@@ -705,6 +705,10 @@
 <span id="705">705</span>
 <span id="706">706</span>
 <span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1205,7 +1209,11 @@
 				.<span class="ident">to_vec</span>(),
 		},
 		<span class="ident">balances</span>: <span class="ident">statemine_runtime::BalancesConfig</span> {
-			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="ident">STATEMINE_ED</span> <span class="op">*</span> <span class="number">4096</span>)).<span class="ident">collect</span>(),
+			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>
+				.<span class="ident">iter</span>()
+				.<span class="ident">cloned</span>()
+				.<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="ident">STATEMINE_ED</span> <span class="op">*</span> <span class="number">524_288</span>))
+				.<span class="ident">collect</span>(),
 		},
 		<span class="ident">parachain_info</span>: <span class="ident">statemine_runtime::ParachainInfoConfig</span> { <span class="ident">parachain_id</span>: <span class="ident">id</span> },
 		<span class="ident">collator_selection</span>: <span class="ident">statemine_runtime::CollatorSelectionConfig</span> {
