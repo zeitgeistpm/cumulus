@@ -990,12 +990,6 @@
 <span id="990">990</span>
 <span id="991">991</span>
 <span id="992">992</span>
-<span id="993">993</span>
-<span id="994">994</span>
-<span id="995">995</span>
-<span id="996">996</span>
-<span id="997">997</span>
-<span id="998">998</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1041,7 +1035,7 @@
 <span class="kw">use</span> <span class="ident">constants</span>::{<span class="ident">currency</span>::<span class="kw-2">*</span>, <span class="ident">fee::WeightToFee</span>};
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">match_type</span>, <span class="ident">parameter_types</span>,
-	<span class="ident">traits</span>::{<span class="ident">Everything</span>, <span class="ident">InstanceFilter</span>, <span class="ident">Nothing</span>},
+	<span class="ident">traits</span>::{<span class="ident">EnsureOneOf</span>, <span class="ident">Everything</span>, <span class="ident">InstanceFilter</span>, <span class="ident">Nothing</span>},
 	<span class="ident">weights</span>::{
 		<span class="ident">constants</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>},
 		<span class="ident">DispatchClass</span>, <span class="ident">IdentityFee</span>, <span class="ident">Weight</span>,
@@ -1050,7 +1044,7 @@
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{
 	<span class="ident">limits</span>::{<span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>},
-	<span class="ident">EnsureOneOf</span>, <span class="ident">EnsureRoot</span>,
+	<span class="ident">EnsureRoot</span>,
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parachains_common</span> <span class="kw">as</span> <span class="ident">common</span>;
 <span class="kw">use</span> <span class="ident">parachains_common</span>::{
@@ -1222,11 +1216,8 @@
 }
 
 <span class="doccomment">/// We allow root and the Relay Chain council to execute privileged asset operations.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AssetsForceOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
-	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AssetsForceOrigin</span> <span class="op">=</span>
+	<span class="ident">EnsureOneOf</span><span class="op">&lt;</span><span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>, <span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">pallet_assets::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
@@ -1641,11 +1632,8 @@
 }
 
 <span class="doccomment">/// We allow root and the Relay Chain council to execute privileged collator selection operations.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CollatorSelectionUpdateOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
-	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CollatorSelectionUpdateOrigin</span> <span class="op">=</span>
+	<span class="ident">EnsureOneOf</span><span class="op">&lt;</span><span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>, <span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">pallet_collator_selection::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;

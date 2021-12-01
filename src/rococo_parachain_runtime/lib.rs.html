@@ -721,9 +721,6 @@
 <span id="721">721</span>
 <span id="722">722</span>
 <span id="723">723</span>
-<span id="724">724</span>
-<span id="725">725</span>
-<span id="726">726</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -764,7 +761,7 @@
 <span class="comment">// A few exports that help ease life for downstream crates.</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">match_type</span>, <span class="ident">parameter_types</span>,
-	<span class="ident">traits</span>::{<span class="ident">Everything</span>, <span class="ident">IsInVec</span>, <span class="ident">Randomness</span>},
+	<span class="ident">traits</span>::{<span class="ident">EnsureOneOf</span>, <span class="ident">Everything</span>, <span class="ident">IsInVec</span>, <span class="ident">Randomness</span>},
 	<span class="ident">weights</span>::{
 		<span class="ident">constants</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">WEIGHT_PER_SECOND</span>},
 		<span class="ident">DispatchClass</span>, <span class="ident">IdentityFee</span>, <span class="ident">Weight</span>,
@@ -773,7 +770,7 @@
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{
 	<span class="ident">limits</span>::{<span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>},
-	<span class="ident">EnsureOneOf</span>, <span class="ident">EnsureRoot</span>,
+	<span class="ident">EnsureRoot</span>,
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet_balances::Call</span> <span class="kw">as</span> <span class="ident">BalancesCall</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet_timestamp::Call</span> <span class="kw">as</span> <span class="ident">TimestampCall</span>;
@@ -1199,11 +1196,8 @@
 }
 
 <span class="doccomment">/// A majority of the Unit body from Rococo over XCM is our required administration origin.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AdminOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
-	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">RocLocation</span>, <span class="ident">UnitBody</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AdminOrigin</span> <span class="op">=</span>
+	<span class="ident">EnsureOneOf</span><span class="op">&lt;</span><span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>, <span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">RocLocation</span>, <span class="ident">UnitBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">pallet_assets::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
