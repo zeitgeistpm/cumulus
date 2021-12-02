@@ -113,6 +113,9 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::chain_spec</span>;
 <span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
@@ -152,6 +155,9 @@
 	<span class="doccomment">/// The custom benchmark subcommmand benchmarking runtime pallets.</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;benchmark&quot;</span>, <span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Benchmark runtime pallets.&quot;</span>)]</span>
 	<span class="ident">Benchmark</span>(<span class="ident">frame_benchmarking_cli::BenchmarkCmd</span>),
+
+	<span class="doccomment">/// Try some testing command against a specified runtime state.</span>
+	<span class="ident">TryRuntime</span>(<span class="ident">try_runtime_cli::TryRuntimeCmd</span>),
 }
 
 <span class="doccomment">/// Command for exporting the genesis state of the parachain</span>

@@ -824,6 +824,17 @@
 <span id="824">824</span>
 <span id="825">825</span>
 <span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="comment">// `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;256&quot;</span>]</span>
@@ -1558,6 +1569,18 @@
 		}
 	}
 
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>)]</span>
+	<span class="kw">impl</span> <span class="ident">frame_try_runtime::TryRuntime</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+		<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Weight</span>, <span class="ident">Weight</span>) {
+			<span class="macro">log::info!</span>(<span class="string">&quot;try-runtime::on_runtime_upgrade parachain-template.&quot;</span>);
+			<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">Executive::try_runtime_upgrade</span>().<span class="ident">unwrap</span>();
+			(<span class="ident">weight</span>, <span class="ident">RuntimeBlockWeights::get</span>().<span class="ident">max_block</span>)
+		}
+
+		<span class="kw">fn</span> <span class="ident">execute_block_no_check</span>(<span class="ident">block</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+			<span class="ident">Executive::execute_block_no_check</span>(<span class="ident">block</span>)
+		}
+	}
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
 	<span class="kw">impl</span> <span class="ident">frame_benchmarking::Benchmark</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
@@ -1614,7 +1637,6 @@
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_session</span>, <span class="ident">SessionBench</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>);
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_timestamp</span>, <span class="ident">Timestamp</span>);
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_collator_selection</span>, <span class="ident">CollatorSelection</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_session</span>, <span class="ident">Session</span>);
 
 			<span class="kw">if</span> <span class="ident">batches</span>.<span class="ident">is_empty</span>() { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Benchmark not found for this pallet.&quot;</span>.<span class="ident">into</span>()) }
 			<span class="prelude-val">Ok</span>(<span class="ident">batches</span>)
