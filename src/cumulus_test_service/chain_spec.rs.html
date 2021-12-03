@@ -130,6 +130,7 @@
 <span id="130">130</span>
 <span id="131">131</span>
 <span id="132">132</span>
+<span id="133">133</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -260,6 +261,7 @@
 			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">60</span>)).<span class="ident">collect</span>(),
 		},
 		<span class="ident">sudo</span>: <span class="ident">cumulus_test_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
+		<span class="ident">transaction_payment</span>: <span class="ident">Default::default</span>(),
 	}
 }
 </code></pre></div>

@@ -471,6 +471,10 @@
 <span id="471">471</span>
 <span id="472">472</span>
 <span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -499,6 +503,8 @@
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 	<span class="macro">include!</span>(<span class="macro">concat!</span>(<span class="macro">env!</span>(<span class="string">&quot;OUT_DIR&quot;</span>), <span class="string">&quot;/wasm_binary_spec_version_incremented.rs&quot;</span>));
 }
+
+<span class="kw">mod</span> <span class="ident">test_pallet</span>;
 
 <span class="kw">use</span> <span class="ident">frame_support::traits::OnRuntimeUpgrade</span>;
 <span class="kw">use</span> <span class="ident">sp_api</span>::{<span class="ident">decl_runtime_apis</span>, <span class="ident">impl_runtime_apis</span>};
@@ -531,6 +537,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">test</span>))]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::BuildStorage</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">Perbill</span>, <span class="ident">Permill</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">test_pallet::Call</span> <span class="kw">as</span> <span class="ident">TestPalletCall</span>;
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SessionHandlers</span> <span class="op">=</span> ();
 
@@ -738,20 +745,21 @@
 	<span class="kw">pub</span> <span class="ident">storage</span> <span class="ident">ParachainId</span>: <span class="ident">cumulus_primitives_core::ParaId</span> <span class="op">=</span> <span class="number">100</span>.<span class="ident">into</span>();
 }
 
+<span class="kw">impl</span> <span class="ident">test_pallet::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
+
 <span class="macro">construct_runtime!</span> {
 	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Runtime</span> <span class="kw">where</span>
 		<span class="ident">Block</span> <span class="op">=</span> <span class="ident">Block</span>,
 		<span class="ident">NodeBlock</span> <span class="op">=</span> <span class="ident">NodeBlock</span>,
 		<span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">UncheckedExtrinsic</span>,
 	{
-		<span class="ident">System</span>: <span class="ident">frame_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>},
-		<span class="ident">ParachainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>::{
-			<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Config</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">ValidateUnsigned</span>,
-		},
-		<span class="ident">Timestamp</span>: <span class="ident">pallet_timestamp</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>},
-		<span class="ident">Balances</span>: <span class="ident">pallet_balances</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>},
-		<span class="ident">Sudo</span>: <span class="ident">pallet_sudo</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>},
-		<span class="ident">TransactionPayment</span>: <span class="ident">pallet_transaction_payment</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>},
+		<span class="ident">System</span>: <span class="ident">frame_system</span>,
+		<span class="ident">ParachainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>,
+		<span class="ident">Timestamp</span>: <span class="ident">pallet_timestamp</span>,
+		<span class="ident">Balances</span>: <span class="ident">pallet_balances</span>,
+		<span class="ident">Sudo</span>: <span class="ident">pallet_sudo</span>,
+		<span class="ident">TransactionPayment</span>: <span class="ident">pallet_transaction_payment</span>,
+		<span class="ident">TestPallet</span>: <span class="ident">test_pallet</span>,
 	}
 }
 
