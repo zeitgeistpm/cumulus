@@ -709,6 +709,9 @@
 <span id="709">709</span>
 <span id="710">710</span>
 <span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1063,6 +1066,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemineChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
+	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">2</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;KSM&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
 
@@ -1098,6 +1102,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_local_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemineChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
+	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">2</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;KSM&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
 
@@ -1147,6 +1152,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemineChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
+	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">2</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;KSM&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
 
