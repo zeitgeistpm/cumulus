@@ -35,6 +35,7 @@ sourcesIndex["parachains_common"] = {"name":"","files":["impls.rs","lib.rs"]};
 sourcesIndex["polkadot_collator"] = {"name":"","files":["chain_spec.rs","cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
 sourcesIndex["rococo_parachain_runtime"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["rococo_runtime"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["seedling_runtime"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["shell_runtime"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["statemine_runtime"] = {"name":"","dirs":[{"name":"weights","files":["mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs"]}],"files":["constants.rs","lib.rs"]};
 sourcesIndex["statemint_runtime"] = {"name":"","dirs":[{"name":"weights","files":["mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs"]}],"files":["constants.rs","lib.rs"]};
