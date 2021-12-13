@@ -788,7 +788,7 @@
 	<span class="ident">sc_service::GenericChainSpec</span><span class="op">&lt;</span><span class="ident">seedling_runtime::GenesisConfig</span>, <span class="ident">Extensions</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Helper function to generate a crypto pair from seed</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span> {
 	<span class="ident">TPublic::Pair::from_string</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;//{}&quot;</span>, <span class="ident">seed</span>), <span class="prelude-val">None</span>)
 		.<span class="ident">expect</span>(<span class="string">&quot;static values are valid; qed&quot;</span>)
 		.<span class="ident">public</span>()
@@ -806,7 +806,7 @@
 
 <span class="kw">impl</span> <span class="ident">Extensions</span> {
 	<span class="doccomment">/// Try to get the extension from the given `ChainSpec`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_get</span>(<span class="ident">chain_spec</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_get</span>(<span class="ident">chain_spec</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span> {
 		<span class="ident">sc_chain_spec::get_extension</span>(<span class="ident">chain_spec</span>.<span class="ident">extensions</span>())
 	}
 }
@@ -814,14 +814,14 @@
 <span class="kw">type</span> <span class="ident">AccountPublic</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Signature</span> <span class="kw">as</span> <span class="ident">Verify</span><span class="op">&gt;</span><span class="ident">::Signer</span>;
 
 <span class="doccomment">/// Helper function to generate an account ID from seed</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_account_id_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccountId</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_account_id_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">AccountId</span>
 <span class="kw">where</span>
 	<span class="ident">AccountPublic</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span><span class="op">&gt;</span>,
 {
 	<span class="ident">AccountPublic::from</span>(<span class="ident">get_from_seed</span>::<span class="op">&lt;</span><span class="ident">TPublic</span><span class="op">&gt;</span>(<span class="ident">seed</span>)).<span class="ident">into_account</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_chain_spec</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_chain_spec</span>() -&gt; <span class="ident">ChainSpec</span> {
 	<span class="ident">ChainSpec::from_genesis</span>(
 		<span class="string">&quot;Local Testnet&quot;</span>,
 		<span class="string">&quot;local_testnet&quot;</span>,
@@ -855,7 +855,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_shell_chain_spec</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ShellChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_shell_chain_spec</span>() -&gt; <span class="ident">ShellChainSpec</span> {
 	<span class="ident">ShellChainSpec::from_genesis</span>(
 		<span class="string">&quot;Shell Local Testnet&quot;</span>,
 		<span class="string">&quot;shell_local_testnet&quot;</span>,
@@ -869,7 +869,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_seedling_chain_spec</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SeedlingChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_seedling_chain_spec</span>() -&gt; <span class="ident">SeedlingChainSpec</span> {
 	<span class="ident">SeedlingChainSpec::from_genesis</span>(
 		<span class="string">&quot;Seedling Local Testnet&quot;</span>,
 		<span class="string">&quot;seedling_local_testnet&quot;</span>,
@@ -888,7 +888,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">staging_test_net</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">staging_test_net</span>() -&gt; <span class="ident">ChainSpec</span> {
 	<span class="ident">ChainSpec::from_genesis</span>(
 		<span class="string">&quot;Staging Testnet&quot;</span>,
 		<span class="string">&quot;staging_testnet&quot;</span>,
@@ -923,7 +923,7 @@
 	<span class="ident">initial_authorities</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AuraId</span><span class="op">&gt;</span>,
 	<span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rococo_parachain_runtime::GenesisConfig</span> {
+) -&gt; <span class="ident">rococo_parachain_runtime::GenesisConfig</span> {
 	<span class="ident">rococo_parachain_runtime::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">rococo_parachain_runtime::SystemConfig</span> {
 			<span class="ident">code</span>: <span class="ident">rococo_parachain_runtime::WASM_BINARY</span>
@@ -941,7 +941,7 @@
 	}
 }
 
-<span class="kw">fn</span> <span class="ident">shell_testnet_genesis</span>(<span class="ident">parachain_id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">shell_runtime::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">shell_testnet_genesis</span>(<span class="ident">parachain_id</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">shell_runtime::GenesisConfig</span> {
 	<span class="ident">shell_runtime::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">shell_runtime::SystemConfig</span> {
 			<span class="ident">code</span>: <span class="ident">shell_runtime::WASM_BINARY</span>
@@ -956,7 +956,7 @@
 <span class="kw">fn</span> <span class="ident">seedling_testnet_genesis</span>(
 	<span class="ident">root_key</span>: <span class="ident">AccountId</span>,
 	<span class="ident">parachain_id</span>: <span class="ident">ParaId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">seedling_runtime::GenesisConfig</span> {
+) -&gt; <span class="ident">seedling_runtime::GenesisConfig</span> {
 	<span class="ident">seedling_runtime::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">seedling_runtime::SystemConfig</span> {
 			<span class="ident">code</span>: <span class="ident">seedling_runtime::WASM_BINARY</span>
@@ -984,7 +984,7 @@
 <span class="kw">const</span> <span class="ident">WESTMINT_ED</span>: <span class="ident">StatemintBalance</span> <span class="op">=</span> <span class="ident">westmint_runtime::constants::currency::EXISTENTIAL_DEPOSIT</span>;
 
 <span class="doccomment">/// Helper function to generate a crypto pair from seed</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_public_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_public_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span> {
 	<span class="ident">TPublic::Pair::from_string</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;//{}&quot;</span>, <span class="ident">seed</span>), <span class="prelude-val">None</span>)
 		.<span class="ident">expect</span>(<span class="string">&quot;static values are valid; qed&quot;</span>)
 		.<span class="ident">public</span>()
@@ -993,32 +993,32 @@
 <span class="doccomment">/// Generate collator keys from seed.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function&#39;s return type must always match the session keys of the chain in tuple format.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_collator_keys_from_seed</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AuraId</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_collator_keys_from_seed</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">AuraId</span> {
 	<span class="ident">get_public_from_seed</span>::<span class="op">&lt;</span><span class="ident">AuraId</span><span class="op">&gt;</span>(<span class="ident">seed</span>)
 }
 
 <span class="doccomment">/// Generate the session keys from individual elements.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The input must be a tuple of individual keys (a single arg for now since we have just one key).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_session_keys</span>(<span class="ident">keys</span>: <span class="ident">AuraId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">statemint_runtime::SessionKeys</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_session_keys</span>(<span class="ident">keys</span>: <span class="ident">AuraId</span>) -&gt; <span class="ident">statemint_runtime::SessionKeys</span> {
 	<span class="ident">statemint_runtime::SessionKeys</span> { <span class="ident">aura</span>: <span class="ident">keys</span> }
 }
 
 <span class="doccomment">/// Generate the session keys from individual elements.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The input must be a tuple of individual keys (a single arg for now since we have just one key).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_session_keys</span>(<span class="ident">keys</span>: <span class="ident">AuraId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">statemine_runtime::SessionKeys</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_session_keys</span>(<span class="ident">keys</span>: <span class="ident">AuraId</span>) -&gt; <span class="ident">statemine_runtime::SessionKeys</span> {
 	<span class="ident">statemine_runtime::SessionKeys</span> { <span class="ident">aura</span>: <span class="ident">keys</span> }
 }
 
 <span class="doccomment">/// Generate the session keys from individual elements.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The input must be a tuple of individual keys (a single arg for now since we have just one key).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_session_keys</span>(<span class="ident">keys</span>: <span class="ident">AuraId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westmint_runtime::SessionKeys</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_session_keys</span>(<span class="ident">keys</span>: <span class="ident">AuraId</span>) -&gt; <span class="ident">westmint_runtime::SessionKeys</span> {
 	<span class="ident">westmint_runtime::SessionKeys</span> { <span class="ident">aura</span>: <span class="ident">keys</span> }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemintChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_development_config</span>() -&gt; <span class="ident">StatemintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;DOT&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">10</span>.<span class="ident">into</span>());
@@ -1053,7 +1053,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_local_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemintChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_local_config</span>() -&gt; <span class="ident">StatemintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;DOT&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">10</span>.<span class="ident">into</span>());
@@ -1106,7 +1106,7 @@
 	<span class="ident">invulnerables</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">AccountId</span>, <span class="ident">AuraId</span>)<span class="op">&gt;</span>,
 	<span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">statemint_runtime::GenesisConfig</span> {
+) -&gt; <span class="ident">statemint_runtime::GenesisConfig</span> {
 	<span class="ident">statemint_runtime::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">statemint_runtime::SystemConfig</span> {
 			<span class="ident">code</span>: <span class="ident">statemint_runtime::WASM_BINARY</span>
@@ -1142,7 +1142,7 @@
 	}
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemineChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_development_config</span>() -&gt; <span class="ident">StatemineChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">2</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;KSM&quot;</span>.<span class="ident">into</span>());
@@ -1178,7 +1178,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_local_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemineChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_local_config</span>() -&gt; <span class="ident">StatemineChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">2</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;KSM&quot;</span>.<span class="ident">into</span>());
@@ -1228,7 +1228,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatemineChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemine_config</span>() -&gt; <span class="ident">StatemineChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">2</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;KSM&quot;</span>.<span class="ident">into</span>());
@@ -1285,7 +1285,7 @@
 	<span class="ident">invulnerables</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">AccountId</span>, <span class="ident">AuraId</span>)<span class="op">&gt;</span>,
 	<span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">statemine_runtime::GenesisConfig</span> {
+) -&gt; <span class="ident">statemine_runtime::GenesisConfig</span> {
 	<span class="ident">statemine_runtime::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">statemine_runtime::SystemConfig</span> {
 			<span class="ident">code</span>: <span class="ident">statemine_runtime::WASM_BINARY</span>
@@ -1323,7 +1323,7 @@
 	}
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WestmintChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_development_config</span>() -&gt; <span class="ident">WestmintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;WND&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
@@ -1359,7 +1359,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_local_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WestmintChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_local_config</span>() -&gt; <span class="ident">WestmintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;WND&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
@@ -1409,7 +1409,7 @@
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WestmintChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westmint_config</span>() -&gt; <span class="ident">WestmintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;WND&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
@@ -1468,7 +1468,7 @@
 	<span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">root_key</span>: <span class="ident">AccountId</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westmint_runtime::GenesisConfig</span> {
+) -&gt; <span class="ident">westmint_runtime::GenesisConfig</span> {
 	<span class="ident">westmint_runtime::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">westmint_runtime::SystemConfig</span> {
 			<span class="ident">code</span>: <span class="ident">westmint_runtime::WASM_BINARY</span>
