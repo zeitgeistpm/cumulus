@@ -266,7 +266,7 @@
 		<span class="ident">balances</span>: <span class="ident">cumulus_test_runtime::BalancesConfig</span> {
 			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">60</span>)).<span class="ident">collect</span>(),
 		},
-		<span class="ident">sudo</span>: <span class="ident">cumulus_test_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
+		<span class="ident">sudo</span>: <span class="ident">cumulus_test_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>) },
 		<span class="ident">transaction_payment</span>: <span class="ident">Default::default</span>(),
 	}
 }

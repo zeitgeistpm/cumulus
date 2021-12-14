@@ -933,7 +933,7 @@
 		<span class="ident">balances</span>: <span class="ident">rococo_parachain_runtime::BalancesConfig</span> {
 			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">60</span>)).<span class="ident">collect</span>(),
 		},
-		<span class="ident">sudo</span>: <span class="ident">rococo_parachain_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
+		<span class="ident">sudo</span>: <span class="ident">rococo_parachain_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>) },
 		<span class="ident">parachain_info</span>: <span class="ident">rococo_parachain_runtime::ParachainInfoConfig</span> { <span class="ident">parachain_id</span>: <span class="ident">id</span> },
 		<span class="ident">aura</span>: <span class="ident">rococo_parachain_runtime::AuraConfig</span> { <span class="ident">authorities</span>: <span class="ident">initial_authorities</span> },
 		<span class="ident">aura_ext</span>: <span class="ident">Default::default</span>(),
@@ -963,7 +963,7 @@
 				.<span class="ident">expect</span>(<span class="string">&quot;WASM binary was not build, please build it!&quot;</span>)
 				.<span class="ident">to_vec</span>(),
 		},
-		<span class="ident">sudo</span>: <span class="ident">seedling_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
+		<span class="ident">sudo</span>: <span class="ident">seedling_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>) },
 		<span class="ident">parachain_info</span>: <span class="ident">seedling_runtime::ParachainInfoConfig</span> { <span class="ident">parachain_id</span> },
 		<span class="ident">parachain_system</span>: <span class="ident">Default::default</span>(),
 	}
@@ -1478,7 +1478,7 @@
 		<span class="ident">balances</span>: <span class="ident">westmint_runtime::BalancesConfig</span> {
 			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="ident">WESTMINT_ED</span> <span class="op">*</span> <span class="number">4096</span>)).<span class="ident">collect</span>(),
 		},
-		<span class="ident">sudo</span>: <span class="ident">westmint_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
+		<span class="ident">sudo</span>: <span class="ident">westmint_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>) },
 		<span class="ident">parachain_info</span>: <span class="ident">westmint_runtime::ParachainInfoConfig</span> { <span class="ident">parachain_id</span>: <span class="ident">id</span> },
 		<span class="ident">collator_selection</span>: <span class="ident">westmint_runtime::CollatorSelectionConfig</span> {
 			<span class="ident">invulnerables</span>: <span class="ident">invulnerables</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">acc</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">acc</span>).<span class="ident">collect</span>(),
