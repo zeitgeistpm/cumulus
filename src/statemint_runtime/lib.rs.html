@@ -1009,6 +1009,8 @@
 <span id="1009">1009</span>
 <span id="1010">1010</span>
 <span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1054,7 +1056,7 @@
 <span class="kw">use</span> <span class="ident">constants</span>::{<span class="ident">currency</span>::<span class="kw-2">*</span>, <span class="ident">fee::WeightToFee</span>};
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">match_type</span>, <span class="ident">parameter_types</span>,
-	<span class="ident">traits</span>::{<span class="ident">Contains</span>, <span class="ident">EnsureOneOf</span>, <span class="ident">Everything</span>, <span class="ident">InstanceFilter</span>, <span class="ident">Nothing</span>},
+	<span class="ident">traits</span>::{<span class="ident">Contains</span>, <span class="ident">EnsureOneOf</span>, <span class="ident">Everything</span>, <span class="ident">InstanceFilter</span>, <span class="ident">Nothing</span>, <span class="ident">PalletInfoAccess</span>},
 	<span class="ident">weights</span>::{
 		<span class="ident">constants</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>},
 		<span class="ident">DispatchClass</span>, <span class="ident">IdentityFee</span>, <span class="ident">Weight</span>,
@@ -1455,6 +1457,8 @@
 	<span class="kw">pub</span> <span class="ident">RelayChainOrigin</span>: <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">cumulus_pallet_xcm::Origin::Relay</span>.<span class="ident">into</span>();
 	<span class="kw">pub</span> <span class="ident">Ancestry</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">Parachain</span>(<span class="ident">ParachainInfo::parachain_id</span>().<span class="ident">into</span>()).<span class="ident">into</span>();
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">Local</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">Here</span>.<span class="ident">into</span>();
+	<span class="kw">pub</span> <span class="ident">AssetsPalletLocation</span>: <span class="ident">MultiLocation</span> <span class="op">=</span>
+		<span class="ident">PalletInstance</span>(<span class="op">&lt;</span><span class="ident">Assets</span> <span class="kw">as</span> <span class="ident">PalletInfoAccess</span><span class="op">&gt;</span><span class="ident">::index</span>() <span class="kw">as</span> <span class="ident">u8</span>).<span class="ident">into</span>();
 	<span class="kw">pub</span> <span class="ident">CheckingAccount</span>: <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">PolkadotXcm::check_account</span>();
 }
 
@@ -1492,7 +1496,7 @@
 	<span class="ident">ConvertedConcreteAssetId</span><span class="op">&lt;</span>
 		<span class="ident">AssetId</span>,
 		<span class="ident">Balance</span>,
-		<span class="ident">AsPrefixedGeneralIndex</span><span class="op">&lt;</span><span class="ident">Local</span>, <span class="ident">AssetId</span>, <span class="ident">JustTry</span><span class="op">&gt;</span>,
+		<span class="ident">AsPrefixedGeneralIndex</span><span class="op">&lt;</span><span class="ident">AssetsPalletLocation</span>, <span class="ident">AssetId</span>, <span class="ident">JustTry</span><span class="op">&gt;</span>,
 		<span class="ident">JustTry</span>,
 	<span class="op">&gt;</span>,
 	<span class="comment">// Convert an XCM MultiLocation into a local account id:</span>

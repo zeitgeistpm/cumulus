@@ -726,6 +726,10 @@
 <span id="726">726</span>
 <span id="727">727</span>
 <span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1040,7 +1044,7 @@
 	<span class="ident">ConvertedConcreteAssetId</span><span class="op">&lt;</span>
 		<span class="ident">AssetId</span>,
 		<span class="ident">u64</span>,
-		<span class="ident">AsPrefixedGeneralIndex</span><span class="op">&lt;</span><span class="ident">StatemintLocation</span>, <span class="ident">AssetId</span>, <span class="ident">JustTry</span><span class="op">&gt;</span>,
+		<span class="ident">AsPrefixedGeneralIndex</span><span class="op">&lt;</span><span class="ident">StatemintAssetsPalletLocation</span>, <span class="ident">AssetId</span>, <span class="ident">JustTry</span><span class="op">&gt;</span>,
 		<span class="ident">JustTry</span>,
 	<span class="op">&gt;</span>,
 	<span class="comment">// Convert an XCM MultiLocation into a local account id:</span>
@@ -1114,6 +1118,10 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="kw">pub</span> <span class="ident">StatemintLocation</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">MultiLocation::new</span>(<span class="number">1</span>, <span class="ident">X1</span>(<span class="ident">Parachain</span>(<span class="number">1000</span>)));
+	<span class="comment">// ALWAYS ensure that the index in PalletInstance stays up-to-date with</span>
+	<span class="comment">// Statemint&#39;s Assets pallet index</span>
+	<span class="kw">pub</span> <span class="ident">StatemintAssetsPalletLocation</span>: <span class="ident">MultiLocation</span> <span class="op">=</span>
+		<span class="ident">MultiLocation::new</span>(<span class="number">1</span>, <span class="ident">X2</span>(<span class="ident">Parachain</span>(<span class="number">1000</span>), <span class="ident">PalletInstance</span>(<span class="number">50</span>)));
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Reserves</span> <span class="op">=</span> (<span class="ident">NativeAsset</span>, <span class="ident">AssetsFrom</span><span class="op">&lt;</span><span class="ident">StatemintLocation</span><span class="op">&gt;</span>);
