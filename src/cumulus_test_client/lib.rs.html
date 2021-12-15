@@ -198,7 +198,6 @@
 <span id="198">198</span>
 <span id="199">199</span>
 <span id="200">200</span>
-<span id="201">201</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -223,7 +222,7 @@
 	<span class="ident">Balance</span>, <span class="ident">Block</span>, <span class="ident">BlockHashCount</span>, <span class="ident">Call</span>, <span class="ident">GenesisConfig</span>, <span class="ident">Runtime</span>, <span class="ident">Signature</span>, <span class="ident">SignedExtra</span>,
 	<span class="ident">SignedPayload</span>, <span class="ident">UncheckedExtrinsic</span>, <span class="ident">VERSION</span>,
 };
-<span class="kw">use</span> <span class="ident">sc_executor</span>::{<span class="ident">sp_wasm_interface::HostFunctions</span>, <span class="ident">WasmExecutionMethod</span>, <span class="ident">WasmExecutor</span>};
+<span class="kw">use</span> <span class="ident">sc_executor</span>::{<span class="ident">WasmExecutionMethod</span>, <span class="ident">WasmExecutor</span>};
 <span class="kw">use</span> <span class="ident">sc_executor_common::runtime_blob::RuntimeBlob</span>;
 <span class="kw">use</span> <span class="ident">sc_service::client</span>;
 <span class="kw">use</span> <span class="ident">sp_blockchain::HeaderBackend</span>;
@@ -380,10 +379,9 @@
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ext</span> <span class="op">=</span> <span class="ident">TestExternalities::default</span>();
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ext_ext</span> <span class="op">=</span> <span class="ident">ext</span>.<span class="ident">ext</span>();
 
-	<span class="kw">let</span> <span class="ident">executor</span> <span class="op">=</span> <span class="ident">WasmExecutor::new</span>(
+	<span class="kw">let</span> <span class="ident">executor</span> <span class="op">=</span> <span class="ident">WasmExecutor</span>::<span class="op">&lt;</span><span class="ident">sp_io::SubstrateHostFunctions</span><span class="op">&gt;</span><span class="ident">::new</span>(
 		<span class="ident">WasmExecutionMethod::Interpreted</span>,
 		<span class="prelude-val">Some</span>(<span class="number">1024</span>),
-		<span class="ident">sp_io::SubstrateHostFunctions::host_functions</span>(),
 		<span class="number">1</span>,
 		<span class="prelude-val">None</span>,
 		<span class="number">2</span>,
