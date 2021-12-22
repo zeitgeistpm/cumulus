@@ -445,6 +445,8 @@
 <span id="445">445</span>
 <span id="446">446</span>
 <span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -464,7 +466,9 @@
 <span class="doccomment">//! Cumulus Collator implementation for Substrate.</span>
 
 <span class="kw">use</span> <span class="ident">cumulus_client_network::WaitToAnnounce</span>;
-<span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{<span class="ident">CollectCollationInfo</span>, <span class="ident">ParachainBlockData</span>, <span class="ident">PersistedValidationData</span>};
+<span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{
+	<span class="ident">relay_chain::Hash</span> <span class="kw">as</span> <span class="ident">PHash</span>, <span class="ident">CollectCollationInfo</span>, <span class="ident">ParachainBlockData</span>, <span class="ident">PersistedValidationData</span>,
+};
 
 <span class="kw">use</span> <span class="ident">sc_client_api::BlockBackend</span>;
 <span class="kw">use</span> <span class="ident">sp_api::ProvideRuntimeApi</span>;
@@ -481,7 +485,7 @@
 };
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem::messages</span>::{<span class="ident">CollationGenerationMessage</span>, <span class="ident">CollatorProtocolMessage</span>};
 <span class="kw">use</span> <span class="ident">polkadot_overseer::Handle</span> <span class="kw">as</span> <span class="ident">OverseerHandle</span>;
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">CollatorPair</span>, <span class="ident">Hash</span> <span class="kw">as</span> <span class="ident">PHash</span>, <span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">CollatorPair</span>, <span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>};
 
 <span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">channel::oneshot</span>, <span class="ident">FutureExt</span>};
