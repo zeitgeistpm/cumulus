@@ -538,8 +538,6 @@
 <span id="538">538</span>
 <span id="539">539</span>
 <span id="540">540</span>
-<span id="541">541</span>
-<span id="542">542</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -561,10 +559,8 @@
 <span class="kw">use</span> <span class="ident">async_trait::async_trait</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{
 	<span class="ident">relay_chain</span>::{
-		<span class="ident">v1</span>::{
-			<span class="ident">CommittedCandidateReceipt</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">ParachainHost</span>, <span class="ident">SessionIndex</span>,
-			<span class="ident">ValidatorId</span>,
-		},
+		<span class="ident">v1</span>::{<span class="ident">CommittedCandidateReceipt</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">SessionIndex</span>, <span class="ident">ValidatorId</span>},
+		<span class="ident">v2::ParachainHost</span>,
 		<span class="ident">Block</span> <span class="kw">as</span> <span class="ident">PBlock</span>, <span class="ident">BlockId</span>, <span class="ident">Hash</span> <span class="kw">as</span> <span class="ident">PHash</span>, <span class="ident">InboundHrmpMessage</span>,
 	},
 	<span class="ident">InboundDownwardMessage</span>, <span class="ident">ParaId</span>, <span class="ident">PersistedValidationData</span>,
