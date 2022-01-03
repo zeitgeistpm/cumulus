@@ -630,8 +630,8 @@
 	}
 
 	<span class="kw">impl</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">collect_collation_info</span>() -&gt; <span class="ident">cumulus_primitives_core::CollationInfo</span> {
-			<span class="ident">ParachainSystem::collect_collation_info</span>()
+		<span class="kw">fn</span> <span class="ident">collect_collation_info</span>(<span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Header</span>) -&gt; <span class="ident">cumulus_primitives_core::CollationInfo</span> {
+			<span class="ident">ParachainSystem::collect_collation_info</span>(<span class="ident">header</span>)
 		}
 	}
 }
