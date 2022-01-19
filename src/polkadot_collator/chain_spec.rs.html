@@ -816,6 +816,9 @@
 <span id="816">816</span>
 <span id="817">817</span>
 <span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1089,6 +1092,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_development_config</span>() -&gt; <span class="ident">StatemintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
+	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">0</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;DOT&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">10</span>.<span class="ident">into</span>());
 
@@ -1125,6 +1129,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_local_config</span>() -&gt; <span class="ident">StatemintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
+	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">0</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;DOT&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">10</span>.<span class="ident">into</span>());
 
@@ -1176,6 +1181,7 @@
 <span class="comment">// Not used for syncing, but just to determine the genesis values set for the upgrade from shell.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_config</span>() -&gt; <span class="ident">StatemintChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
+	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;ss58Format&quot;</span>.<span class="ident">into</span>(), <span class="number">0</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;DOT&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">10</span>.<span class="ident">into</span>());
 
