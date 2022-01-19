@@ -959,8 +959,6 @@
 <span id="959">959</span>
 <span id="960">960</span>
 <span id="961">961</span>
-<span id="962">962</span>
-<span id="963">963</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -996,7 +994,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
 
-<span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">DecodeAll</span>, <span class="ident">DecodeLimit</span>, <span class="ident">Encode</span>};
+<span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">DecodeLimit</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{
 	<span class="ident">relay_chain::BlockNumber</span> <span class="kw">as</span> <span class="ident">RelayBlockNumber</span>, <span class="ident">ChannelStatus</span>, <span class="ident">GetChannelInfo</span>, <span class="ident">MessageSendError</span>,
 	<span class="ident">ParaId</span>, <span class="ident">XcmpMessageFormat</span>, <span class="ident">XcmpMessageHandler</span>, <span class="ident">XcmpMessageSource</span>,
@@ -1501,26 +1499,24 @@
 			<span class="ident">XcmpMessageFormat::ConcatenatedEncodedBlob</span> =&gt; {
 				<span class="kw">while</span> <span class="op">!</span><span class="ident">remaining_fragments</span>.<span class="ident">is_empty</span>() {
 					<span class="ident">last_remaining_fragments</span> <span class="op">=</span> <span class="ident">remaining_fragments</span>;
-					<span class="kw">match</span> <span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::decode_all</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">remaining_fragments</span>) {
-						<span class="prelude-val">Ok</span>(<span class="ident">blob</span>) <span class="kw">if</span> <span class="ident">remaining_fragments</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">last_remaining_fragments</span>.<span class="ident">len</span>() =&gt; {
-							<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">max_weight</span> <span class="op">-</span> <span class="ident">weight_used</span>;
-							<span class="kw">match</span> <span class="ident"><span class="self">Self</span>::handle_blob_message</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">blob</span>, <span class="ident">weight</span>) {
-								<span class="prelude-val">Ok</span>(<span class="ident">used</span>) =&gt; <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">weight_used</span>.<span class="ident">saturating_add</span>(<span class="ident">used</span>),
-								<span class="prelude-val">Err</span>(<span class="bool-val">true</span>) =&gt; {
-									<span class="comment">// That message didn&#39;t get processed this time because of being</span>
-									<span class="comment">// too heavy. We leave it around for next time and bail.</span>
-									<span class="ident">remaining_fragments</span> <span class="op">=</span> <span class="ident">last_remaining_fragments</span>;
-									<span class="kw">break</span>
-								},
-								<span class="prelude-val">Err</span>(<span class="bool-val">false</span>) =&gt; {
-									<span class="comment">// Message invalid; don&#39;t attempt to retry</span>
-								},
-							}
-						},
-						<span class="kw">_</span> =&gt; {
-							<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>, <span class="string">&quot;Invalid incoming blob message data&quot;</span>);
-							<span class="ident">remaining_fragments</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="string">b&quot;&quot;</span>[..];
-						},
+
+					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">blob</span>) <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">remaining_fragments</span>) {
+						<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">max_weight</span> <span class="op">-</span> <span class="ident">weight_used</span>;
+						<span class="kw">match</span> <span class="ident"><span class="self">Self</span>::handle_blob_message</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">blob</span>, <span class="ident">weight</span>) {
+							<span class="prelude-val">Ok</span>(<span class="ident">used</span>) =&gt; <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">weight_used</span>.<span class="ident">saturating_add</span>(<span class="ident">used</span>),
+							<span class="prelude-val">Err</span>(<span class="bool-val">true</span>) =&gt; {
+								<span class="comment">// That message didn&#39;t get processed this time because of being</span>
+								<span class="comment">// too heavy. We leave it around for next time and bail.</span>
+								<span class="ident">remaining_fragments</span> <span class="op">=</span> <span class="ident">last_remaining_fragments</span>;
+								<span class="kw">break</span>
+							},
+							<span class="prelude-val">Err</span>(<span class="bool-val">false</span>) =&gt; {
+								<span class="comment">// Message invalid; don&#39;t attempt to retry</span>
+							},
+						}
+					} <span class="kw">else</span> {
+						<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>, <span class="string">&quot;Invalid incoming blob message data&quot;</span>);
+						<span class="ident">remaining_fragments</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="string">b&quot;&quot;</span>[..];
 					}
 				}
 			},
