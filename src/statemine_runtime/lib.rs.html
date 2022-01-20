@@ -1016,6 +1016,13 @@
 <span id="1016">1016</span>
 <span id="1017">1017</span>
 <span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1800,7 +1807,7 @@
 	<span class="ident">frame_system::ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">Runtime</span>,
 	<span class="ident">AllPalletsWithSystem</span>,
-	<span class="ident">RemoveCollectiveFlip</span>,
+	(<span class="ident">RemoveCollectiveFlip</span>, <span class="ident">UniquesV1Migration</span>),
 <span class="op">&gt;</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RemoveCollectiveFlip</span>;
@@ -1810,6 +1817,13 @@
 		<span class="comment">// Remove the storage value `RandomMaterial` from removed pallet `RandomnessCollectiveFlip`</span>
 		<span class="ident">migration::remove_storage_prefix</span>(<span class="string">b&quot;RandomnessCollectiveFlip&quot;</span>, <span class="string">b&quot;RandomMaterial&quot;</span>, <span class="string">b&quot;&quot;</span>);
 		<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>)
+	}
+}
+
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UniquesV1Migration</span>;
+<span class="kw">impl</span> <span class="ident">frame_support::traits::OnRuntimeUpgrade</span> <span class="kw">for</span> <span class="ident">UniquesV1Migration</span> {
+	<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() -&gt; <span class="ident">Weight</span> {
+		<span class="ident">pallet_uniques::migration::migrate_to_v1</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="kw">_</span>, <span class="ident">Uniques</span><span class="op">&gt;</span>()
 	}
 }
 

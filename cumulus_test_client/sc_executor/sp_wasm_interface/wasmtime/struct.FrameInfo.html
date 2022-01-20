@@ -23,15 +23,25 @@ tweaked over time here and isn’t guaranteed to be something in
 particular about a wasm module due to its primary purpose of assisting
 in debugging.</p>
 <p>This function returns <code>None</code> when no name could be inferred.</p>
-</div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.module_offset" class="method has-srclink"><div class="rightside"></div><a href="#method.module_offset" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.module_offset" class="fnname">module_offset</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.57.0/std/primitive.usize.html">usize</a></h4></div></summary><div class="docblock"><p>Returns the offset within the original wasm module this frame’s program
+</div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.module_offset" class="method has-srclink"><div class="rightside"></div><a href="#method.module_offset" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.module_offset" class="fnname">module_offset</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.57.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.57.0/std/primitive.usize.html">usize</a>&gt;</h4></div></summary><div class="docblock"><p>Returns the offset within the original wasm module this frame’s program
 counter was at.</p>
 <p>The offset here is the offset from the beginning of the original wasm
 module to the instruction that this frame points to.</p>
-</div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.func_offset" class="method has-srclink"><div class="rightside"></div><a href="#method.func_offset" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.func_offset" class="fnname">func_offset</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.57.0/std/primitive.usize.html">usize</a></h4></div></summary><div class="docblock"><p>Returns the offset from the original wasm module’s function to this
+<p>Note that <code>None</code> may be returned if the original module was not
+compiled with mapping information to yield this information. This is
+controlled by the
+<a href="struct.Config.html#method.generate_address_map"><code>Config::generate_address_map</code></a>
+configuration option.</p>
+</div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.func_offset" class="method has-srclink"><div class="rightside"></div><a href="#method.func_offset" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.func_offset" class="fnname">func_offset</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.57.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.57.0/std/primitive.usize.html">usize</a>&gt;</h4></div></summary><div class="docblock"><p>Returns the offset from the original wasm module’s function to this
 frame’s program counter.</p>
 <p>The offset here is the offset from the beginning of the defining
 function of this frame (within the wasm module) to the instruction this
 frame points to.</p>
+<p>Note that <code>None</code> may be returned if the original module was not
+compiled with mapping information to yield this information. This is
+controlled by the
+<a href="struct.Config.html#method.generate_address_map"><code>Config::generate_address_map</code></a>
+configuration option.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.symbols" class="method has-srclink"><div class="rightside"></div><a href="#method.symbols" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.symbols" class="fnname">symbols</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.57.0/std/primitive.slice.html">&amp;[</a><a class="struct" href="struct.FrameSymbol.html" title="struct cumulus_test_client::sc_executor::sp_wasm_interface::wasmtime::FrameSymbol">FrameSymbol</a><a class="primitive" href="https://doc.rust-lang.org/1.57.0/std/primitive.slice.html">]</a></h4></div></summary><div class="docblock"><p>Returns the debug symbols found, if any, for this function frame.</p>
 <p>When a wasm program is compiled with DWARF debug information then this
 function may be populated to return symbols which contain extra debug
