@@ -682,6 +682,10 @@
 <span id="681">681</span>
 <span id="682">682</span>
 <span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -711,6 +715,7 @@
 <span class="kw">use</span> <span class="ident">cumulus_client_service::genesis::generate_genesis_block</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
 <span class="kw">use</span> <span class="ident">log::info</span>;
+<span class="kw">use</span> <span class="ident">parachains_common</span>::{<span class="ident">AuraId</span>, <span class="ident">StatemintAuraId</span>};
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::AccountIdConversion</span>;
 <span class="kw">use</span> <span class="ident">sc_cli</span>::{
 	<span class="ident">ChainSpec</span>, <span class="ident">CliConfiguration</span>, <span class="ident">DefaultConfigurationValues</span>, <span class="ident">ImportParams</span>, <span class="ident">KeystoreParams</span>,
@@ -938,7 +943,7 @@
 			<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
 				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">westmint_runtime::RuntimeApi</span>, <span class="ident">WestmintRuntimeExecutor</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 					<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
-					<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>,
+					<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
 				)<span class="question-mark">?</span>;
 				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 				{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
@@ -947,7 +952,7 @@
 			<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
 				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">statemine_runtime::RuntimeApi</span>, <span class="ident">StatemineRuntimeExecutor</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 					<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
-					<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>,
+					<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
 				)<span class="question-mark">?</span>;
 				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 				{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
@@ -956,7 +961,7 @@
 			<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
 				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">statemint_runtime::RuntimeApi</span>, <span class="ident">StatemintRuntimeExecutor</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 					<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
-					<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>,
+					<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">StatemintAuraId</span><span class="op">&gt;</span>,
 				)<span class="question-mark">?</span>;
 				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 				{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
@@ -1186,6 +1191,7 @@
 					<span class="ident"><span class="kw">crate</span>::service::start_statemint_node</span>::<span class="op">&lt;</span>
 						<span class="ident">statemint_runtime::RuntimeApi</span>,
 						<span class="ident">StatemintRuntimeExecutor</span>,
+						<span class="ident">StatemintAuraId</span>,
 					<span class="op">&gt;</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">id</span>)
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
@@ -1194,6 +1200,7 @@
 					<span class="ident"><span class="kw">crate</span>::service::start_statemint_node</span>::<span class="op">&lt;</span>
 						<span class="ident">statemine_runtime::RuntimeApi</span>,
 						<span class="ident">StatemineRuntimeExecutor</span>,
+						<span class="ident">AuraId</span>,
 					<span class="op">&gt;</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">id</span>)
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
@@ -1202,6 +1209,7 @@
 					<span class="ident"><span class="kw">crate</span>::service::start_statemint_node</span>::<span class="op">&lt;</span>
 						<span class="ident">westmint_runtime::RuntimeApi</span>,
 						<span class="ident">WestmintRuntimeExecutor</span>,
+						<span class="ident">AuraId</span>,
 					<span class="op">&gt;</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">id</span>)
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
