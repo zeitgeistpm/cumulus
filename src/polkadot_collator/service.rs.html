@@ -1241,6 +1241,14 @@
 <span id="1240">1240</span>
 <span id="1241">1241</span>
 <span id="1242">1242</span>
+<span id="1243">1243</span>
+<span id="1244">1244</span>
+<span id="1245">1245</span>
+<span id="1246">1246</span>
+<span id="1247">1247</span>
+<span id="1248">1248</span>
+<span id="1249">1249</span>
+<span id="1250">1250</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1632,6 +1640,8 @@
 		<span class="ident">Arc::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">hash</span>, <span class="ident">data</span><span class="op">|</span> <span class="ident">network</span>.<span class="ident">announce_block</span>(<span class="ident">hash</span>, <span class="ident">data</span>))
 	};
 
+	<span class="kw">let</span> <span class="ident">relay_chain_slot_duration</span> <span class="op">=</span> <span class="ident">Duration::from_secs</span>(<span class="number">6</span>);
+
 	<span class="kw">if</span> <span class="ident">validator</span> {
 		<span class="kw">let</span> <span class="ident">parachain_consensus</span> <span class="op">=</span> <span class="ident">build_consensus</span>(
 			<span class="ident">client</span>.<span class="ident">clone</span>(),
@@ -1658,7 +1668,7 @@
 			<span class="ident">parachain_consensus</span>,
 			<span class="ident">import_queue</span>,
 			<span class="ident">collator_key</span>,
-			<span class="ident">slot_duration</span>: <span class="ident">Duration::from_secs</span>(<span class="number">6</span>),
+			<span class="ident">relay_chain_slot_duration</span>,
 		};
 
 		<span class="ident">start_collator</span>(<span class="ident">params</span>).<span class="kw">await</span><span class="question-mark">?</span>;
@@ -1669,6 +1679,8 @@
 			<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
 			<span class="ident">para_id</span>: <span class="ident">id</span>,
 			<span class="ident">relay_chain_interface</span>,
+			<span class="ident">relay_chain_slot_duration</span>,
+			<span class="ident">import_queue</span>,
 		};
 
 		<span class="ident">start_full_node</span>(<span class="ident">params</span>)<span class="question-mark">?</span>;
@@ -1819,6 +1831,8 @@
 		<span class="ident">Arc::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">hash</span>, <span class="ident">data</span><span class="op">|</span> <span class="ident">network</span>.<span class="ident">announce_block</span>(<span class="ident">hash</span>, <span class="ident">data</span>))
 	};
 
+	<span class="kw">let</span> <span class="ident">relay_chain_slot_duration</span> <span class="op">=</span> <span class="ident">Duration::from_secs</span>(<span class="number">6</span>);
+
 	<span class="kw">if</span> <span class="ident">validator</span> {
 		<span class="kw">let</span> <span class="ident">parachain_consensus</span> <span class="op">=</span> <span class="ident">build_consensus</span>(
 			<span class="ident">client</span>.<span class="ident">clone</span>(),
@@ -1845,7 +1859,7 @@
 			<span class="ident">parachain_consensus</span>,
 			<span class="ident">import_queue</span>,
 			<span class="ident">collator_key</span>,
-			<span class="ident">slot_duration</span>: <span class="ident">Duration::from_secs</span>(<span class="number">6</span>),
+			<span class="ident">relay_chain_slot_duration</span>,
 		};
 
 		<span class="ident">start_collator</span>(<span class="ident">params</span>).<span class="kw">await</span><span class="question-mark">?</span>;
@@ -1856,6 +1870,8 @@
 			<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
 			<span class="ident">para_id</span>: <span class="ident">id</span>,
 			<span class="ident">relay_chain_interface</span>,
+			<span class="ident">relay_chain_slot_duration</span>,
+			<span class="ident">import_queue</span>,
 		};
 
 		<span class="ident">start_full_node</span>(<span class="ident">params</span>)<span class="question-mark">?</span>;
