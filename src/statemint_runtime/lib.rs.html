@@ -1018,7 +1018,6 @@
 <span id="1017">1017</span>
 <span id="1018">1018</span>
 <span id="1019">1019</span>
-<span id="1020">1020</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1078,9 +1077,8 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parachains_common</span> <span class="kw">as</span> <span class="ident">common</span>;
 <span class="kw">use</span> <span class="ident">parachains_common</span>::{
 	<span class="ident">impls</span>::{<span class="ident">AssetsToBlockAuthor</span>, <span class="ident">DealWithFees</span>, <span class="ident">NonZeroIssuance</span>},
-	<span class="ident">opaque</span>, <span class="ident">AccountId</span>, <span class="ident">AssetId</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">Header</span>, <span class="ident">Index</span>, <span class="ident">Signature</span>,
-	<span class="ident">StatemintAuraId</span> <span class="kw">as</span> <span class="ident">AuraId</span>, <span class="ident">AVERAGE_ON_INITIALIZE_RATIO</span>, <span class="ident">HOURS</span>, <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>,
-	<span class="ident">NORMAL_DISPATCH_RATIO</span>, <span class="ident">SLOT_DURATION</span>,
+	<span class="ident">opaque</span>, <span class="ident">AccountId</span>, <span class="ident">AssetId</span>, <span class="ident">AuraId</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">Header</span>, <span class="ident">Index</span>, <span class="ident">Signature</span>,
+	<span class="ident">AVERAGE_ON_INITIALIZE_RATIO</span>, <span class="ident">HOURS</span>, <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>, <span class="ident">NORMAL_DISPATCH_RATIO</span>, <span class="ident">SLOT_DURATION</span>,
 };
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">test</span>))]</span>
