@@ -261,6 +261,10 @@
 <span id="260">260</span>
 <span id="261">261</span>
 <span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -370,10 +374,13 @@
 		.<span class="ident">spawn_essential_handle</span>()
 		.<span class="ident">spawn</span>(<span class="string">&quot;cumulus-consensus&quot;</span>, <span class="prelude-val">None</span>, <span class="ident">consensus</span>);
 
+	<span class="kw">let</span> <span class="ident">overseer_handle</span> <span class="op">=</span> <span class="ident">relay_chain_interface</span>
+		.<span class="ident">overseer_handle</span>()
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">sc_service::Error::Application</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>
+		.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Polkadot full node did not provide an `OverseerHandle`!&quot;</span>)<span class="question-mark">?</span>;
+
 	<span class="kw">let</span> <span class="ident">pov_recovery</span> <span class="op">=</span> <span class="ident">cumulus_client_pov_recovery::PoVRecovery::new</span>(
-		<span class="ident">relay_chain_interface</span>
-			.<span class="ident">overseer_handle</span>()
-			.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Polkadot full node did not provide an `OverseerHandle`!&quot;</span>)<span class="question-mark">?</span>,
+		<span class="ident">overseer_handle</span>.<span class="ident">clone</span>(),
 		<span class="comment">// We want that collators wait at maximum the relay chain slot duration before starting</span>
 		<span class="comment">// to recover blocks.</span>
 		<span class="ident">cumulus_client_pov_recovery::RecoveryDelay::WithMax</span> { <span class="ident">max</span>: <span class="ident">relay_chain_slot_duration</span> },
@@ -391,9 +398,7 @@
 		<span class="ident">runtime_api</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">block_status</span>,
 		<span class="ident">announce_block</span>,
-		<span class="ident">overseer_handle</span>: <span class="ident">relay_chain_interface</span>
-			.<span class="ident">overseer_handle</span>()
-			.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Polkadot full node did not provide an `OverseerHandle`!&quot;</span>)<span class="question-mark">?</span>,
+		<span class="ident">overseer_handle</span>,
 		<span class="ident">spawner</span>,
 		<span class="ident">para_id</span>,
 		<span class="ident">key</span>: <span class="ident">collator_key</span>,
@@ -455,10 +460,13 @@
 		.<span class="ident">spawn_essential_handle</span>()
 		.<span class="ident">spawn</span>(<span class="string">&quot;cumulus-consensus&quot;</span>, <span class="prelude-val">None</span>, <span class="ident">consensus</span>);
 
+	<span class="kw">let</span> <span class="ident">overseer_handle</span> <span class="op">=</span> <span class="ident">relay_chain_interface</span>
+		.<span class="ident">overseer_handle</span>()
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">sc_service::Error::Application</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>
+		.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Polkadot full node did not provide an `OverseerHandle`!&quot;</span>)<span class="question-mark">?</span>;
+
 	<span class="kw">let</span> <span class="ident">pov_recovery</span> <span class="op">=</span> <span class="ident">cumulus_client_pov_recovery::PoVRecovery::new</span>(
-		<span class="ident">relay_chain_interface</span>
-			.<span class="ident">overseer_handle</span>()
-			.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Polkadot full node did not provide an `OverseerHandle`!&quot;</span>)<span class="question-mark">?</span>,
+		<span class="ident">overseer_handle</span>,
 		<span class="comment">// Full nodes should at least wait 2.5 minutes (assuming 6 seconds slot duration) and</span>
 		<span class="comment">// in maximum 5 minutes before starting to recover blocks. Collators should already start</span>
 		<span class="comment">// the recovery way before full nodes try to recover a certain block and then share the</span>

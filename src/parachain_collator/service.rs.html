@@ -479,6 +479,7 @@
 <span id="478">478</span>
 <span id="479">479</span>
 <span id="480">480</span>
+<span id="481">481</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Service and ServiceFactory implementation. Specialized wrapper over substrate service.</span>
 
 <span class="comment">// std</span>
@@ -917,14 +918,15 @@
 				<span class="ident">BuildAuraConsensusParams</span> {
 					<span class="ident">proposer_factory</span>,
 					<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, (<span class="ident">relay_parent</span>, <span class="ident">validation_data</span>)<span class="op">|</span> {
-						<span class="kw">let</span> <span class="ident">parachain_inherent</span> <span class="op">=</span>
+						<span class="kw">let</span> <span class="ident">relay_chain_interface</span> <span class="op">=</span> <span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>();
+						<span class="kw">async</span> <span class="kw">move</span> {
+							<span class="kw">let</span> <span class="ident">parachain_inherent</span> <span class="op">=</span>
 							<span class="ident">cumulus_primitives_parachain_inherent::ParachainInherentData::create_at</span>(
 								<span class="ident">relay_parent</span>,
 								<span class="kw-2">&amp;</span><span class="ident">relay_chain_interface</span>,
 								<span class="kw-2">&amp;</span><span class="ident">validation_data</span>,
 								<span class="ident">id</span>,
-							);
-						<span class="kw">async</span> <span class="kw">move</span> {
+							).<span class="kw">await</span>;
 							<span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
 							<span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span>
