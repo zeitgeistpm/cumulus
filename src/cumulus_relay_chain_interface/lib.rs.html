@@ -291,7 +291,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RelayChainError</span> {
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Error occured while calling relay chain runtime: {0:?}&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Error occurred while calling relay chain runtime: {0:?}&quot;</span>)]</span>
 	<span class="ident">ApiError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">ApiError</span>),
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Timeout while waiting for relay-chain block `{0}` to be imported.&quot;</span>)]</span>
 	<span class="ident">WaitTimeout</span>(<span class="ident">PHash</span>),
@@ -301,9 +301,9 @@
 	<span class="ident">WaitBlockchainError</span>(<span class="ident">PHash</span>, <span class="ident">sp_blockchain::Error</span>),
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Blockchain returned an error: {0:?}&quot;</span>)]</span>
 	<span class="ident">BlockchainError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">sp_blockchain::Error</span>),
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;State machine error occured: {0:?}&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;State machine error occurred: {0:?}&quot;</span>)]</span>
 	<span class="ident">StateMachineError</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sp_state_machine::Error</span><span class="op">&gt;</span>),
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Unspecified error occured: {0:?}&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Unspecified error occurred: {0:?}&quot;</span>)]</span>
 	<span class="ident">GenericError</span>(<span class="ident">String</span>),
 }
 
