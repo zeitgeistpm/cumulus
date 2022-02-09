@@ -1038,7 +1038,6 @@
 <span id="1037">1037</span>
 <span id="1038">1038</span>
 <span id="1039">1039</span>
-<span id="1040">1040</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1086,7 +1085,6 @@
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{<span class="ident">ensure_none</span>, <span class="ident">ensure_root</span>};
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::RelayChainBlockNumber</span>;
-<span class="kw">use</span> <span class="ident">relay_state_snapshot::MessagingStateSnapshot</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
 	<span class="ident">traits</span>::{<span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>, <span class="ident">BlockNumberProvider</span>, <span class="ident">Hash</span>},
 	<span class="ident">transaction_validity</span>::{
@@ -1126,7 +1124,7 @@
 <span class="doccomment">/// # fn main() {}</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cumulus_pallet_parachain_system_proc_macro::register_validate_block</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">relay_state_snapshot::RelayChainStateProof</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">relay_state_snapshot</span>::{<span class="ident">MessagingStateSnapshot</span>, <span class="ident">RelayChainStateProof</span>};
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 
