@@ -1,4 +1,5 @@
 var N = null;var sourcesIndex = {};
+sourcesIndex["canvas_kusama_runtime"] = {"name":"","files":["constants.rs","lib.rs"]};
 sourcesIndex["cumulus_client_cli"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_collator"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_consensus_aura"] = {"name":"","files":["import_queue.rs","lib.rs"]};

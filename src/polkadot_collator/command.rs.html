@@ -686,6 +686,36 @@
 <span id="685">685</span>
 <span id="686">686</span>
 <span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -706,9 +736,9 @@
 	<span class="ident">chain_spec</span>,
 	<span class="ident">cli</span>::{<span class="ident">Cli</span>, <span class="ident">RelayChainCli</span>, <span class="ident">Subcommand</span>},
 	<span class="ident">service</span>::{
-		<span class="ident">new_partial</span>, <span class="ident">Block</span>, <span class="ident">RococoParachainRuntimeExecutor</span>, <span class="ident">SeedlingRuntimeExecutor</span>,
-		<span class="ident">ShellRuntimeExecutor</span>, <span class="ident">StatemineRuntimeExecutor</span>, <span class="ident">StatemintRuntimeExecutor</span>,
-		<span class="ident">WestmintRuntimeExecutor</span>,
+		<span class="ident">new_partial</span>, <span class="ident">Block</span>, <span class="ident">CanvasKusamaRuntimeExecutor</span>, <span class="ident">RococoParachainRuntimeExecutor</span>,
+		<span class="ident">SeedlingRuntimeExecutor</span>, <span class="ident">ShellRuntimeExecutor</span>, <span class="ident">StatemineRuntimeExecutor</span>,
+		<span class="ident">StatemintRuntimeExecutor</span>, <span class="ident">WestmintRuntimeExecutor</span>,
 	},
 };
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
@@ -735,6 +765,7 @@
 	<span class="kw">fn</span> <span class="ident">is_statemint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 	<span class="kw">fn</span> <span class="ident">is_statemine</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 	<span class="kw">fn</span> <span class="ident">is_westmint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+	<span class="kw">fn</span> <span class="ident">is_canvas_kusama</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">IdentifyChain</span> <span class="kw">for</span> <span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span> {
@@ -753,6 +784,10 @@
 	<span class="kw">fn</span> <span class="ident">is_westmint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
 		<span class="self">self</span>.<span class="ident">id</span>().<span class="ident">starts_with</span>(<span class="string">&quot;westmint&quot;</span>)
 	}
+	<span class="kw">fn</span> <span class="ident">is_canvas_kusama</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+		<span class="comment">// we use the same runtime on rococo and kusama</span>
+		<span class="self">self</span>.<span class="ident">id</span>().<span class="ident">starts_with</span>(<span class="string">&quot;canvas-kusama&quot;</span>) <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">id</span>().<span class="ident">starts_with</span>(<span class="string">&quot;canvas-rococo&quot;</span>)
+	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">sc_service::ChainSpec</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">IdentifyChain</span> <span class="kw">for</span> <span class="ident">T</span> {
@@ -770,6 +805,9 @@
 	}
 	<span class="kw">fn</span> <span class="ident">is_westmint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
 		<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span><span class="ident">::is_westmint</span>(<span class="self">self</span>)
+	}
+	<span class="kw">fn</span> <span class="ident">is_canvas_kusama</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+		<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span><span class="ident">::is_canvas_kusama</span>(<span class="self">self</span>)
 	}
 }
 
@@ -814,6 +852,10 @@
 		<span class="string">&quot;westmint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/westmint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
+		<span class="comment">// -- Canvas on Rococo</span>
+		<span class="string">&quot;canvas-rococo-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::canvas_rococo_development_config</span>()),
+		<span class="string">&quot;canvas-rococo-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::canvas_rococo_local_config</span>()),
+		<span class="string">&quot;canvas-rococo&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::canvas_rococo_config</span>()),
 		<span class="string">&quot;&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_chain_spec</span>()),
 		<span class="ident">path</span> =&gt; {
 			<span class="kw">let</span> <span class="ident">chain_spec</span> <span class="op">=</span> <span class="ident">chain_spec::ChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>;
@@ -827,6 +869,8 @@
 				<span class="ident">Box::new</span>(<span class="ident">chain_spec::ShellChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
 			} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_seedling</span>() {
 				<span class="ident">Box::new</span>(<span class="ident">chain_spec::SeedlingChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
+			} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
+				<span class="ident">Box::new</span>(<span class="ident">chain_spec::CanvasKusamaChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
 			} <span class="kw">else</span> {
 				<span class="ident">Box::new</span>(<span class="ident">chain_spec</span>)
 			}
@@ -880,6 +924,8 @@
 			<span class="kw-2">&amp;</span><span class="ident">shell_runtime::VERSION</span>
 		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_seedling</span>() {
 			<span class="kw-2">&amp;</span><span class="ident">seedling_runtime::VERSION</span>
+		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
+			<span class="kw-2">&amp;</span><span class="ident">canvas_kusama_runtime::VERSION</span>
 		} <span class="kw">else</span> {
 			<span class="kw-2">&amp;</span><span class="ident">rococo_parachain_runtime::VERSION</span>
 		}
@@ -980,6 +1026,15 @@
 				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">seedling_runtime::RuntimeApi</span>, <span class="ident">SeedlingRuntimeExecutor</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 					<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
 					<span class="ident"><span class="kw">crate</span>::service::shell_build_import_queue</span>,
+				)<span class="question-mark">?</span>;
+				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
+				{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
+			})
+		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
+			<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
+				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">canvas_kusama_runtime::RuntimeApi</span>, <span class="ident">CanvasKusamaRuntimeExecutor</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+					<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
+					<span class="ident"><span class="kw">crate</span>::service::canvas_kusama_build_import_queue</span>,
 				)<span class="question-mark">?</span>;
 				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 				{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
@@ -1230,6 +1285,11 @@
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
 					.<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+				} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
+					<span class="ident"><span class="kw">crate</span>::service::start_canvas_kusama_node</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">id</span>)
+						.<span class="kw">await</span>
+						.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
+						.<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
 				} <span class="kw">else</span> {
 					<span class="ident"><span class="kw">crate</span>::service::start_rococo_parachain_node</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">id</span>)
 						.<span class="kw">await</span>
