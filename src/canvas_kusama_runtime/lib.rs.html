@@ -677,12 +677,6 @@
 <span id="676">676</span>
 <span id="677">677</span>
 <span id="678">678</span>
-<span id="679">679</span>
-<span id="680">680</span>
-<span id="681">681</span>
-<span id="682">682</span>
-<span id="683">683</span>
-<span id="684">684</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2018-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0</span>
 <span class="comment">//</span>
@@ -796,17 +790,11 @@
 	<span class="ident">spec_name</span>: <span class="macro">create_runtime_str!</span>(<span class="string">&quot;canvas-kusama&quot;</span>),
 	<span class="ident">impl_name</span>: <span class="macro">create_runtime_str!</span>(<span class="string">&quot;canvas-kusama&quot;</span>),
 	<span class="ident">authoring_version</span>: <span class="number">1</span>,
-	<span class="ident">spec_version</span>: <span class="number">15</span>,
+	<span class="ident">spec_version</span>: <span class="number">16</span>,
 	<span class="ident">impl_version</span>: <span class="number">0</span>,
 	<span class="ident">apis</span>: <span class="ident">RUNTIME_API_VERSIONS</span>,
 	<span class="ident">transaction_version</span>: <span class="number">1</span>,
-	<span class="comment">// Since Canvas is a &quot;live&quot; chain (on Rococo anyways), we need to set this to `0` until a</span>
-	<span class="comment">// migration path to `state_version = 1` is ready.</span>
-	<span class="comment">//</span>
-	<span class="comment">// See the following PRs for more details:</span>
-	<span class="comment">// - https://github.com/paritytech/substrate/pull/9732</span>
-	<span class="comment">// - https://github.com/paritytech/substrate/pull/10073</span>
-	<span class="ident">state_version</span>: <span class="number">0</span>,
+	<span class="ident">state_version</span>: <span class="number">1</span>,
 };
 
 <span class="doccomment">/// The version information used to identify this runtime when compiled natively.</span>
