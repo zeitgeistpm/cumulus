@@ -1086,6 +1086,11 @@
 <span id="1085">1085</span>
 <span id="1086">1086</span>
 <span id="1087">1087</span>
+<span id="1088">1088</span>
+<span id="1089">1089</span>
+<span id="1090">1090</span>
+<span id="1091">1091</span>
+<span id="1092">1092</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -2170,6 +2175,11 @@
 		<span class="ident">parachain_system</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">polkadot_xcm</span>: <span class="ident">canvas_kusama_runtime::PolkadotXcmConfig</span> {
 			<span class="ident">safe_xcm_version</span>: <span class="prelude-val">Some</span>(<span class="ident">SAFE_XCM_VERSION</span>),
+		},
+		<span class="ident">sudo</span>: <span class="ident">canvas_kusama_runtime::SudoConfig</span> {
+			<span class="ident">key</span>: <span class="prelude-val">Some</span>(
+				<span class="macro">hex!</span>[<span class="string">&quot;2681a28014e7d3a5bfb32a003b3571f53c408acbc28d351d6bf58f5028c4ef14&quot;</span>].<span class="ident">into</span>(),
+			),
 		},
 	}
 }
