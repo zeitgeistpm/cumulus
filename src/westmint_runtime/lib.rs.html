@@ -818,13 +818,6 @@
 <span id="817">817</span>
 <span id="818">818</span>
 <span id="819">819</span>
-<span id="820">820</span>
-<span id="821">821</span>
-<span id="822">822</span>
-<span id="823">823</span>
-<span id="824">824</span>
-<span id="825">825</span>
-<span id="826">826</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1421,15 +1414,8 @@
 	<span class="ident">frame_system::ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">Runtime</span>,
 	<span class="ident">AllPalletsWithSystem</span>,
-	<span class="ident">UniquesV1Migration</span>,
+	(),
 <span class="op">&gt;</span>;
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UniquesV1Migration</span>;
-<span class="kw">impl</span> <span class="ident">frame_support::traits::OnRuntimeUpgrade</span> <span class="kw">for</span> <span class="ident">UniquesV1Migration</span> {
-	<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() -&gt; <span class="ident">Weight</span> {
-		<span class="ident">pallet_uniques::migration::migrate_to_v1</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="kw">_</span>, <span class="ident">Uniques</span><span class="op">&gt;</span>()
-	}
-}
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
