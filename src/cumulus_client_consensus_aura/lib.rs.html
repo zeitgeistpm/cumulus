@@ -228,10 +228,6 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -270,10 +266,8 @@
 <span class="kw">use</span> <span class="ident">sp_api::ProvideRuntimeApi</span>;
 <span class="kw">use</span> <span class="ident">sp_application_crypto::AppPublic</span>;
 <span class="kw">use</span> <span class="ident">sp_blockchain::HeaderBackend</span>;
-<span class="kw">use</span> <span class="ident">sp_consensus</span>::{
-	<span class="ident">EnableProofRecording</span>, <span class="ident">Environment</span>, <span class="ident">ProofRecording</span>, <span class="ident">Proposer</span>, <span class="ident">SlotData</span>, <span class="ident">SyncOracle</span>,
-};
-<span class="kw">use</span> <span class="ident">sp_consensus_aura::AuraApi</span>;
+<span class="kw">use</span> <span class="ident">sp_consensus</span>::{<span class="ident">EnableProofRecording</span>, <span class="ident">Environment</span>, <span class="ident">ProofRecording</span>, <span class="ident">Proposer</span>, <span class="ident">SyncOracle</span>};
+<span class="kw">use</span> <span class="ident">sp_consensus_aura</span>::{<span class="ident">AuraApi</span>, <span class="ident">SlotDuration</span>};
 <span class="kw">use</span> <span class="ident">sp_core::crypto::Pair</span>;
 <span class="kw">use</span> <span class="ident">sp_inherents</span>::{<span class="ident">CreateInherentDataProviders</span>, <span class="ident">InherentData</span>, <span class="ident">InherentDataProvider</span>};
 <span class="kw">use</span> <span class="ident">sp_keystore::SyncCryptoStorePtr</span>;
@@ -283,9 +277,7 @@
 <span class="kw">mod</span> <span class="ident">import_queue</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">import_queue</span>::{<span class="ident">build_verifier</span>, <span class="ident">import_queue</span>, <span class="ident">BuildVerifierParams</span>, <span class="ident">ImportQueueParams</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sc_consensus_aura</span>::{
-	<span class="ident">slot_duration</span>, <span class="ident">AuraVerifier</span>, <span class="ident">BuildAuraWorkerParams</span>, <span class="ident">SlotDuration</span>, <span class="ident">SlotProportion</span>,
-};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sc_consensus_aura</span>::{<span class="ident">slot_duration</span>, <span class="ident">AuraVerifier</span>, <span class="ident">BuildAuraWorkerParams</span>, <span class="ident">SlotProportion</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sc_consensus_slots::InherentDataProviderExt</span>;
 
 <span class="kw">const</span> <span class="ident">LOG_TARGET</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;aura::cumulus&quot;</span>;
@@ -435,7 +427,7 @@
 			<span class="ident">inherent_data_providers</span>.<span class="ident">slot</span>(),
 			<span class="ident">inherent_data_providers</span>.<span class="ident">timestamp</span>(),
 			<span class="ident">inherent_data</span>,
-			<span class="self">self</span>.<span class="ident">slot_duration</span>.<span class="ident">slot_duration</span>(),
+			<span class="self">self</span>.<span class="ident">slot_duration</span>.<span class="ident">as_duration</span>(),
 			<span class="ident">parent</span>.<span class="ident">clone</span>(),
 			<span class="comment">// Set the block limit to 50% of the maximum PoV size.</span>
 			<span class="comment">//</span>
