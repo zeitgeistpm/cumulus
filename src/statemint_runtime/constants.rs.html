@@ -88,7 +88,7 @@
 <span class="comment">// limitations under the License.</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">currency</span> {
-	<span class="kw">use</span> <span class="ident">node_primitives::Balance</span>;
+	<span class="kw">use</span> <span class="ident">polkadot_core_primitives::Balance</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_runtime_constants</span> <span class="kw">as</span> <span class="ident">constants</span>;
 
 	<span class="doccomment">/// The existential deposit. Set to 1/10 of its parent Relay Chain (v9010).</span>
@@ -111,7 +111,7 @@
 		<span class="ident">constants::ExtrinsicBaseWeight</span>, <span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>,
 		<span class="ident">WeightToFeePolynomial</span>,
 	};
-	<span class="kw">use</span> <span class="ident">node_primitives::Balance</span>;
+	<span class="kw">use</span> <span class="ident">polkadot_core_primitives::Balance</span>;
 	<span class="kw">use</span> <span class="ident">smallvec::smallvec</span>;
 	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;
 
