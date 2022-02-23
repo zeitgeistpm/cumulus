@@ -118,7 +118,7 @@
 <span id="117">117</span>
 <span id="118">118</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::chain_spec</span>;
-<span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">AppSettings</span>, <span class="ident">Parser</span>};
+<span class="kw">use</span> <span class="ident">clap::Parser</span>;
 <span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
 <span class="doccomment">/// Sub-commands supported by the collator.</span>
@@ -194,11 +194,11 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
-<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">setting</span>(
-	<span class="ident">AppSettings::PropagateVersion</span> <span class="op">|</span>
-	<span class="ident">AppSettings::ArgsNegateSubcommands</span> <span class="op">|</span>
-	<span class="ident">AppSettings::SubcommandsNegateReqs</span>,
-))]</span>
+<span class="attribute">#[<span class="ident">clap</span>(
+	<span class="ident">propagate_version</span> <span class="op">=</span> <span class="bool-val">true</span>,
+	<span class="ident">args_conflicts_with_subcommands</span> <span class="op">=</span> <span class="bool-val">true</span>,
+	<span class="ident">subcommand_negates_reqs</span> <span class="op">=</span> <span class="bool-val">true</span>
+)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cli</span> {
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">subcommand</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Subcommand</span><span class="op">&gt;</span>,
