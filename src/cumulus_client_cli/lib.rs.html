@@ -257,6 +257,41 @@
 <span id="256">256</span>
 <span id="257">257</span>
 <span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -278,7 +313,6 @@
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">clap::Parser</span>;
-<span class="kw">use</span> <span class="ident">sc_cli</span>;
 <span class="kw">use</span> <span class="ident">sc_service</span>::{
 	<span class="ident">config</span>::{<span class="ident">PrometheusConfig</span>, <span class="ident">TelemetryEndpoints</span>},
 	<span class="ident">BasePath</span>, <span class="ident">TransactionPoolOptions</span>,
@@ -288,6 +322,7 @@
 	<span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">Write</span>},
 	<span class="ident">net::SocketAddr</span>,
 };
+<span class="kw">use</span> <span class="ident">url::Url</span>;
 
 <span class="doccomment">/// The `purge-chain` command used to remove the whole chain: the parachain and the relay chain.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
@@ -378,6 +413,19 @@
 	}
 }
 
+<span class="kw">fn</span> <span class="ident">validate_relay_chain_url</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">Url::parse</span>(<span class="ident">arg</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">to_string</span>())<span class="question-mark">?</span>;
+
+	<span class="kw">if</span> <span class="ident">url</span>.<span class="ident">scheme</span>() <span class="op">==</span> <span class="string">&quot;ws&quot;</span> {
+		<span class="prelude-val">Ok</span>(())
+	} <span class="kw">else</span> {
+		<span class="prelude-val">Err</span>(<span class="macro">format!</span>(
+			<span class="string">&quot;&#39;{}&#39; URL scheme not supported. Only websocket RPC is currently supported&quot;</span>,
+			<span class="ident">url</span>.<span class="ident">scheme</span>()
+		))
+	}
+}
+
 <span class="doccomment">/// The `run` command used to run a node.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunCmd</span> {
@@ -390,6 +438,23 @@
 	<span class="doccomment">/// Note that this is the same as running with `--validator`.</span>
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;validator&quot;</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">collator</span>: <span class="ident">bool</span>,
+
+	<span class="doccomment">/// EXPERIMENTAL: Specify an URL to a relay chain full node to communicate with.</span>
+	<span class="attribute">#[<span class="ident">clap</span>(
+		<span class="ident">long</span>,
+		<span class="ident">parse</span>(<span class="ident">try_from_str</span>),
+		<span class="ident">validator</span> <span class="op">=</span> <span class="ident">validate_relay_chain_url</span>,
+		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;collator&quot;</span>,
+		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;validator&quot;</span>
+	)]</span>
+	<span class="kw">pub</span> <span class="ident">relay_chain_rpc_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Options only relevant for collator nodes</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CollatorOptions</span> {
+	<span class="doccomment">/// Location of relay chain full node</span>
+	<span class="kw">pub</span> <span class="ident">relay_chain_rpc_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A non-redundant version of the `RunCmd` that sets the `validator` field when the</span>
@@ -408,6 +473,11 @@
 		<span class="ident">new_base</span>.<span class="ident">validator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">validator</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">collator</span>;
 
 		<span class="ident">NormalizedRunCmd</span> { <span class="ident">base</span>: <span class="ident">new_base</span> }
+	}
+
+	<span class="doccomment">/// Create [`CollatorOptions`] representing options only relevant to parachain collator nodes</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">collator_options</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">CollatorOptions</span> {
+		<span class="ident">CollatorOptions</span> { <span class="ident">relay_chain_rpc_url</span>: <span class="self">self</span>.<span class="ident">relay_chain_rpc_url</span>.<span class="ident">clone</span>() }
 	}
 }
 
