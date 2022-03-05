@@ -471,7 +471,6 @@
 <span id="469">469</span>
 <span id="470">470</span>
 <span id="471">471</span>
-<span id="472">472</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -890,8 +889,7 @@
 			.<span class="ident">state_get_read_proof</span>(<span class="ident">storage_keys</span>, <span class="prelude-val">Some</span>(<span class="ident">relay_parent</span>))
 			.<span class="kw">await</span>
 			.<span class="ident">map</span>(<span class="op">|</span><span class="ident">read_proof</span><span class="op">|</span> {
-				<span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">read_proof</span>.<span class="ident">proof</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> <span class="ident">bytes</span>.<span class="ident">to_vec</span>()).<span class="ident">collect</span>();
-				<span class="ident">StorageProof::new</span>(<span class="ident">bytes</span>)
+				<span class="ident">StorageProof::new</span>(<span class="ident">read_proof</span>.<span class="ident">proof</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> <span class="ident">bytes</span>.<span class="ident">to_vec</span>()))
 			})
 	}
 
