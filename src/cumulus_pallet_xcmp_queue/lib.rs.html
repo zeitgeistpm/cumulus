@@ -1096,6 +1096,14 @@
 <span id="1094">1094</span>
 <span id="1095">1095</span>
 <span id="1096">1096</span>
+<span id="1097">1097</span>
+<span id="1098">1098</span>
+<span id="1099">1099</span>
+<span id="1100">1100</span>
+<span id="1101">1101</span>
+<span id="1102">1102</span>
+<span id="1103">1103</span>
+<span id="1104">1104</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1130,6 +1138,11 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">benchmarking</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">weights</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">weights::WeightInfo</span>;
 
 <span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">DecodeLimit</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{
@@ -1191,6 +1204,9 @@
 		<span class="doccomment">/// The conversion function used to attempt to convert an XCM `MultiLocation` origin to a</span>
 		<span class="doccomment">/// superuser origin.</span>
 		<span class="kw">type</span> <span class="ident">ControllerOriginConverter</span>: <span class="ident">ConvertOrigin</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Origin</span><span class="op">&gt;</span>;
+
+		<span class="doccomment">/// The weight information of this pallet.</span>
+		<span class="kw">type</span> <span class="ident">WeightInfo</span>: <span class="ident">WeightInfo</span>;
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::hooks</span>]</span>
@@ -1220,7 +1236,7 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// Events:</span>
 		<span class="doccomment">/// - `OverweightServiced`: On success.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="ident">weight_limit</span>.<span class="ident">saturating_add</span>(<span class="number">1_000_000</span>))]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">weight_limit</span>.<span class="ident">saturating_add</span>(<span class="number">1_000_000</span>), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">service_overweight</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">index</span>: <span class="ident">OverweightIndex</span>,
@@ -1245,7 +1261,7 @@
 		<span class="doccomment">/// Suspends all XCM executions for the XCMP queue, regardless of the sender&#39;s origin.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `ControllerOrigin`.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>))]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">suspend_xcm_execution</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">T::ControllerOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
@@ -1259,7 +1275,7 @@
 		<span class="doccomment">/// Note that this function doesn&#39;t change the status of the in/out bound channels.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `ControllerOrigin`.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>))]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resume_xcm_execution</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">T::ControllerOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
@@ -1273,7 +1289,7 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `Root`.</span>
 		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.suspend_value`</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span> <span class="op">+</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>))]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::WeightInfo::set_config_with_u32</span>(), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_suspend_threshold</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident">QueueConfig</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">data</span><span class="op">|</span> <span class="ident">data</span>.<span class="ident">suspend_threshold</span> <span class="op">=</span> <span class="ident">new</span>);
@@ -1286,7 +1302,7 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `Root`.</span>
 		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.drop_threshold`</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span> <span class="op">+</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>))]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::WeightInfo::set_config_with_u32</span>(),<span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_drop_threshold</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident">QueueConfig</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">data</span><span class="op">|</span> <span class="ident">data</span>.<span class="ident">drop_threshold</span> <span class="op">=</span> <span class="ident">new</span>);
@@ -1298,8 +1314,8 @@
 		<span class="doccomment">/// message sending may recommence after it has been suspended.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `Root`.</span>
-		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.resume_threshold`                                </span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span> <span class="op">+</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>))]</span>
+		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.resume_threshold`</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::WeightInfo::set_config_with_u32</span>(), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_resume_threshold</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident">QueueConfig</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">data</span><span class="op">|</span> <span class="ident">data</span>.<span class="ident">resume_threshold</span> <span class="op">=</span> <span class="ident">new</span>);
@@ -1310,8 +1326,8 @@
 		<span class="doccomment">/// Overwrites the amount of remaining weight under which we stop processing messages.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `Root`.</span>
-		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.threshold_weight`                                </span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span> <span class="op">+</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>))]</span>
+		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.threshold_weight`</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::WeightInfo::set_config_with_weight</span>(), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_threshold_weight</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident">QueueConfig</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">data</span><span class="op">|</span> <span class="ident">data</span>.<span class="ident">threshold_weight</span> <span class="op">=</span> <span class="ident">new</span>);
@@ -1323,8 +1339,8 @@
 		<span class="doccomment">/// A lower number results in a faster progression. A value of 1 makes the entire weight available initially.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `Root`.</span>
-		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.weight_restrict_decay`.                                </span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span> <span class="op">+</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>))]</span>
+		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.weight_restrict_decay`.</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::WeightInfo::set_config_with_weight</span>(), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_weight_restrict_decay</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident">QueueConfig</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">data</span><span class="op">|</span> <span class="ident">data</span>.<span class="ident">weight_restrict_decay</span> <span class="op">=</span> <span class="ident">new</span>);
@@ -1336,8 +1352,8 @@
 		<span class="doccomment">/// Messages above this weight go into the overweight queue and may only be serviced explicitly.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// - `origin`: Must pass `Root`.</span>
-		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.xcmp_max_individual_weight`.                                </span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span> <span class="op">+</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>))]</span>
+		<span class="doccomment">/// - `new`: Desired value for `QueueConfigData.xcmp_max_individual_weight`.</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::WeightInfo::set_config_with_weight</span>(), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_xcmp_max_individual_weight</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">Weight</span>,
