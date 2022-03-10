@@ -517,6 +517,8 @@
 <span id="515">515</span>
 <span id="516">516</span>
 <span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -538,8 +540,10 @@
 <span class="kw">use</span> <span class="ident">async_trait::async_trait</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{
 	<span class="ident">relay_chain</span>::{
-		<span class="ident">v1</span>::{<span class="ident">CommittedCandidateReceipt</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">SessionIndex</span>, <span class="ident">ValidatorId</span>},
-		<span class="ident">v2::ParachainHost</span>,
+		<span class="ident">v2</span>::{
+			<span class="ident">CommittedCandidateReceipt</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">ParachainHost</span>, <span class="ident">SessionIndex</span>,
+			<span class="ident">ValidatorId</span>,
+		},
 		<span class="ident">Block</span> <span class="kw">as</span> <span class="ident">PBlock</span>, <span class="ident">BlockId</span>, <span class="ident">Hash</span> <span class="kw">as</span> <span class="ident">PHash</span>, <span class="ident">Header</span> <span class="kw">as</span> <span class="ident">PHeader</span>, <span class="ident">InboundHrmpMessage</span>,
 	},
 	<span class="ident">InboundDownwardMessage</span>, <span class="ident">ParaId</span>, <span class="ident">PersistedValidationData</span>,
@@ -903,7 +907,7 @@
 
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::Block</span> <span class="kw">as</span> <span class="ident">PBlock</span>;
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2::Block</span> <span class="kw">as</span> <span class="ident">PBlock</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_test_client</span>::{
 		<span class="ident">construct_transfer_extrinsic</span>, <span class="ident">BlockBuilderExt</span>, <span class="ident">Client</span>, <span class="ident">ClientBlockImportExt</span>,
 		<span class="ident">DefaultTestClientBuilderExt</span>, <span class="ident">ExecutionStrategy</span>, <span class="ident">InitPolkadotBlockBuilder</span>,

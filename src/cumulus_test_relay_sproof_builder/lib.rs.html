@@ -183,7 +183,7 @@
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{
 	<span class="ident">relay_chain</span>, <span class="ident">AbridgedHostConfiguration</span>, <span class="ident">AbridgedHrmpChannel</span>, <span class="ident">ParaId</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::UpgradeGoAhead</span>;
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2::UpgradeGoAhead</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime::traits::HashFor</span>;
 <span class="kw">use</span> <span class="ident">sp_state_machine::MemoryDB</span>;
 <span class="kw">use</span> <span class="ident">sp_std::collections::btree_map::BTreeMap</span>;
@@ -207,8 +207,8 @@
 	<span class="kw">pub</span> <span class="ident">relay_dispatch_queue_size</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">u32</span>, <span class="ident">u32</span>)<span class="op">&gt;</span>,
 	<span class="kw">pub</span> <span class="ident">hrmp_ingress_channel_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="kw">pub</span> <span class="ident">hrmp_egress_channel_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="kw">pub</span> <span class="ident">hrmp_channels</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">relay_chain::v1::HrmpChannelId</span>, <span class="ident">AbridgedHrmpChannel</span><span class="op">&gt;</span>,
-	<span class="kw">pub</span> <span class="ident">current_slot</span>: <span class="ident">relay_chain::v1::Slot</span>,
+	<span class="kw">pub</span> <span class="ident">hrmp_channels</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">relay_chain::v2::HrmpChannelId</span>, <span class="ident">AbridgedHrmpChannel</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">current_slot</span>: <span class="ident">relay_chain::v2::Slot</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">RelayStateSproofBuilder</span> {
@@ -250,7 +250,7 @@
 		}
 
 		<span class="self">self</span>.<span class="ident">hrmp_channels</span>
-			.<span class="ident">entry</span>(<span class="ident">relay_chain::v1::HrmpChannelId</span> { <span class="ident">sender</span>, <span class="ident">recipient</span>: <span class="self">self</span>.<span class="ident">para_id</span> })
+			.<span class="ident">entry</span>(<span class="ident">relay_chain::v2::HrmpChannelId</span> { <span class="ident">sender</span>, <span class="ident">recipient</span>: <span class="self">self</span>.<span class="ident">para_id</span> })
 			.<span class="ident">or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">AbridgedHrmpChannel</span> {
 				<span class="ident">max_capacity</span>: <span class="number">0</span>,
 				<span class="ident">max_total_size</span>: <span class="number">0</span>,
@@ -263,8 +263,8 @@
 
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_state_root_and_proof</span>(
 		<span class="self">self</span>,
-	) -&gt; (<span class="ident">polkadot_primitives::v1::Hash</span>, <span class="ident">sp_state_machine::StorageProof</span>) {
-		<span class="kw">let</span> (<span class="ident">db</span>, <span class="ident">root</span>) <span class="op">=</span> <span class="ident">MemoryDB</span>::<span class="op">&lt;</span><span class="ident">HashFor</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v1::Block</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::default_with_root</span>();
+	) -&gt; (<span class="ident">polkadot_primitives::v2::Hash</span>, <span class="ident">sp_state_machine::StorageProof</span>) {
+		<span class="kw">let</span> (<span class="ident">db</span>, <span class="ident">root</span>) <span class="op">=</span> <span class="ident">MemoryDB</span>::<span class="op">&lt;</span><span class="ident">HashFor</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v2::Block</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::default_with_root</span>();
 		<span class="kw">let</span> <span class="ident">state_version</span> <span class="op">=</span> <span class="ident">Default::default</span>(); <span class="comment">// for test using default.</span>
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">sp_state_machine::TrieBackend::new</span>(<span class="ident">db</span>, <span class="ident">root</span>);
 

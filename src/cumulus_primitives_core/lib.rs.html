@@ -288,21 +288,21 @@
 	<span class="ident">DmpMessageHandler</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">IsSystem</span>, <span class="ident">UpwardMessage</span>, <span class="ident">ValidationParams</span>, <span class="ident">XcmpMessageFormat</span>,
 	<span class="ident">XcmpMessageHandler</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{
 	<span class="ident">AbridgedHostConfiguration</span>, <span class="ident">AbridgedHrmpChannel</span>, <span class="ident">PersistedValidationData</span>,
 };
 
 <span class="doccomment">/// A module that re-exports relevant relay chain definitions.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">relay_chain</span> {
 	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_core_primitives</span>::<span class="kw-2">*</span>;
-	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{<span class="ident">v1</span>, <span class="ident">v1::well_known_keys</span>, <span class="ident">v2</span>};
+	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{<span class="ident">v2</span>, <span class="ident">v2::well_known_keys</span>};
 }
 
 <span class="doccomment">/// An inbound HRMP message.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">InboundHrmpMessage</span> <span class="op">=</span> <span class="ident">polkadot_primitives::v1::InboundHrmpMessage</span><span class="op">&lt;</span><span class="ident">relay_chain::BlockNumber</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">InboundHrmpMessage</span> <span class="op">=</span> <span class="ident">polkadot_primitives::v2::InboundHrmpMessage</span><span class="op">&lt;</span><span class="ident">relay_chain::BlockNumber</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// And outbound HRMP message</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OutboundHrmpMessage</span> <span class="op">=</span> <span class="ident">polkadot_primitives::v1::OutboundHrmpMessage</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OutboundHrmpMessage</span> <span class="op">=</span> <span class="ident">polkadot_primitives::v2::OutboundHrmpMessage</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Error description of a message send failure.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>)]</span>
@@ -464,11 +464,11 @@
 	<span class="doccomment">/// The horizontal messages sent by the parachain.</span>
 	<span class="kw">pub</span> <span class="ident">horizontal_messages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">OutboundHrmpMessage</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// New validation code.</span>
-	<span class="kw">pub</span> <span class="ident">new_validation_code</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">relay_chain::v1::ValidationCode</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">new_validation_code</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">relay_chain::v2::ValidationCode</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The number of messages processed from the DMQ.</span>
 	<span class="kw">pub</span> <span class="ident">processed_downward_messages</span>: <span class="ident">u32</span>,
 	<span class="doccomment">/// The mark which specifies the block number up to which all inbound HRMP messages are processed.</span>
-	<span class="kw">pub</span> <span class="ident">hrmp_watermark</span>: <span class="ident">relay_chain::v1::BlockNumber</span>,
+	<span class="kw">pub</span> <span class="ident">hrmp_watermark</span>: <span class="ident">relay_chain::v2::BlockNumber</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">CollationInfoV1</span> {
@@ -493,11 +493,11 @@
 	<span class="doccomment">/// The horizontal messages sent by the parachain.</span>
 	<span class="kw">pub</span> <span class="ident">horizontal_messages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">OutboundHrmpMessage</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// New validation code.</span>
-	<span class="kw">pub</span> <span class="ident">new_validation_code</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">relay_chain::v1::ValidationCode</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">new_validation_code</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">relay_chain::v2::ValidationCode</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The number of messages processed from the DMQ.</span>
 	<span class="kw">pub</span> <span class="ident">processed_downward_messages</span>: <span class="ident">u32</span>,
 	<span class="doccomment">/// The mark which specifies the block number up to which all inbound HRMP messages are processed.</span>
-	<span class="kw">pub</span> <span class="ident">hrmp_watermark</span>: <span class="ident">relay_chain::v1::BlockNumber</span>,
+	<span class="kw">pub</span> <span class="ident">hrmp_watermark</span>: <span class="ident">relay_chain::v2::BlockNumber</span>,
 	<span class="doccomment">/// The head data, aka encoded header, of the block that corresponds to the collation.</span>
 	<span class="kw">pub</span> <span class="ident">head_data</span>: <span class="ident">HeadData</span>,
 }
