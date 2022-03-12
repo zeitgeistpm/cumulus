@@ -823,7 +823,6 @@
 <span id="821">821</span>
 <span id="822">822</span>
 <span id="823">823</span>
-<span id="824">824</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -871,10 +870,7 @@
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">parameter_types</span>,
 	<span class="ident">traits</span>::{<span class="ident">AsEnsureOriginWithArg</span>, <span class="ident">InstanceFilter</span>},
-	<span class="ident">weights</span>::{
-		<span class="ident">constants</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>},
-		<span class="ident">DispatchClass</span>, <span class="ident">Weight</span>,
-	},
+	<span class="ident">weights</span>::{<span class="ident">DispatchClass</span>, <span class="ident">Weight</span>},
 	<span class="ident">PalletId</span>, <span class="ident">RuntimeDebug</span>,
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{
@@ -893,8 +889,10 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::BuildStorage</span>;
 
 <span class="comment">// Polkadot imports</span>
-<span class="kw">use</span> <span class="ident">polkadot_runtime</span>::{<span class="ident">BlockHashCount</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">SlowAdjustingFeeUpdate</span>};
+<span class="kw">use</span> <span class="ident">polkadot_runtime_common</span>::{<span class="ident">BlockHashCount</span>, <span class="ident">SlowAdjustingFeeUpdate</span>};
 <span class="kw">use</span> <span class="ident">xcm_executor::XcmExecutor</span>;
+
+<span class="kw">use</span> <span class="ident">weights</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>, <span class="ident">RocksDbWeight</span>};
 
 <span class="macro">impl_opaque_keys!</span> {
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionKeys</span> {

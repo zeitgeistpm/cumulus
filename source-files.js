@@ -1,5 +1,5 @@
 var N = null;var sourcesIndex = {};
-sourcesIndex["canvas_kusama_runtime"] = {"name":"","files":["constants.rs","contracts.rs","lib.rs","xcm_config.rs"]};
+sourcesIndex["canvas_kusama_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","contracts.rs","lib.rs","xcm_config.rs"]};
 sourcesIndex["cumulus_client_cli"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_collator"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_consensus_aura"] = {"name":"","files":["import_queue.rs","lib.rs"]};
@@ -33,13 +33,13 @@ sourcesIndex["pallet_collator_selection"] = {"name":"","files":["lib.rs","weight
 sourcesIndex["pallet_template"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["parachain_collator"] = {"name":"","files":["chain_spec.rs","cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
 sourcesIndex["parachain_info"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["parachain_template_runtime"] = {"name":"","files":["lib.rs","xcm_config.rs"]};
+sourcesIndex["parachain_template_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["lib.rs","xcm_config.rs"]};
 sourcesIndex["parachains_common"] = {"name":"","files":["impls.rs","lib.rs"]};
 sourcesIndex["polkadot_collator"] = {"name":"","files":["chain_spec.rs","cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
 sourcesIndex["rococo_parachain_runtime"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["seedling_runtime"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["shell_runtime"] = {"name":"","files":["lib.rs","xcm_config.rs"]};
-sourcesIndex["statemine_runtime"] = {"name":"","dirs":[{"name":"weights","files":["cumulus_pallet_xcmp_queue.rs","frame_system.rs","mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs"]}],"files":["constants.rs","lib.rs","xcm_config.rs"]};
-sourcesIndex["statemint_runtime"] = {"name":"","dirs":[{"name":"weights","files":["cumulus_pallet_xcmp_queue.rs","frame_system.rs","mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs"]}],"files":["constants.rs","lib.rs","xcm_config.rs"]};
-sourcesIndex["westmint_runtime"] = {"name":"","dirs":[{"name":"weights","files":["cumulus_pallet_xcmp_queue.rs","frame_system.rs","mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs"]}],"files":["constants.rs","lib.rs","xcm_config.rs"]};
+sourcesIndex["statemine_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","cumulus_pallet_xcmp_queue.rs","extrinsic_weights.rs","frame_system.rs","mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","lib.rs","xcm_config.rs"]};
+sourcesIndex["statemint_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","cumulus_pallet_xcmp_queue.rs","extrinsic_weights.rs","frame_system.rs","mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","lib.rs","xcm_config.rs"]};
+sourcesIndex["westmint_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","cumulus_pallet_xcmp_queue.rs","extrinsic_weights.rs","frame_system.rs","mod.rs","pallet_assets.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_uniques.rs","pallet_utility.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","lib.rs","xcm_config.rs"]};
 createSourceSidebar();
