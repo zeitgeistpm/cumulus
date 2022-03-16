@@ -523,6 +523,7 @@
 <span id="521">521</span>
 <span id="522">522</span>
 <span id="523">523</span>
+<span id="524">524</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -893,7 +894,7 @@
 
 			<span class="kw">let</span> <span class="ident">current_count</span> <span class="op">=</span>
 				<span class="op">&lt;</span><span class="ident">Candidates</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::try_mutate</span>(<span class="op">|</span><span class="ident">candidates</span><span class="op">|</span> -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">DispatchError</span><span class="op">&gt;</span> {
-					<span class="kw">if</span> <span class="ident">candidates</span>.<span class="ident">into_iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">candidate</span><span class="op">|</span> <span class="ident">candidate</span>.<span class="ident">who</span> <span class="op">==</span> <span class="ident">who</span>) {
+					<span class="kw">if</span> <span class="ident">candidates</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">candidate</span><span class="op">|</span> <span class="ident">candidate</span>.<span class="ident">who</span> <span class="op">==</span> <span class="ident">who</span>) {
 						<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AlreadyCandidate</span>)<span class="question-mark">?</span>
 					} <span class="kw">else</span> {
 						<span class="ident">T::Currency::reserve</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>, <span class="ident">deposit</span>)<span class="question-mark">?</span>;
@@ -934,6 +935,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">account_id</span>() -&gt; <span class="ident">T::AccountId</span> {
 			<span class="ident">T::PotId::get</span>().<span class="ident">into_account</span>()
 		}
+
 		<span class="doccomment">/// Removes a candidate if they exist and sends them back their deposit</span>
 		<span class="kw">fn</span> <span class="ident">try_remove_candidate</span>(<span class="ident">who</span>: <span class="kw-2">&amp;</span><span class="ident">T::AccountId</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">DispatchError</span><span class="op">&gt;</span> {
 			<span class="kw">let</span> <span class="ident">current_count</span> <span class="op">=</span>
@@ -942,8 +944,8 @@
 						.<span class="ident">iter</span>()
 						.<span class="ident">position</span>(<span class="op">|</span><span class="ident">candidate</span><span class="op">|</span> <span class="ident">candidate</span>.<span class="ident">who</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">who</span>)
 						.<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotCandidate</span>)<span class="question-mark">?</span>;
-					<span class="ident">T::Currency::unreserve</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>, <span class="ident">candidates</span>[<span class="ident">index</span>].<span class="ident">deposit</span>);
-					<span class="ident">candidates</span>.<span class="ident">remove</span>(<span class="ident">index</span>);
+					<span class="kw">let</span> <span class="ident">candidate</span> <span class="op">=</span> <span class="ident">candidates</span>.<span class="ident">remove</span>(<span class="ident">index</span>);
+					<span class="ident">T::Currency::unreserve</span>(<span class="ident">who</span>, <span class="ident">candidate</span>.<span class="ident">deposit</span>);
 					<span class="op">&lt;</span><span class="ident">LastAuthoredBlock</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="ident">who</span>.<span class="ident">clone</span>());
 					<span class="prelude-val">Ok</span>(<span class="ident">candidates</span>.<span class="ident">len</span>())
 				})<span class="question-mark">?</span>;
@@ -956,16 +958,18 @@
 		<span class="doccomment">/// This is done on the fly, as frequent as we are told to do so, as the session manager.</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assemble_collators</span>(<span class="ident">candidates</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span> {
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">collators</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::invulnerables</span>();
-			<span class="ident">collators</span>.<span class="ident">extend</span>(<span class="ident">candidates</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>());
+			<span class="ident">collators</span>.<span class="ident">extend</span>(<span class="ident">candidates</span>);
 			<span class="ident">collators</span>
 		}
-		<span class="doccomment">/// Kicks out and candidates that did not produce a block in the kick threshold.</span>
+
+		<span class="doccomment">/// Kicks out candidates that did not produce a block in the kick threshold</span>
+		<span class="doccomment">/// and refund their deposits.</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kick_stale_candidates</span>(
 			<span class="ident">candidates</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CandidateInfo</span><span class="op">&lt;</span><span class="ident">T::AccountId</span>, <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span> {
 			<span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::block_number</span>();
 			<span class="kw">let</span> <span class="ident">kick_threshold</span> <span class="op">=</span> <span class="ident">T::KickThreshold::get</span>();
-			<span class="kw">let</span> <span class="ident">new_candidates</span> <span class="op">=</span> <span class="ident">candidates</span>
+			<span class="ident">candidates</span>
 				.<span class="ident">into_iter</span>()
 				.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> {
 					<span class="kw">let</span> <span class="ident">last_block</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">LastAuthoredBlock</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">c</span>.<span class="ident">who</span>.<span class="ident">clone</span>());
@@ -983,8 +987,7 @@
 						<span class="prelude-val">None</span>
 					}
 				})
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-			<span class="ident">new_candidates</span>
+				.<span class="ident">collect</span>()
 		}
 	}
 
@@ -1028,9 +1031,8 @@
 			<span class="kw">let</span> <span class="ident">candidates</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::candidates</span>();
 			<span class="kw">let</span> <span class="ident">candidates_len_before</span> <span class="op">=</span> <span class="ident">candidates</span>.<span class="ident">len</span>();
 			<span class="kw">let</span> <span class="ident">active_candidates</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::kick_stale_candidates</span>(<span class="ident">candidates</span>);
-			<span class="kw">let</span> <span class="ident">active_candidates_len</span> <span class="op">=</span> <span class="ident">active_candidates</span>.<span class="ident">len</span>();
+			<span class="kw">let</span> <span class="ident">removed</span> <span class="op">=</span> <span class="ident">candidates_len_before</span> <span class="op">-</span> <span class="ident">active_candidates</span>.<span class="ident">len</span>();
 			<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::assemble_collators</span>(<span class="ident">active_candidates</span>);
-			<span class="kw">let</span> <span class="ident">removed</span> <span class="op">=</span> <span class="ident">candidates_len_before</span> <span class="op">-</span> <span class="ident">active_candidates_len</span>;
 
 			<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::register_extra_weight_unchecked</span>(
 				<span class="ident">T::WeightInfo::new_session</span>(<span class="ident">candidates_len_before</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="ident">removed</span> <span class="kw">as</span> <span class="ident">u32</span>),
