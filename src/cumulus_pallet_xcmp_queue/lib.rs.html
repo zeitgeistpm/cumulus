@@ -1102,8 +1102,6 @@
 <span id="1100">1100</span>
 <span id="1101">1101</span>
 <span id="1102">1102</span>
-<span id="1103">1103</span>
-<span id="1104">1104</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1677,9 +1675,7 @@
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shuffled</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">len</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 		<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">len</span> {
 			<span class="kw">let</span> <span class="ident">j</span> <span class="op">=</span> (<span class="ident">rng</span>.<span class="ident">next_u32</span>() <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">%</span> <span class="ident">len</span>;
-			<span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">shuffled</span>[<span class="ident">i</span>];
-			<span class="ident">shuffled</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">shuffled</span>[<span class="ident">j</span>];
-			<span class="ident">shuffled</span>[<span class="ident">j</span>] <span class="op">=</span> <span class="ident">a</span>;
+			<span class="ident">shuffled</span>.<span class="ident">as_mut_slice</span>().<span class="ident">swap</span>(<span class="ident">i</span>, <span class="ident">j</span>);
 		}
 		<span class="ident">shuffled</span>
 	}
