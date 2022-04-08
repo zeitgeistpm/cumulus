@@ -440,6 +440,29 @@
 <span id="438">438</span>
 <span id="439">439</span>
 <span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
 	<span class="ident">chain_spec</span>,
 	<span class="ident">cli</span>::{<span class="ident">Cli</span>, <span class="ident">RelayChainCli</span>, <span class="ident">Subcommand</span>},
@@ -448,6 +471,7 @@
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_service::genesis::generate_genesis_block</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
+<span class="kw">use</span> <span class="ident">frame_benchmarking_cli::BenchmarkCmd</span>;
 <span class="kw">use</span> <span class="ident">log::info</span>;
 <span class="kw">use</span> <span class="ident">parachain_template_runtime</span>::{<span class="ident">Block</span>, <span class="ident">RuntimeApi</span>};
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::AccountIdConversion</span>;
@@ -673,16 +697,38 @@
 
 			<span class="prelude-val">Ok</span>(())
 		},
-		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::Benchmark</span>(<span class="ident">cmd</span>)) =&gt;
-			<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>) {
-				<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
+		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::Benchmark</span>(<span class="ident">cmd</span>)) =&gt; {
+			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
+			<span class="comment">// Switch on the concrete benchmark sub-command-</span>
+			<span class="kw">match</span> <span class="ident">cmd</span> {
+				<span class="ident">BenchmarkCmd::Pallet</span>(<span class="ident">cmd</span>) =&gt;
+					<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>) {
+						<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TemplateRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>))
+					} <span class="kw">else</span> {
+						<span class="prelude-val">Err</span>(<span class="string">&quot;Benchmarking wasn&#39;t enabled when building the node. \
+					You can enable it with `--features runtime-benchmarks`.&quot;</span>
+							.<span class="ident">into</span>())
+					},
+				<span class="ident">BenchmarkCmd::Block</span>(<span class="ident">cmd</span>) =&gt; <span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+					<span class="kw">let</span> <span class="ident">partials</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">TemplateRuntimeExecutor</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+						<span class="kw-2">&amp;</span><span class="ident">config</span>,
+						<span class="ident"><span class="kw">crate</span>::service::parachain_build_import_queue</span>,
+					)<span class="question-mark">?</span>;
+					<span class="ident">cmd</span>.<span class="ident">run</span>(<span class="ident">partials</span>.<span class="ident">client</span>)
+				}),
+				<span class="ident">BenchmarkCmd::Storage</span>(<span class="ident">cmd</span>) =&gt; <span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+					<span class="kw">let</span> <span class="ident">partials</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">TemplateRuntimeExecutor</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+						<span class="kw-2">&amp;</span><span class="ident">config</span>,
+						<span class="ident"><span class="kw">crate</span>::service::parachain_build_import_queue</span>,
+					)<span class="question-mark">?</span>;
+					<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">partials</span>.<span class="ident">backend</span>.<span class="ident">expose_db</span>();
+					<span class="kw">let</span> <span class="ident">storage</span> <span class="op">=</span> <span class="ident">partials</span>.<span class="ident">backend</span>.<span class="ident">expose_storage</span>();
 
-				<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TemplateRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>))
-			} <span class="kw">else</span> {
-				<span class="prelude-val">Err</span>(<span class="string">&quot;Benchmarking wasn&#39;t enabled when building the node. \
-				You can enable it with `--features runtime-benchmarks`.&quot;</span>
-					.<span class="ident">into</span>())
-			},
+					<span class="ident">cmd</span>.<span class="ident">run</span>(<span class="ident">config</span>, <span class="ident">partials</span>.<span class="ident">client</span>.<span class="ident">clone</span>(), <span class="ident">db</span>, <span class="ident">storage</span>)
+				}),
+				<span class="ident">BenchmarkCmd::Overhead</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Unsupported benchmarking command&quot;</span>.<span class="ident">into</span>()),
+			}
+		},
 		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::TryRuntime</span>(<span class="ident">cmd</span>)) =&gt; {
 			<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>) {
 				<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;

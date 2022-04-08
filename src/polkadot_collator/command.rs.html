@@ -740,6 +740,54 @@
 <span id="738">738</span>
 <span id="739">739</span>
 <span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -767,6 +815,7 @@
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_service::genesis::generate_genesis_block</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
+<span class="kw">use</span> <span class="ident">frame_benchmarking_cli::BenchmarkCmd</span>;
 <span class="kw">use</span> <span class="ident">log::info</span>;
 <span class="kw">use</span> <span class="ident">parachains_common</span>::{<span class="ident">AuraId</span>, <span class="ident">StatemintAuraId</span>};
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::AccountIdConversion</span>;
@@ -1010,6 +1059,33 @@
 		.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Could not find wasm file in genesis state!&quot;</span>.<span class="ident">into</span>())
 }
 
+<span class="doccomment">/// Creates partial components for the runtimes that are supported by the benchmarks.</span>
+<span class="macro">macro_rules!</span> <span class="ident">construct_benchmark_partials</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>:<span class="ident">expr</span>, <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">partials</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>) =&gt; {
+		<span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_statemine</span>() {
+			<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">partials</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">statemine_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
+				<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
+			)<span class="question-mark">?</span>;
+			<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
+		} <span class="kw">else</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_westmint</span>() {
+			<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">partials</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">westmint_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
+				<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
+			)<span class="question-mark">?</span>;
+			<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
+		} <span class="kw">else</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_statemint</span>() {
+			<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">partials</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">statemint_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
+				<span class="ident"><span class="kw">crate</span>::service::statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">StatemintAuraId</span><span class="op">&gt;</span>,
+			)<span class="question-mark">?</span>;
+			<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
+		} <span class="kw">else</span> {
+			<span class="prelude-val">Err</span>(<span class="string">&quot;The chain is not supported&quot;</span>.<span class="ident">into</span>())
+		}
+	};
+}
+
 <span class="macro">macro_rules!</span> <span class="ident">construct_async_run</span> {
 	(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">cli</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">cmd</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>:<span class="ident">ident</span><span class="op">|</span> $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">tt</span> )<span class="op">*</span> ) =&gt; {{
 		<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">cli</span>.<span class="ident">create_runner</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cmd</span>)<span class="question-mark">?</span>;
@@ -1181,23 +1257,43 @@
 
 			<span class="prelude-val">Ok</span>(())
 		},
-		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::Benchmark</span>(<span class="ident">cmd</span>)) =&gt;
-			<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>) {
-				<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
-				<span class="kw">if</span> <span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>.<span class="ident">is_statemine</span>() {
-					<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">StatemineRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>))
-				} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>.<span class="ident">is_westmint</span>() {
-					<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">WestmintRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>))
-				} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>.<span class="ident">is_statemint</span>() {
-					<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">StatemintRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>))
-				} <span class="kw">else</span> {
-					<span class="prelude-val">Err</span>(<span class="string">&quot;Chain doesn&#39;t support benchmarking&quot;</span>.<span class="ident">into</span>())
-				}
-			} <span class="kw">else</span> {
-				<span class="prelude-val">Err</span>(<span class="string">&quot;Benchmarking wasn&#39;t enabled when building the node. \
+		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::Benchmark</span>(<span class="ident">cmd</span>)) =&gt; {
+			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
+
+			<span class="comment">// Switch on the concrete benchmark sub-command-</span>
+			<span class="kw">match</span> <span class="ident">cmd</span> {
+				<span class="ident">BenchmarkCmd::Pallet</span>(<span class="ident">cmd</span>) =&gt;
+					<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>) {
+						<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+							<span class="kw">if</span> <span class="ident">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_statemine</span>() {
+								<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">StatemineRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>)
+							} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_westmint</span>() {
+								<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">WestmintRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>)
+							} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_statemint</span>() {
+								<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">StatemintRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>)
+							} <span class="kw">else</span> {
+								<span class="prelude-val">Err</span>(<span class="string">&quot;Chain doesn&#39;t support benchmarking&quot;</span>.<span class="ident">into</span>())
+							}
+						})
+					} <span class="kw">else</span> {
+						<span class="prelude-val">Err</span>(<span class="string">&quot;Benchmarking wasn&#39;t enabled when building the node. \
 				You can enable it with `--features runtime-benchmarks`.&quot;</span>
-					.<span class="ident">into</span>())
-			},
+							.<span class="ident">into</span>())
+					},
+				<span class="ident">BenchmarkCmd::Block</span>(<span class="ident">cmd</span>) =&gt; <span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+					<span class="macro">construct_benchmark_partials!</span>(<span class="ident">config</span>, <span class="op">|</span><span class="ident">partials</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>(<span class="ident">partials</span>.<span class="ident">client</span>))
+				}),
+				<span class="ident">BenchmarkCmd::Storage</span>(<span class="ident">cmd</span>) =&gt; <span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+					<span class="macro">construct_benchmark_partials!</span>(<span class="ident">config</span>, <span class="op">|</span><span class="ident">partials</span><span class="op">|</span> {
+						<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">partials</span>.<span class="ident">backend</span>.<span class="ident">expose_db</span>();
+						<span class="kw">let</span> <span class="ident">storage</span> <span class="op">=</span> <span class="ident">partials</span>.<span class="ident">backend</span>.<span class="ident">expose_storage</span>();
+
+						<span class="ident">cmd</span>.<span class="ident">run</span>(<span class="ident">config</span>, <span class="ident">partials</span>.<span class="ident">client</span>.<span class="ident">clone</span>(), <span class="ident">db</span>, <span class="ident">storage</span>)
+					})
+				}),
+				<span class="ident">BenchmarkCmd::Overhead</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Unsupported benchmarking command&quot;</span>.<span class="ident">into</span>()),
+			}
+		},
 		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::TryRuntime</span>(<span class="ident">cmd</span>)) =&gt; {
 			<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>) {
 				<span class="comment">// grab the task manager.</span>
