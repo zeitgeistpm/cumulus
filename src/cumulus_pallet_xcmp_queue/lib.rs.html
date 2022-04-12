@@ -1104,6 +1104,10 @@
 <span id="1102">1102</span>
 <span id="1103">1103</span>
 <span id="1104">1104</span>
+<span id="1105">1105</span>
+<span id="1106">1106</span>
+<span id="1107">1107</span>
+<span id="1108">1108</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1761,7 +1765,11 @@
 								<span class="ident">remaining_fragments</span> <span class="op">=</span> <span class="ident">last_remaining_fragments</span>;
 								<span class="kw">break</span>
 							},
-							<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
+							<span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; {
+								<span class="macro">log::error!</span>(
+									<span class="string">&quot;Failed to process XCMP-XCM message, caused by {:?}&quot;</span>,
+									<span class="ident">error</span>
+								);
 								<span class="comment">// Message looks invalid; don&#39;t attempt to retry</span>
 							},
 						}
