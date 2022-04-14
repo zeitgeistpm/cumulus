@@ -146,11 +146,21 @@ blobs across versions of wasmtime you can be safely guaranteed that
 future versions of wasmtime will reject old cache entries).</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><section id="method.deserialize_file" class="method has-srclink"><a href="#method.deserialize_file" class="anchor"></a><h4 class="code-header">pub unsafe fn <a href="#method.deserialize_file" class="fnname">deserialize_file</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;engine: &amp;<a class="struct" href="struct.Engine.html" title="struct cumulus_test_client::sc_executor::sp_wasm_interface::wasmtime::Engine">Engine</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;path: impl <a class="trait" href="https://doc.rust-lang.org/1.60.0/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/1.60.0/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;<br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.60.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.Module.html" title="struct cumulus_test_client::sc_executor::sp_wasm_interface::wasmtime::Module">Module</a>, <a class="struct" href="https://docs.rs/anyhow/1.0.51/anyhow/struct.Error.html" title="struct anyhow::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Same as <a href="struct.Module.html#method.deserialize"><code>deserialize</code></a>, except that the contents of <code>path</code> are read to
 deserialize into a <a href="struct.Module.html" title="Module"><code>Module</code></a>.</p>
-<p>For more information see the documentation of the <a href="struct.Module.html#method.deserialize"><code>deserialize</code></a>
-method for why this function is <code>unsafe</code>.</p>
 <p>This method is provided because it can be faster than <a href="struct.Module.html#method.deserialize"><code>deserialize</code></a>
 since the data doesn’t need to be copied around, but rather the module
 can be used directly from an mmap’d view of the file provided.</p>
+<h5 id="unsafety-1"><a href="#unsafety-1">Unsafety</a></h5>
+<p>All of the reasons that <a href="struct.Module.html#method.deserialize"><code>deserialize</code></a> is <code>unsafe</code> applies to this
+function as well. Arbitrary data loaded from a file may trick Wasmtime
+into arbitrary code execution since the contents of the file are not
+validated to be a valid precompiled module.</p>
+<p>Additionally though this function is also <code>unsafe</code> because the file
+referenced must remain unchanged and a valid precompiled module for the
+entire lifetime of the <a href="struct.Module.html" title="Module"><code>Module</code></a> returned. Any changes to the file on
+disk may change future instantiations of the module to be incorrect.
+This is because the file is mapped into memory and lazily loaded pages
+reflect the current state of the file, not necessarily the origianl
+state of the file.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><section id="method.validate" class="method has-srclink"><a href="#method.validate" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.validate" class="fnname">validate</a>(engine: &amp;<a class="struct" href="struct.Engine.html" title="struct cumulus_test_client::sc_executor::sp_wasm_interface::wasmtime::Engine">Engine</a>, binary: <a class="primitive" href="https://doc.rust-lang.org/1.60.0/std/primitive.slice.html">&amp;[</a><a class="primitive" href="https://doc.rust-lang.org/1.60.0/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/1.60.0/std/primitive.slice.html">]</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.60.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.60.0/std/primitive.unit.html">()</a>, <a class="struct" href="https://docs.rs/anyhow/1.0.51/anyhow/struct.Error.html" title="struct anyhow::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Validates <code>binary</code> input data as a WebAssembly binary given the
 configuration in <code>engine</code>.</p>
 <p>This function will perform a speedy validation of the <code>binary</code> input
