@@ -114,6 +114,8 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -132,9 +134,11 @@
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">impls</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">xcm_config</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">constants</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">opaque</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">types</span>::<span class="kw-2">*</span>;
+
 <span class="doccomment">/// Common types of parachains.</span>
 <span class="kw">mod</span> <span class="ident">types</span> {
 	<span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">IdentifyAccount</span>, <span class="ident">Verify</span>};
