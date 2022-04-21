@@ -232,6 +232,12 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -265,7 +271,7 @@
 <span class="kw">use</span> <span class="ident">futures::lock::Mutex</span>;
 <span class="kw">use</span> <span class="ident">sc_client_api</span>::{<span class="ident">backend::AuxStore</span>, <span class="ident">BlockOf</span>};
 <span class="kw">use</span> <span class="ident">sc_consensus::BlockImport</span>;
-<span class="kw">use</span> <span class="ident">sc_consensus_slots</span>::{<span class="ident">BackoffAuthoringBlocksStrategy</span>, <span class="ident">SlotInfo</span>};
+<span class="kw">use</span> <span class="ident">sc_consensus_slots</span>::{<span class="ident">BackoffAuthoringBlocksStrategy</span>, <span class="ident">SimpleSlotWorker</span>, <span class="ident">SlotInfo</span>};
 <span class="kw">use</span> <span class="ident">sc_telemetry::TelemetryHandle</span>;
 <span class="kw">use</span> <span class="ident">sp_api::ProvideRuntimeApi</span>;
 <span class="kw">use</span> <span class="ident">sp_application_crypto::AppPublic</span>;
@@ -276,7 +282,7 @@
 <span class="kw">use</span> <span class="ident">sp_inherents</span>::{<span class="ident">CreateInherentDataProviders</span>, <span class="ident">InherentData</span>, <span class="ident">InherentDataProvider</span>};
 <span class="kw">use</span> <span class="ident">sp_keystore::SyncCryptoStorePtr</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>, <span class="ident">Header</span> <span class="kw">as</span> <span class="ident">HeaderT</span>, <span class="ident">Member</span>, <span class="ident">NumberFor</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">hash::Hash</span>, <span class="ident">sync::Arc</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">hash::Hash</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">sync::Arc</span>};
 
 <span class="kw">mod</span> <span class="ident">import_queue</span>;
 
@@ -287,29 +293,25 @@
 <span class="kw">const</span> <span class="ident">LOG_TARGET</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;aura::cumulus&quot;</span>;
 
 <span class="doccomment">/// The implementation of the AURA consensus for parachains.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, <span class="ident">W</span><span class="op">&gt;</span> {
 	<span class="ident">create_inherent_data_providers</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CIDP</span><span class="op">&gt;</span>,
-	<span class="ident">aura_worker</span>: <span class="ident">Arc</span><span class="op">&lt;</span>
-		<span class="ident">Mutex</span><span class="op">&lt;</span>
-			<span class="kw">dyn</span> <span class="ident">sc_consensus_slots::SlotWorker</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="op">&lt;</span><span class="ident">EnableProofRecording</span> <span class="kw">as</span> <span class="ident">ProofRecording</span><span class="op">&gt;</span><span class="ident">::Proof</span><span class="op">&gt;</span>
-				<span class="op">+</span> <span class="ident">Send</span>
-				<span class="op">+</span> <span class="lifetime">&#39;static</span>,
-		<span class="op">&gt;</span>,
-	<span class="op">&gt;</span>,
+	<span class="ident">aura_worker</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">slot_duration</span>: <span class="ident">SlotDuration</span>,
+	<span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, <span class="ident">W</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, <span class="ident">W</span><span class="op">&gt;</span> {
 	<span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span> {
 			<span class="ident">create_inherent_data_providers</span>: <span class="self">self</span>.<span class="ident">create_inherent_data_providers</span>.<span class="ident">clone</span>(),
 			<span class="ident">aura_worker</span>: <span class="self">self</span>.<span class="ident">aura_worker</span>.<span class="ident">clone</span>(),
 			<span class="ident">slot_duration</span>: <span class="self">self</span>.<span class="ident">slot_duration</span>,
+			<span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
 		}
 	}
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">B</span>: <span class="ident">BlockT</span>,
 	<span class="ident">CIDP</span>: <span class="ident">CreateInherentDataProviders</span><span class="op">&lt;</span><span class="ident">B</span>, (<span class="ident">PHash</span>, <span class="ident">PersistedValidationData</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
@@ -368,13 +370,21 @@
 			},
 		);
 
-		<span class="ident">Box::new</span>(<span class="self">Self</span> {
+		<span class="ident">Box::new</span>(<span class="ident">AuraConsensus</span> {
 			<span class="ident">create_inherent_data_providers</span>: <span class="ident">Arc::new</span>(<span class="ident">create_inherent_data_providers</span>),
 			<span class="ident">aura_worker</span>: <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">worker</span>)),
 			<span class="ident">slot_duration</span>,
+			<span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
 		})
 	}
+}
 
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, <span class="ident">W</span><span class="op">&gt;</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, <span class="ident">W</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+	<span class="ident">B</span>: <span class="ident">BlockT</span>,
+	<span class="ident">CIDP</span>: <span class="ident">CreateInherentDataProviders</span><span class="op">&lt;</span><span class="ident">B</span>, (<span class="ident">PHash</span>, <span class="ident">PersistedValidationData</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">CIDP::InherentDataProviders</span>: <span class="ident">InherentDataProviderExt</span>,
+{
 	<span class="doccomment">/// Create the inherent data.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Returns the created inherent data and the inherent data providers used.</span>
@@ -412,11 +422,13 @@
 }
 
 <span class="attribute">#[<span class="ident">async_trait::async_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> <span class="ident">ParachainConsensus</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, <span class="ident">W</span><span class="op">&gt;</span> <span class="ident">ParachainConsensus</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, <span class="ident">W</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">B</span>: <span class="ident">BlockT</span>,
 	<span class="ident">CIDP</span>: <span class="ident">CreateInherentDataProviders</span><span class="op">&lt;</span><span class="ident">B</span>, (<span class="ident">PHash</span>, <span class="ident">PersistedValidationData</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">CIDP::InherentDataProviders</span>: <span class="ident">InherentDataProviderExt</span> <span class="op">+</span> <span class="ident">Send</span>,
+	<span class="ident">W</span>: <span class="ident">SimpleSlotWorker</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
+	<span class="ident">W::Proposer</span>: <span class="ident">Proposer</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">Proof</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">EnableProofRecording</span> <span class="kw">as</span> <span class="ident">ProofRecording</span><span class="op">&gt;</span><span class="ident">::Proof</span><span class="op">&gt;</span>,
 {
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">produce_candidate</span>(
 		<span class="kw-2">&amp;mut</span> <span class="self">self</span>,
