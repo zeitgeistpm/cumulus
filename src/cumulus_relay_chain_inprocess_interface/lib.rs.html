@@ -520,6 +520,13 @@
 <span id="515">515</span>
 <span id="516">516</span>
 <span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -849,6 +856,7 @@
 	<span class="ident">config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">parachain_config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry_worker_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryWorkerHandle</span><span class="op">&gt;</span>,
+	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NewFull</span><span class="op">&lt;</span><span class="ident">polkadot_client::Client</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CollatorPair</span><span class="op">&gt;</span>), <span class="ident">polkadot_service::Error</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">is_light</span> <span class="op">=</span> <span class="macro">matches!</span>(<span class="ident">config</span>.<span class="ident">role</span>, <span class="ident">Role::Light</span>);
 	<span class="kw">if</span> <span class="ident">is_light</span> {
@@ -870,6 +878,7 @@
 			<span class="ident">telemetry_worker_handle</span>,
 			<span class="bool-val">true</span>,
 			<span class="ident">polkadot_service::RealOverseerGen</span>,
+			<span class="ident">hwbench</span>,
 		)<span class="question-mark">?</span>;
 
 		<span class="prelude-val">Ok</span>((<span class="ident">relay_chain_full_node</span>, <span class="ident">maybe_collator_key</span>))
@@ -882,9 +891,14 @@
 	<span class="ident">parachain_config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry_worker_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryWorkerHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">TaskManager</span>,
+	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span>(<span class="ident">Arc</span><span class="op">&lt;</span>(<span class="kw">dyn</span> <span class="ident">RelayChainInterface</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CollatorPair</span><span class="op">&gt;</span>)<span class="op">&gt;</span> {
-	<span class="kw">let</span> (<span class="ident">full_node</span>, <span class="ident">collator_key</span>) <span class="op">=</span>
-		<span class="ident">build_polkadot_full_node</span>(<span class="ident">polkadot_config</span>, <span class="ident">parachain_config</span>, <span class="ident">telemetry_worker_handle</span>)<span class="question-mark">?</span>;
+	<span class="kw">let</span> (<span class="ident">full_node</span>, <span class="ident">collator_key</span>) <span class="op">=</span> <span class="ident">build_polkadot_full_node</span>(
+		<span class="ident">polkadot_config</span>,
+		<span class="ident">parachain_config</span>,
+		<span class="ident">telemetry_worker_handle</span>,
+		<span class="ident">hwbench</span>,
+	)<span class="question-mark">?</span>;
 
 	<span class="kw">let</span> <span class="ident">sync_oracle</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SyncOracle</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">full_node</span>.<span class="ident">network</span>.<span class="ident">clone</span>());
 	<span class="kw">let</span> <span class="ident">sync_oracle</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">sync_oracle</span>));

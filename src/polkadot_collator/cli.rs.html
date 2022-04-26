@@ -143,6 +143,16 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -253,6 +263,16 @@
 
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">run</span>: <span class="ident">cumulus_client_cli::RunCmd</span>,
+
+	<span class="doccomment">/// Disable automatic hardware benchmarks.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// By default these benchmarks are automatically ran at startup and measure</span>
+	<span class="doccomment">/// the CPU speed, the memory bandwidth and the disk speed.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// The results are then printed out in the logs, and also sent as part of</span>
+	<span class="doccomment">/// telemetry, if telemetry is enabled.</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>)]</span>
+	<span class="kw">pub</span> <span class="ident">no_hardware_benchmarks</span>: <span class="ident">bool</span>,
 
 	<span class="doccomment">/// Relay chain arguments</span>
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">raw</span> <span class="op">=</span> <span class="bool-val">true</span>, <span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;relay-chain-rpc-url&quot;</span>)]</span>
