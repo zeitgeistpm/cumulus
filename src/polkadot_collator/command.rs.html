@@ -807,6 +807,7 @@
 <span id="802">802</span>
 <span id="803">803</span>
 <span id="804">804</span>
+<span id="805">805</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -834,7 +835,7 @@
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_service::genesis::generate_genesis_block</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
-<span class="kw">use</span> <span class="ident">frame_benchmarking_cli::BenchmarkCmd</span>;
+<span class="kw">use</span> <span class="ident">frame_benchmarking_cli</span>::{<span class="ident">BenchmarkCmd</span>, <span class="ident">SUBSTRATE_REFERENCE_HARDWARE</span>};
 <span class="kw">use</span> <span class="ident">log::info</span>;
 <span class="kw">use</span> <span class="ident">parachains_common</span>::{<span class="ident">AuraId</span>, <span class="ident">StatemintAuraId</span>};
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::AccountIdConversion</span>;
@@ -1311,7 +1312,8 @@
 					})
 				}),
 				<span class="ident">BenchmarkCmd::Overhead</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Unsupported benchmarking command&quot;</span>.<span class="ident">into</span>()),
-				<span class="ident">BenchmarkCmd::Machine</span>(<span class="ident">cmd</span>) =&gt; <span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="ident">config</span>)),
+				<span class="ident">BenchmarkCmd::Machine</span>(<span class="ident">cmd</span>) =&gt;
+					<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="ident">config</span>, <span class="ident">SUBSTRATE_REFERENCE_HARDWARE</span>.<span class="ident">clone</span>())),
 			}
 		},
 		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::TryRuntime</span>(<span class="ident">cmd</span>)) =&gt; {
