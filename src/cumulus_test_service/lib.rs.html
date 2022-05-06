@@ -1469,7 +1469,7 @@
 		<span class="ident">database</span>: <span class="ident">DatabaseSource::RocksDb</span> { <span class="ident">path</span>: <span class="ident">root</span>.<span class="ident">join</span>(<span class="string">&quot;db&quot;</span>), <span class="ident">cache_size</span>: <span class="number">128</span> },
 		<span class="ident">state_cache_size</span>: <span class="number">67108864</span>,
 		<span class="ident">state_cache_child_ratio</span>: <span class="prelude-val">None</span>,
-		<span class="ident">state_pruning</span>: <span class="ident">PruningMode::ArchiveAll</span>,
+		<span class="ident">state_pruning</span>: <span class="prelude-val">Some</span>(<span class="ident">PruningMode::ArchiveAll</span>),
 		<span class="ident">keep_blocks</span>: <span class="ident">KeepBlocks::All</span>,
 		<span class="ident">chain_spec</span>: <span class="ident">spec</span>,
 		<span class="ident">wasm_method</span>: <span class="ident">WasmExecutionMethod::Interpreted</span>,
