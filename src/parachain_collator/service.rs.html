@@ -535,10 +535,16 @@
 <span id="530">530</span>
 <span id="531">531</span>
 <span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Service and ServiceFactory implementation. Specialized wrapper over substrate service.</span>
 
 <span class="comment">// std</span>
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">sync::Arc</span>, <span class="ident">time::Duration</span>};
+
+<span class="comment">// rpc</span>
+<span class="kw">use</span> <span class="ident">jsonrpsee::RpcModule</span>;
 
 <span class="kw">use</span> <span class="ident">cumulus_client_cli::CollatorOptions</span>;
 <span class="comment">// Local Runtime Types</span>
@@ -759,7 +765,7 @@
 	<span class="ident">Executor</span>: <span class="ident">sc_executor::NativeExecutionDispatch</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RB</span>: <span class="ident">Fn</span>(
 			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">Executor</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpc_core::IoHandler</span><span class="op">&lt;</span><span class="ident">sc_rpc::Metadata</span><span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
+		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
@@ -838,7 +844,7 @@
 			<span class="ident">warp_sync</span>: <span class="prelude-val">None</span>,
 		})<span class="question-mark">?</span>;
 
-	<span class="kw">let</span> <span class="ident">rpc_extensions_builder</span> <span class="op">=</span> {
+	<span class="kw">let</span> <span class="ident">rpc_builder</span> <span class="op">=</span> {
 		<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
 		<span class="kw">let</span> <span class="ident">transaction_pool</span> <span class="op">=</span> <span class="ident">transaction_pool</span>.<span class="ident">clone</span>();
 
@@ -849,12 +855,12 @@
 				<span class="ident">deny_unsafe</span>,
 			};
 
-			<span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::rpc::create_full</span>(<span class="ident">deps</span>))
+			<span class="ident"><span class="kw">crate</span>::rpc::create_full</span>(<span class="ident">deps</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
 		})
 	};
 
 	<span class="ident">sc_service::spawn_tasks</span>(<span class="ident">sc_service::SpawnTasksParams</span> {
-		<span class="ident">rpc_extensions_builder</span>,
+		<span class="ident">rpc_builder</span>,
 		<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">transaction_pool</span>: <span class="ident">transaction_pool</span>.<span class="ident">clone</span>(),
 		<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
@@ -998,7 +1004,7 @@
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
 		<span class="ident">id</span>,
-		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Default::default</span>()),
+		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">parachain_build_import_queue</span>,
 		<span class="op">|</span><span class="ident">client</span>,
 		 <span class="ident">prometheus_registry</span>,

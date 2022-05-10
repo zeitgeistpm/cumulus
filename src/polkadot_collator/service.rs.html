@@ -1679,6 +1679,8 @@
 <span id="1674">1674</span>
 <span id="1675">1675</span>
 <span id="1676">1676</span>
+<span id="1677">1677</span>
+<span id="1678">1678</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1714,6 +1716,8 @@
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_rpc_interface::RelayChainRPCInterface</span>;
 <span class="kw">use</span> <span class="ident">polkadot_service::CollatorPair</span>;
 <span class="kw">use</span> <span class="ident">sp_core::Pair</span>;
+
+<span class="kw">use</span> <span class="ident">jsonrpsee::RpcModule</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::rpc</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parachains_common</span>::{<span class="ident">AccountId</span>, <span class="ident">Balance</span>, <span class="ident">Block</span>, <span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">Header</span>, <span class="ident">Index</span> <span class="kw">as</span> <span class="ident">Nonce</span>};
@@ -2021,7 +2025,7 @@
 	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="ident">RB</span>: <span class="ident">Fn</span>(
 			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpc_core::IoHandler</span><span class="op">&lt;</span><span class="ident">sc_rpc::Metadata</span><span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
+		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
@@ -2102,10 +2106,10 @@
 		})<span class="question-mark">?</span>;
 
 	<span class="kw">let</span> <span class="ident">rpc_client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
-	<span class="kw">let</span> <span class="ident">rpc_extensions_builder</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">rpc_ext_builder</span>(<span class="ident">rpc_client</span>.<span class="ident">clone</span>()));
+	<span class="kw">let</span> <span class="ident">rpc_builder</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">rpc_ext_builder</span>(<span class="ident">rpc_client</span>.<span class="ident">clone</span>()));
 
 	<span class="ident">sc_service::spawn_tasks</span>(<span class="ident">sc_service::SpawnTasksParams</span> {
-		<span class="ident">rpc_extensions_builder</span>,
+		<span class="ident">rpc_builder</span>,
 		<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">transaction_pool</span>: <span class="ident">transaction_pool</span>.<span class="ident">clone</span>(),
 		<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
@@ -2223,7 +2227,7 @@
 	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="ident">RB</span>: <span class="ident">Fn</span>(
 			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpc_core::IoHandler</span><span class="op">&lt;</span><span class="ident">sc_rpc::Metadata</span><span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
+		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
@@ -2302,7 +2306,7 @@
 			<span class="ident">warp_sync</span>: <span class="prelude-val">None</span>,
 		})<span class="question-mark">?</span>;
 
-	<span class="kw">let</span> <span class="ident">rpc_extensions_builder</span> <span class="op">=</span> {
+	<span class="kw">let</span> <span class="ident">rpc_builder</span> <span class="op">=</span> {
 		<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
 		<span class="kw">let</span> <span class="ident">transaction_pool</span> <span class="op">=</span> <span class="ident">transaction_pool</span>.<span class="ident">clone</span>();
 
@@ -2313,12 +2317,12 @@
 				<span class="ident">deny_unsafe</span>,
 			};
 
-			<span class="prelude-val">Ok</span>(<span class="ident">rpc::create_full</span>(<span class="ident">deps</span>))
+			<span class="ident">rpc::create_full</span>(<span class="ident">deps</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
 		})
 	};
 
 	<span class="ident">sc_service::spawn_tasks</span>(<span class="ident">sc_service::SpawnTasksParams</span> {
-		<span class="ident">rpc_extensions_builder</span>,
+		<span class="ident">rpc_builder</span>,
 		<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">transaction_pool</span>: <span class="ident">transaction_pool</span>.<span class="ident">clone</span>(),
 		<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
@@ -2463,7 +2467,7 @@
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
 		<span class="ident">id</span>,
-		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Default::default</span>()),
+		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">rococo_parachain_build_import_queue</span>,
 		<span class="op">|</span><span class="ident">client</span>,
 		 <span class="ident">prometheus_registry</span>,
@@ -2606,7 +2610,7 @@
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
 		<span class="ident">id</span>,
-		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Default::default</span>()),
+		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">shell_build_import_queue</span>,
 		<span class="op">|</span><span class="ident">client</span>,
 		 <span class="ident">prometheus_registry</span>,
@@ -2881,7 +2885,7 @@
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
 		<span class="ident">id</span>,
-		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Default::default</span>()),
+		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
 		<span class="op">|</span><span class="ident">client</span>,
 		 <span class="ident">prometheus_registry</span>,
@@ -3046,7 +3050,7 @@
 	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="ident">RB</span>: <span class="ident">Fn</span>(
 			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpc_core::IoHandler</span><span class="op">&lt;</span><span class="ident">sc_rpc::Metadata</span><span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
+		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
@@ -3125,7 +3129,7 @@
 			<span class="ident">warp_sync</span>: <span class="prelude-val">None</span>,
 		})<span class="question-mark">?</span>;
 
-	<span class="kw">let</span> <span class="ident">rpc_extensions_builder</span> <span class="op">=</span> {
+	<span class="kw">let</span> <span class="ident">rpc_builder</span> <span class="op">=</span> {
 		<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
 		<span class="kw">let</span> <span class="ident">transaction_pool</span> <span class="op">=</span> <span class="ident">transaction_pool</span>.<span class="ident">clone</span>();
 
@@ -3136,12 +3140,12 @@
 				<span class="ident">deny_unsafe</span>,
 			};
 
-			<span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::rpc::create_canvas_kusama</span>(<span class="ident">deps</span>))
+			<span class="ident"><span class="kw">crate</span>::rpc::create_canvas_kusama</span>(<span class="ident">deps</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
 		})
 	};
 
 	<span class="ident">sc_service::spawn_tasks</span>(<span class="ident">sc_service::SpawnTasksParams</span> {
-		<span class="ident">rpc_extensions_builder</span>,
+		<span class="ident">rpc_builder</span>,
 		<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">transaction_pool</span>: <span class="ident">transaction_pool</span>.<span class="ident">clone</span>(),
 		<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
@@ -3284,7 +3288,7 @@
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
 		<span class="ident">id</span>,
-		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Default::default</span>()),
+		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">canvas_kusama_build_import_queue</span>,
 		<span class="op">|</span><span class="ident">client</span>,
 		 <span class="ident">prometheus_registry</span>,
