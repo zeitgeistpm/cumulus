@@ -365,13 +365,13 @@
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Uniques Class (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">freeze_class</span>() -&gt; <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">freeze_collection</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">13_259_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Uniques Class (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">thaw_class</span>() -&gt; <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">thaw_collection</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">13_207_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -392,7 +392,7 @@
 	}
 	<span class="comment">// Storage: Uniques Class (r:1 w:1)</span>
 	<span class="comment">// Storage: Uniques ClassAccount (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">force_asset_status</span>() -&gt; <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">force_item_status</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">16_812_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -429,14 +429,14 @@
 	}
 	<span class="comment">// Storage: Uniques Class (r:1 w:1)</span>
 	<span class="comment">// Storage: Uniques ClassMetadataOf (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_class_metadata</span>() -&gt; <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_collection_metadata</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">28_613_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Uniques Class (r:1 w:0)</span>
 	<span class="comment">// Storage: Uniques ClassMetadataOf (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">clear_class_metadata</span>() -&gt; <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">clear_collection_metadata</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">26_273_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))

@@ -1181,10 +1181,10 @@
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_team</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_metadata</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_attribute</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_class_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_collection_metadata</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_metadata</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_attribute</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_class_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_collection_metadata</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. }
 			),
 			<span class="ident">ProxyType::AssetManager</span> =&gt; <span class="macro">matches!</span>(
@@ -1199,8 +1199,8 @@
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::burn</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::freeze</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::thaw</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::freeze_class</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::thaw_class</span> { .. }) <span class="op">|</span>
+					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::freeze_collection</span> { .. }) <span class="op">|</span>
+					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::thaw_collection</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. }
 			),
 			<span class="ident">ProxyType::Collator</span> =&gt; <span class="macro">matches!</span>(
@@ -1337,8 +1337,8 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ClassDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span>; <span class="comment">// 1 UNIT deposit to create asset class</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">InstanceDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">100</span>; <span class="comment">// 1/100 UNIT deposit to create asset instance</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CollectionDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span>; <span class="comment">// 1 UNIT deposit to create asset class</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ItemDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">100</span>; <span class="comment">// 1/100 UNIT deposit to create asset instance</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KeyLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">32</span>;	<span class="comment">// Max 32 bytes per key</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ValueLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">64</span>;	<span class="comment">// Max 64 bytes per value</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UniquesMetadataDepositBase</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">129</span>);
@@ -1349,12 +1349,12 @@
 
 <span class="kw">impl</span> <span class="ident">pallet_uniques::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">ClassId</span> <span class="op">=</span> <span class="ident">u32</span>;
-	<span class="kw">type</span> <span class="ident">InstanceId</span> <span class="op">=</span> <span class="ident">u32</span>;
+	<span class="kw">type</span> <span class="ident">CollectionId</span> <span class="op">=</span> <span class="ident">u32</span>;
+	<span class="kw">type</span> <span class="ident">ItemId</span> <span class="op">=</span> <span class="ident">u32</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
 	<span class="kw">type</span> <span class="ident">ForceOrigin</span> <span class="op">=</span> <span class="ident">AssetsForceOrigin</span>;
-	<span class="kw">type</span> <span class="ident">ClassDeposit</span> <span class="op">=</span> <span class="ident">ClassDeposit</span>;
-	<span class="kw">type</span> <span class="ident">InstanceDeposit</span> <span class="op">=</span> <span class="ident">InstanceDeposit</span>;
+	<span class="kw">type</span> <span class="ident">CollectionDeposit</span> <span class="op">=</span> <span class="ident">CollectionDeposit</span>;
+	<span class="kw">type</span> <span class="ident">ItemDeposit</span> <span class="op">=</span> <span class="ident">ItemDeposit</span>;
 	<span class="kw">type</span> <span class="ident">MetadataDepositBase</span> <span class="op">=</span> <span class="ident">UniquesMetadataDepositBase</span>;
 	<span class="kw">type</span> <span class="ident">AttributeDepositBase</span> <span class="op">=</span> <span class="ident">AttributeDepositBase</span>;
 	<span class="kw">type</span> <span class="ident">DepositPerByte</span> <span class="op">=</span> <span class="ident">DepositPerByte</span>;
