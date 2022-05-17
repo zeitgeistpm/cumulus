@@ -936,7 +936,7 @@
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="doccomment">/// Get a unique, inaccessible account id from the `PotId`.</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">account_id</span>() -&gt; <span class="ident">T::AccountId</span> {
-			<span class="ident">T::PotId::get</span>().<span class="ident">into_account</span>()
+			<span class="ident">T::PotId::get</span>().<span class="ident">into_account_truncating</span>()
 		}
 
 		<span class="doccomment">/// Removes a candidate if they exist and sends them back their deposit</span>
