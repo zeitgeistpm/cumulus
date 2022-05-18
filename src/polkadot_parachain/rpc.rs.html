@@ -181,8 +181,8 @@
 	<span class="prelude-val">Ok</span>(<span class="ident">module</span>)
 }
 
-<span class="doccomment">/// Instantiate all RPCs we want at the canvas-kusama chain.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_canvas_kusama</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">P</span><span class="op">&gt;</span>(
+<span class="doccomment">/// Instantiate all RPCs we want at the contracts-rococo chain.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_contracts_rococo</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">P</span><span class="op">&gt;</span>(
 	<span class="ident">deps</span>: <span class="ident">FullDeps</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">P</span><span class="op">&gt;</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RpcExtension</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>

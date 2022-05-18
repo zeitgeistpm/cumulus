@@ -806,7 +806,6 @@
 <span id="801">801</span>
 <span id="802">802</span>
 <span id="803">803</span>
-<span id="804">804</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -855,7 +854,7 @@
 	<span class="kw">fn</span> <span class="ident">is_statemint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 	<span class="kw">fn</span> <span class="ident">is_statemine</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 	<span class="kw">fn</span> <span class="ident">is_westmint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
-	<span class="kw">fn</span> <span class="ident">is_canvas_kusama</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+	<span class="kw">fn</span> <span class="ident">is_contracts_rococo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">IdentifyChain</span> <span class="kw">for</span> <span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span> {
@@ -874,9 +873,8 @@
 	<span class="kw">fn</span> <span class="ident">is_westmint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
 		<span class="self">self</span>.<span class="ident">id</span>().<span class="ident">starts_with</span>(<span class="string">&quot;westmint&quot;</span>)
 	}
-	<span class="kw">fn</span> <span class="ident">is_canvas_kusama</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-		<span class="comment">// we use the same runtime on rococo and kusama</span>
-		<span class="self">self</span>.<span class="ident">id</span>().<span class="ident">starts_with</span>(<span class="string">&quot;canvas-kusama&quot;</span>) <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">id</span>().<span class="ident">starts_with</span>(<span class="string">&quot;canvas-rococo&quot;</span>)
+	<span class="kw">fn</span> <span class="ident">is_contracts_rococo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+		<span class="self">self</span>.<span class="ident">id</span>().<span class="ident">starts_with</span>(<span class="string">&quot;contracts-rococo&quot;</span>)
 	}
 }
 
@@ -896,8 +894,8 @@
 	<span class="kw">fn</span> <span class="ident">is_westmint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
 		<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span><span class="ident">::is_westmint</span>(<span class="self">self</span>)
 	}
-	<span class="kw">fn</span> <span class="ident">is_canvas_kusama</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-		<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span><span class="ident">::is_canvas_kusama</span>(<span class="self">self</span>)
+	<span class="kw">fn</span> <span class="ident">is_contracts_rococo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+		<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span><span class="ident">::is_contracts_rococo</span>(<span class="self">self</span>)
 	}
 }
 
@@ -942,12 +940,12 @@
 		<span class="string">&quot;westmint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/westmint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
-		<span class="comment">// -- Canvas on Rococo</span>
-		<span class="string">&quot;canvas-rococo-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::canvas_rococo_development_config</span>()),
-		<span class="string">&quot;canvas-rococo-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::canvas_rococo_local_config</span>()),
-		<span class="string">&quot;canvas-rococo-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::canvas_rococo_config</span>()),
-		<span class="string">&quot;canvas-rococo&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/canvas-rococo.json&quot;</span>)[..],
+		<span class="comment">// -- Contracts on Rococo</span>
+		<span class="string">&quot;contracts-rococo-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts_rococo_development_config</span>()),
+		<span class="string">&quot;contracts-rococo-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts_rococo_local_config</span>()),
+		<span class="string">&quot;contracts-rococo-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts_rococo_config</span>()),
+		<span class="string">&quot;contracts-rococo&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/contracts-rococo.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="comment">// -- Fallback (generic chainspec)</span>
 		<span class="string">&quot;&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_chain_spec</span>()),
@@ -964,8 +962,8 @@
 				<span class="ident">Box::new</span>(<span class="ident">chain_spec::ShellChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
 			} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_seedling</span>() {
 				<span class="ident">Box::new</span>(<span class="ident">chain_spec::SeedlingChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
-			} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
-				<span class="ident">Box::new</span>(<span class="ident">chain_spec::CanvasKusamaChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
+			} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_contracts_rococo</span>() {
+				<span class="ident">Box::new</span>(<span class="ident">chain_spec::ContractsRococoChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
 			} <span class="kw">else</span> {
 				<span class="ident">Box::new</span>(<span class="ident">chain_spec</span>)
 			}
@@ -1019,8 +1017,8 @@
 			<span class="kw-2">&amp;</span><span class="ident">shell_runtime::VERSION</span>
 		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_seedling</span>() {
 			<span class="kw-2">&amp;</span><span class="ident">seedling_runtime::VERSION</span>
-		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
-			<span class="kw-2">&amp;</span><span class="ident">canvas_kusama_runtime::VERSION</span>
+		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chain_spec</span>.<span class="ident">is_contracts_rococo</span>() {
+			<span class="kw-2">&amp;</span><span class="ident">contracts_rococo_runtime::VERSION</span>
 		} <span class="kw">else</span> {
 			<span class="kw-2">&amp;</span><span class="ident">rococo_parachain_runtime::VERSION</span>
 		}
@@ -1152,11 +1150,11 @@
 				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 				{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
 			})
-		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
+		} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>.<span class="ident">is_contracts_rococo</span>() {
 			<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
-				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">canvas_kusama_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 					<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
-					<span class="ident"><span class="kw">crate</span>::service::canvas_kusama_build_import_queue</span>,
+					<span class="ident"><span class="kw">crate</span>::service::contracts_rococo_build_import_queue</span>,
 				)<span class="question-mark">?</span>;
 				<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 				{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
@@ -1447,8 +1445,8 @@
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
 					.<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
-				} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_canvas_kusama</span>() {
-					<span class="ident"><span class="kw">crate</span>::service::start_canvas_kusama_node</span>(
+				} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_contracts_rococo</span>() {
+					<span class="ident"><span class="kw">crate</span>::service::start_contracts_rococo_node</span>(
 						<span class="ident">config</span>,
 						<span class="ident">polkadot_config</span>,
 						<span class="ident">collator_options</span>,

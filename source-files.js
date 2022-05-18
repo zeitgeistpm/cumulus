@@ -1,5 +1,6 @@
 var N = null;var sourcesIndex = {};
 sourcesIndex["canvas_kusama_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","contracts.rs","lib.rs","xcm_config.rs"]};
+sourcesIndex["contracts_rococo_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","contracts.rs","lib.rs","xcm_config.rs"]};
 sourcesIndex["cumulus_client_cli"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_collator"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_consensus_aura"] = {"name":"","files":["import_queue.rs","lib.rs"]};

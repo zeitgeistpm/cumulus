@@ -1094,7 +1094,6 @@
 <span id="1089">1089</span>
 <span id="1090">1090</span>
 <span id="1091">1091</span>
-<span id="1092">1092</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1932,39 +1931,38 @@
 	}
 }
 
-<span class="doccomment">/// We use the same runtime on kusama and rococo.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CanvasKusamaChainSpec</span> <span class="op">=</span>
-	<span class="ident">sc_service::GenericChainSpec</span><span class="op">&lt;</span><span class="ident">canvas_kusama_runtime::GenesisConfig</span>, <span class="ident">Extensions</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ContractsRococoChainSpec</span> <span class="op">=</span>
+	<span class="ident">sc_service::GenericChainSpec</span><span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::GenesisConfig</span>, <span class="ident">Extensions</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// No relay chain suffix because the id is the same over all relay chains.</span>
-<span class="kw">const</span> <span class="ident">CANVAS_PARACHAIN_ID</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1002</span>;
+<span class="kw">const</span> <span class="ident">CONTRACTS_PARACHAIN_ID</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1002</span>;
 
-<span class="doccomment">/// The existential deposit is determined by the runtime &quot;canvas-kusama&quot;.</span>
-<span class="kw">const</span> <span class="ident">CANVAS_KUSAMA_ED</span>: <span class="ident">canvas_kusama_runtime::Balance</span> <span class="op">=</span>
-	<span class="ident">canvas_kusama_runtime::constants::currency::EXISTENTIAL_DEPOSIT</span>;
+<span class="doccomment">/// The existential deposit is determined by the runtime &quot;contracts-rococo&quot;.</span>
+<span class="kw">const</span> <span class="ident">CONTRACTS_ROCOCO_ED</span>: <span class="ident">contracts_rococo_runtime::Balance</span> <span class="op">=</span>
+	<span class="ident">contracts_rococo_runtime::constants::currency::EXISTENTIAL_DEPOSIT</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">canvas_rococo_development_config</span>() -&gt; <span class="ident">CanvasKusamaChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contracts_rococo_development_config</span>() -&gt; <span class="ident">ContractsRococoChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;ROC&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
 
-	<span class="ident">CanvasKusamaChainSpec::from_genesis</span>(
+	<span class="ident">ContractsRococoChainSpec::from_genesis</span>(
 		<span class="comment">// Name</span>
-		<span class="string">&quot;Canvas on Rococo Development&quot;</span>,
+		<span class="string">&quot;Contracts on Rococo Development&quot;</span>,
 		<span class="comment">// ID</span>
-		<span class="string">&quot;canvas-rococo-dev&quot;</span>,
+		<span class="string">&quot;contracts-rococo-dev&quot;</span>,
 		<span class="ident">ChainType::Development</span>,
 		<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-			<span class="ident">canvas_kusama_genesis</span>(
+			<span class="ident">contracts_rococo_genesis</span>(
 				<span class="comment">// initial collators.</span>
 				<span class="macro">vec!</span>[
 					(
 						<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
-						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">canvas_kusama_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
+						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
 					),
 					(
 						<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
-						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">canvas_kusama_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
+						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
 					),
 				],
 				<span class="macro">vec!</span>[
@@ -1981,7 +1979,7 @@
 					<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Eve//stash&quot;</span>),
 					<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Ferdie//stash&quot;</span>),
 				],
-				<span class="ident">CANVAS_PARACHAIN_ID</span>.<span class="ident">into</span>(),
+				<span class="ident">CONTRACTS_PARACHAIN_ID</span>.<span class="ident">into</span>(),
 			)
 		},
 		<span class="ident">Vec::new</span>(),
@@ -1991,33 +1989,33 @@
 		<span class="prelude-val">None</span>,
 		<span class="ident">Extensions</span> {
 			<span class="ident">relay_chain</span>: <span class="string">&quot;rococo-local&quot;</span>.<span class="ident">into</span>(), <span class="comment">// You MUST set this to the correct network!</span>
-			<span class="ident">para_id</span>: <span class="ident">CANVAS_PARACHAIN_ID</span>,
+			<span class="ident">para_id</span>: <span class="ident">CONTRACTS_PARACHAIN_ID</span>,
 		},
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">canvas_rococo_local_config</span>() -&gt; <span class="ident">CanvasKusamaChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contracts_rococo_local_config</span>() -&gt; <span class="ident">ContractsRococoChainSpec</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;ROC&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
 
-	<span class="ident">CanvasKusamaChainSpec::from_genesis</span>(
+	<span class="ident">ContractsRococoChainSpec::from_genesis</span>(
 		<span class="comment">// Name</span>
-		<span class="string">&quot;Canvas on Rococo&quot;</span>,
+		<span class="string">&quot;Contracts on Rococo&quot;</span>,
 		<span class="comment">// ID</span>
-		<span class="string">&quot;canvas-rococo-local&quot;</span>,
+		<span class="string">&quot;contracts-rococo-local&quot;</span>,
 		<span class="ident">ChainType::Local</span>,
 		<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-			<span class="ident">canvas_kusama_genesis</span>(
+			<span class="ident">contracts_rococo_genesis</span>(
 				<span class="comment">// initial collators.</span>
 				<span class="macro">vec!</span>[
 					(
 						<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
-						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">canvas_kusama_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
+						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
 					),
 					(
 						<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
-						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">canvas_kusama_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
+						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
 					),
 				],
 				<span class="macro">vec!</span>[
@@ -2034,7 +2032,7 @@
 					<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Eve//stash&quot;</span>),
 					<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Ferdie//stash&quot;</span>),
 				],
-				<span class="ident">CANVAS_PARACHAIN_ID</span>.<span class="ident">into</span>(),
+				<span class="ident">CONTRACTS_PARACHAIN_ID</span>.<span class="ident">into</span>(),
 			)
 		},
 		<span class="comment">// Bootnodes</span>
@@ -2050,25 +2048,25 @@
 		<span class="comment">// Extensions</span>
 		<span class="ident">Extensions</span> {
 			<span class="ident">relay_chain</span>: <span class="string">&quot;rococo-local&quot;</span>.<span class="ident">into</span>(), <span class="comment">// You MUST set this to the correct network!</span>
-			<span class="ident">para_id</span>: <span class="ident">CANVAS_PARACHAIN_ID</span>,
+			<span class="ident">para_id</span>: <span class="ident">CONTRACTS_PARACHAIN_ID</span>,
 		},
 	)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">canvas_rococo_config</span>() -&gt; <span class="ident">CanvasKusamaChainSpec</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contracts_rococo_config</span>() -&gt; <span class="ident">ContractsRococoChainSpec</span> {
 	<span class="comment">// Give your base currency a unit name and decimal places</span>
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">properties</span> <span class="op">=</span> <span class="ident">sc_chain_spec::Properties::new</span>();
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenSymbol&quot;</span>.<span class="ident">into</span>(), <span class="string">&quot;ROC&quot;</span>.<span class="ident">into</span>());
 	<span class="ident">properties</span>.<span class="ident">insert</span>(<span class="string">&quot;tokenDecimals&quot;</span>.<span class="ident">into</span>(), <span class="number">12</span>.<span class="ident">into</span>());
 
-	<span class="ident">CanvasKusamaChainSpec::from_genesis</span>(
+	<span class="ident">ContractsRococoChainSpec::from_genesis</span>(
 		<span class="comment">// Name</span>
-		<span class="string">&quot;Canvas on Rococo&quot;</span>,
+		<span class="string">&quot;Contracts on Rococo&quot;</span>,
 		<span class="comment">// ID</span>
-		<span class="string">&quot;canvas-rococo&quot;</span>,
+		<span class="string">&quot;contracts-rococo&quot;</span>,
 		<span class="ident">ChainType::Live</span>,
 		<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-			<span class="ident">canvas_kusama_genesis</span>(
+			<span class="ident">contracts_rococo_genesis</span>(
 				<span class="macro">vec!</span>[
 					<span class="comment">// 5GKFbTTgrVS4Vz1UWWHPqMZQNFWZtqo7H2KpCDyYhEL3aS26</span>
 					(
@@ -2109,7 +2107,7 @@
 					<span class="comment">// AccountId of an account which `ink-waterfall` uses for automated testing</span>
 					<span class="macro">hex!</span>[<span class="string">&quot;0e47e2344d523c3cc5c34394b0d58b9a4200e813a038e6c5a6163cc07d70b069&quot;</span>].<span class="ident">into</span>(),
 				],
-				<span class="ident">CANVAS_PARACHAIN_ID</span>.<span class="ident">into</span>(),
+				<span class="ident">CONTRACTS_PARACHAIN_ID</span>.<span class="ident">into</span>(),
 			)
 		},
 		<span class="comment">// Bootnodes</span>
@@ -2136,38 +2134,38 @@
 		<span class="comment">// Properties</span>
 		<span class="prelude-val">Some</span>(<span class="ident">properties</span>),
 		<span class="comment">// Extensions</span>
-		<span class="ident">Extensions</span> { <span class="ident">relay_chain</span>: <span class="string">&quot;rococo&quot;</span>.<span class="ident">into</span>(), <span class="ident">para_id</span>: <span class="ident">CANVAS_PARACHAIN_ID</span> },
+		<span class="ident">Extensions</span> { <span class="ident">relay_chain</span>: <span class="string">&quot;rococo&quot;</span>.<span class="ident">into</span>(), <span class="ident">para_id</span>: <span class="ident">CONTRACTS_PARACHAIN_ID</span> },
 	)
 }
 
-<span class="kw">fn</span> <span class="ident">canvas_kusama_genesis</span>(
+<span class="kw">fn</span> <span class="ident">contracts_rococo_genesis</span>(
 	<span class="ident">invulnerables</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">AccountId</span>, <span class="ident">AuraId</span>)<span class="op">&gt;</span>,
 	<span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
-) -&gt; <span class="ident">canvas_kusama_runtime::GenesisConfig</span> {
-	<span class="ident">canvas_kusama_runtime::GenesisConfig</span> {
-		<span class="ident">system</span>: <span class="ident">canvas_kusama_runtime::SystemConfig</span> {
-			<span class="ident">code</span>: <span class="ident">canvas_kusama_runtime::WASM_BINARY</span>
+) -&gt; <span class="ident">contracts_rococo_runtime::GenesisConfig</span> {
+	<span class="ident">contracts_rococo_runtime::GenesisConfig</span> {
+		<span class="ident">system</span>: <span class="ident">contracts_rococo_runtime::SystemConfig</span> {
+			<span class="ident">code</span>: <span class="ident">contracts_rococo_runtime::WASM_BINARY</span>
 				.<span class="ident">expect</span>(<span class="string">&quot;WASM binary was not build, please build it!&quot;</span>)
 				.<span class="ident">to_vec</span>(),
 		},
-		<span class="ident">balances</span>: <span class="ident">canvas_kusama_runtime::BalancesConfig</span> {
+		<span class="ident">balances</span>: <span class="ident">contracts_rococo_runtime::BalancesConfig</span> {
 			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">60</span>)).<span class="ident">collect</span>(),
 		},
-		<span class="ident">parachain_info</span>: <span class="ident">canvas_kusama_runtime::ParachainInfoConfig</span> { <span class="ident">parachain_id</span>: <span class="ident">id</span> },
-		<span class="ident">collator_selection</span>: <span class="ident">canvas_kusama_runtime::CollatorSelectionConfig</span> {
+		<span class="ident">parachain_info</span>: <span class="ident">contracts_rococo_runtime::ParachainInfoConfig</span> { <span class="ident">parachain_id</span>: <span class="ident">id</span> },
+		<span class="ident">collator_selection</span>: <span class="ident">contracts_rococo_runtime::CollatorSelectionConfig</span> {
 			<span class="ident">invulnerables</span>: <span class="ident">invulnerables</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">acc</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">acc</span>).<span class="ident">collect</span>(),
-			<span class="ident">candidacy_bond</span>: <span class="ident">CANVAS_KUSAMA_ED</span> <span class="op">*</span> <span class="number">16</span>,
+			<span class="ident">candidacy_bond</span>: <span class="ident">CONTRACTS_ROCOCO_ED</span> <span class="op">*</span> <span class="number">16</span>,
 			..<span class="ident">Default::default</span>()
 		},
-		<span class="ident">session</span>: <span class="ident">canvas_kusama_runtime::SessionConfig</span> {
+		<span class="ident">session</span>: <span class="ident">contracts_rococo_runtime::SessionConfig</span> {
 			<span class="ident">keys</span>: <span class="ident">invulnerables</span>
 				.<span class="ident">into_iter</span>()
 				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">acc</span>, <span class="ident">aura</span>)<span class="op">|</span> {
 					(
-						<span class="ident">acc</span>.<span class="ident">clone</span>(),                                 <span class="comment">// account id</span>
-						<span class="ident">acc</span>,                                         <span class="comment">// validator id</span>
-						<span class="ident">canvas_kusama_runtime::SessionKeys</span> { <span class="ident">aura</span> }, <span class="comment">// session keys</span>
+						<span class="ident">acc</span>.<span class="ident">clone</span>(),                                    <span class="comment">// account id</span>
+						<span class="ident">acc</span>,                                            <span class="comment">// validator id</span>
+						<span class="ident">contracts_rococo_runtime::SessionKeys</span> { <span class="ident">aura</span> }, <span class="comment">// session keys</span>
 					)
 				})
 				.<span class="ident">collect</span>(),
@@ -2177,10 +2175,10 @@
 		<span class="ident">aura</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">aura_ext</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">parachain_system</span>: <span class="ident">Default::default</span>(),
-		<span class="ident">polkadot_xcm</span>: <span class="ident">canvas_kusama_runtime::PolkadotXcmConfig</span> {
+		<span class="ident">polkadot_xcm</span>: <span class="ident">contracts_rococo_runtime::PolkadotXcmConfig</span> {
 			<span class="ident">safe_xcm_version</span>: <span class="prelude-val">Some</span>(<span class="ident">SAFE_XCM_VERSION</span>),
 		},
-		<span class="ident">sudo</span>: <span class="ident">canvas_kusama_runtime::SudoConfig</span> {
+		<span class="ident">sudo</span>: <span class="ident">contracts_rococo_runtime::SudoConfig</span> {
 			<span class="ident">key</span>: <span class="prelude-val">Some</span>(
 				<span class="macro">hex!</span>[<span class="string">&quot;2681a28014e7d3a5bfb32a003b3571f53c408acbc28d351d6bf58f5028c4ef14&quot;</span>].<span class="ident">into</span>(),
 			),
