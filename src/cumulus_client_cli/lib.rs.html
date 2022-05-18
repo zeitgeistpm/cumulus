@@ -295,13 +295,6 @@
 <span id="290">290</span>
 <span id="291">291</span>
 <span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -454,15 +447,8 @@
 		<span class="ident">long</span>,
 		<span class="ident">parse</span>(<span class="ident">try_from_str</span>),
 		<span class="ident">validator</span> <span class="op">=</span> <span class="ident">validate_relay_chain_url</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;collator&quot;</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;validator&quot;</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;alice&quot;</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;bob&quot;</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;charlie&quot;</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;dave&quot;</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;eve&quot;</span>,
-		<span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;ferdie&quot;</span>
-	)]</span>
+		<span class="ident">conflicts_with_all</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;bob&quot;</span>, <span class="string">&quot;charlie&quot;</span>, <span class="string">&quot;dave&quot;</span>, <span class="string">&quot;eve&quot;</span>, <span class="string">&quot;ferdie&quot;</span>, <span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>]</span>	)
+	]
 	<span class="kw">pub</span> <span class="ident">relay_chain_rpc_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
 }
 
