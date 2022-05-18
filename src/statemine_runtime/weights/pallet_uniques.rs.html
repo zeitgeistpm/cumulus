@@ -233,6 +233,13 @@
 <span id="228">228</span>
 <span id="229">229</span>
 <span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -458,6 +465,13 @@
 	<span class="comment">// Storage: Uniques Class (r:1 w:0)</span>
 	<span class="comment">// Storage: Uniques Asset (r:1 w:1)</span>
 	<span class="kw">fn</span> <span class="ident">set_accept_ownership</span>() -&gt; <span class="ident">Weight</span> {
+		(<span class="number">19_417_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
+			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
+			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
+	}
+	<span class="comment">// Storage: Uniques Class (r:1 w:0)</span>
+	<span class="comment">// Storage: Uniques Asset (r:1 w:1)</span>
+	<span class="kw">fn</span> <span class="ident">set_collection_max_supply</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">19_417_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))

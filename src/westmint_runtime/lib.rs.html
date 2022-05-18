@@ -827,6 +827,7 @@
 <span id="822">822</span>
 <span id="823">823</span>
 <span id="824">824</span>
+<span id="825">825</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1172,6 +1173,7 @@
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_metadata</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_attribute</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_collection_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_collection_max_supply</span> { .. }) <span class="op">|</span>
 					<span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. }
 			),
 			<span class="ident">ProxyType::AssetManager</span> =&gt; <span class="macro">matches!</span>(
