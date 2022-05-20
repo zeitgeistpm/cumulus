@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `polkadot-parachains/src/command.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>command.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `polkadot-parachain/src/command.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>command.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
     <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../polkadot_parachain/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
@@ -903,13 +903,13 @@
 	<span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">id</span> {
 		<span class="string">&quot;staging&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::staging_test_net</span>()),
 		<span class="string">&quot;tick&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/tick.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/tick.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="string">&quot;trick&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/trick.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/trick.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="string">&quot;track&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/track.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/track.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="string">&quot;shell&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_shell_chain_spec</span>()),
 		<span class="comment">// -- Statemint</span>
@@ -920,7 +920,7 @@
 		<span class="string">&quot;statemint-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint_config</span>()),
 		<span class="comment">// the shell-based chain spec as used for syncing</span>
 		<span class="string">&quot;statemint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/statemint.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/statemint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="comment">// -- Statemine</span>
 		<span class="string">&quot;statemine-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemine_development_config</span>()),
@@ -929,7 +929,7 @@
 		<span class="string">&quot;statemine-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemine_config</span>()),
 		<span class="comment">// the shell-based chain spec as used for syncing</span>
 		<span class="string">&quot;statemine&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/statemine.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/statemine.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="comment">// -- Westmint</span>
 		<span class="string">&quot;westmint-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::westmint_development_config</span>()),
@@ -938,14 +938,14 @@
 		<span class="string">&quot;westmint-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::westmint_config</span>()),
 		<span class="comment">// the shell-based chain spec as used for syncing</span>
 		<span class="string">&quot;westmint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/westmint.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/westmint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="comment">// -- Contracts on Rococo</span>
 		<span class="string">&quot;contracts-rococo-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts_rococo_development_config</span>()),
 		<span class="string">&quot;contracts-rococo-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts_rococo_local_config</span>()),
 		<span class="string">&quot;contracts-rococo-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts_rococo_config</span>()),
 		<span class="string">&quot;contracts-rococo&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/contracts-rococo.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/contracts-rococo.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="comment">// -- Fallback (generic chainspec)</span>
 		<span class="string">&quot;&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_chain_spec</span>()),
