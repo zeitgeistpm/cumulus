@@ -1066,6 +1066,9 @@
 <span id="1061">1061</span>
 <span id="1062">1062</span>
 <span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1398,7 +1401,9 @@
 
 					<span class="ident"><span class="self">Self</span>::put_parachain_code</span>(<span class="kw-2">&amp;</span><span class="ident">validation_code</span>);
 					<span class="op">&lt;</span><span class="ident">T::OnSystemEvent</span> <span class="kw">as</span> <span class="ident">OnSystemEvent</span><span class="op">&gt;</span><span class="ident">::on_validation_code_applied</span>();
-					<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ValidationFunctionApplied</span>(<span class="ident">vfp</span>.<span class="ident">relay_parent_number</span>));
+					<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ValidationFunctionApplied</span> {
+						<span class="ident">relay_chain_block_num</span>: <span class="ident">vfp</span>.<span class="ident">relay_parent_number</span>,
+					});
 				},
 				<span class="prelude-val">Some</span>(<span class="ident">relay_chain::v2::UpgradeGoAhead::Abort</span>) =&gt; {
 					<span class="op">&lt;</span><span class="ident">PendingValidationCode</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::kill</span>();
@@ -1457,7 +1462,7 @@
 
 			<span class="ident">AuthorizedUpgrade</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="kw-2">&amp;</span><span class="ident">code_hash</span>);
 
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::UpgradeAuthorized</span>(<span class="ident">code_hash</span>));
+			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::UpgradeAuthorized</span> { <span class="ident">code_hash</span> });
 			<span class="prelude-val">Ok</span>(())
 		}
 
@@ -1479,17 +1484,15 @@
 		<span class="doccomment">/// The validation function has been scheduled to apply.</span>
 		<span class="ident">ValidationFunctionStored</span>,
 		<span class="doccomment">/// The validation function was applied as of the contained relay chain block number.</span>
-		<span class="ident">ValidationFunctionApplied</span>(<span class="ident">RelayChainBlockNumber</span>),
+		<span class="ident">ValidationFunctionApplied</span> { <span class="ident">relay_chain_block_num</span>: <span class="ident">RelayChainBlockNumber</span> },
 		<span class="doccomment">/// The relay-chain aborted the upgrade process.</span>
 		<span class="ident">ValidationFunctionDiscarded</span>,
 		<span class="doccomment">/// An upgrade has been authorized.</span>
-		<span class="ident">UpgradeAuthorized</span>(<span class="ident">T::Hash</span>),
+		<span class="ident">UpgradeAuthorized</span> { <span class="ident">code_hash</span>: <span class="ident">T::Hash</span> },
 		<span class="doccomment">/// Some downward messages have been received and will be processed.</span>
-		<span class="doccomment">/// \[ count \]</span>
-		<span class="ident">DownwardMessagesReceived</span>(<span class="ident">u32</span>),
+		<span class="ident">DownwardMessagesReceived</span> { <span class="ident">count</span>: <span class="ident">u32</span> },
 		<span class="doccomment">/// Downward messages were processed using the given weight.</span>
-		<span class="doccomment">/// \[ weight_used, result_mqc_head \]</span>
-		<span class="ident">DownwardMessagesProcessed</span>(<span class="ident">Weight</span>, <span class="ident">relay_chain::Hash</span>),
+		<span class="ident">DownwardMessagesProcessed</span> { <span class="ident">weight_used</span>: <span class="ident">Weight</span>, <span class="ident">dmq_head</span>: <span class="ident">relay_chain::Hash</span> },
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::error</span>]</span>
@@ -1818,7 +1821,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="number">0</span>;
 		<span class="kw">if</span> <span class="ident">dm_count</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::DownwardMessagesReceived</span>(<span class="ident">dm_count</span>));
+			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::DownwardMessagesReceived</span> { <span class="ident">count</span>: <span class="ident">dm_count</span> });
 			<span class="kw">let</span> <span class="ident">max_weight</span> <span class="op">=</span>
 				<span class="op">&lt;</span><span class="ident">ReservedDmpWeightOverride</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>().<span class="ident">unwrap_or_else</span>(<span class="ident">T::ReservedDmpWeight::get</span>);
 
@@ -1831,7 +1834,10 @@
 			<span class="ident">weight_used</span> <span class="op">+</span><span class="op">=</span> <span class="ident">T::DmpMessageHandler::handle_dmp_messages</span>(<span class="ident">message_iter</span>, <span class="ident">max_weight</span>);
 			<span class="op">&lt;</span><span class="ident">LastDmqMqcHead</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="kw-2">&amp;</span><span class="ident">dmq_head</span>);
 
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::DownwardMessagesProcessed</span>(<span class="ident">weight_used</span>, <span class="ident">dmq_head</span>.<span class="ident">head</span>()));
+			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::DownwardMessagesProcessed</span> {
+				<span class="ident">weight_used</span>,
+				<span class="ident">dmq_head</span>: <span class="ident">dmq_head</span>.<span class="ident">head</span>(),
+			});
 		}
 
 		<span class="comment">// After hashing each message in the message queue chain submitted by the collator, we</span>
