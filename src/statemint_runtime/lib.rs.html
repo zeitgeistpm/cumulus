@@ -836,7 +836,38 @@
 <span id="831">831</span>
 <span id="832">832</span>
 <span id="833">833</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="comment">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -851,7 +882,38 @@
 <span class="comment">// See the License for the specific language governing permissions and</span>
 <span class="comment">// limitations under the License.</span>
 
-<span class="doccomment">//! Statemint runtime.</span>
+<span class="doccomment">//! # Statemint Runtime</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Statemint is a parachain that provides an interface to create, manage, and use assets. Assets</span>
+<span class="doccomment">//! may be fungible or non-fungible.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Assets</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! - Fungibles: Configuration of `pallet-assets`.</span>
+<span class="doccomment">//! - Non-Fungibles (NFTs): Configuration of `pallet-uniques`.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Other Functionality</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Native Balances</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Statemint uses its parent DOT token as its native asset.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Governance</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! As a common good parachain, Statemint defers its governance (namely, its `Root` origin), to its</span>
+<span class="doccomment">//! Relay Chain parent, Polkadot.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Collator Selection</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Statemint uses `pallet-collator-selection`, a simple first-come-first-served registration</span>
+<span class="doccomment">//! system where collators can reserve a small bond to join the block producer set. There is no</span>
+<span class="doccomment">//! slashing.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### XCM</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Because Statemint is fully under the control of the Relay Chain, it is meant to be a</span>
+<span class="doccomment">//! `TrustedTeleporter`. It can also serve as a reserve location to other parachains for DOT as well</span>
+<span class="doccomment">//! as other local assets.</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;256&quot;</span>]</span>
