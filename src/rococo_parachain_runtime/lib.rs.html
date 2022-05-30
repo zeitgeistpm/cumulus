@@ -737,6 +737,7 @@
 <span id="732">732</span>
 <span id="733">733</span>
 <span id="734">734</span>
+<span id="735">735</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1331,6 +1332,7 @@
 	<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="kw">use</span> <span class="ident">frame_support::storage::migration</span>;
 		<span class="comment">// Remove the storage value `RandomMaterial` from removed pallet `RandomnessCollectiveFlip`</span>
+		<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 		<span class="ident">migration::remove_storage_prefix</span>(<span class="string">b&quot;RandomnessCollectiveFlip&quot;</span>, <span class="string">b&quot;RandomMaterial&quot;</span>, <span class="string">b&quot;&quot;</span>);
 		<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>)
 	}
