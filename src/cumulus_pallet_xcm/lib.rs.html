@@ -195,7 +195,6 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
-<span id="193">193</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -225,7 +224,7 @@
 <span class="kw">use</span> <span class="ident">frame_support::dispatch::Weight</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
-<span class="kw">use</span> <span class="ident">sp_runtime::traits::BadOrigin</span>;
+<span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">traits::BadOrigin</span>, <span class="ident">RuntimeDebug</span>};
 <span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
 <span class="kw">use</span> <span class="ident">xcm</span>::{
 	<span class="ident">latest</span>::{<span class="ident">ExecuteXcm</span>, <span class="ident">Outcome</span>, <span class="ident">Parent</span>, <span class="ident">Xcm</span>},
@@ -275,8 +274,7 @@
 	}
 
 	<span class="doccomment">/// Origin for the parachains module.</span>
-	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-	<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>))]</span>
+	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>, <span class="ident">RuntimeDebug</span>)]</span>
 	<span class="attribute">#[<span class="ident">pallet::origin</span>]</span>
 	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Origin</span> {
 		<span class="doccomment">/// It comes from the (parent) relay chain.</span>
