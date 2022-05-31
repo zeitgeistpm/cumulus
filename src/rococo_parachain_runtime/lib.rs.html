@@ -778,7 +778,7 @@
 <span class="comment">// A few exports that help ease life for downstream crates.</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">match_types</span>, <span class="ident">parameter_types</span>,
-	<span class="ident">traits</span>::{<span class="ident">EnsureOneOf</span>, <span class="ident">Everything</span>, <span class="ident">IsInVec</span>, <span class="ident">Randomness</span>},
+	<span class="ident">traits</span>::{<span class="ident">EitherOfDiverse</span>, <span class="ident">Everything</span>, <span class="ident">IsInVec</span>, <span class="ident">Randomness</span>},
 	<span class="ident">weights</span>::{
 		<span class="ident">constants</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">WEIGHT_PER_SECOND</span>},
 		<span class="ident">ConstantMultiplier</span>, <span class="ident">DispatchClass</span>, <span class="ident">IdentityFee</span>, <span class="ident">Weight</span>,
@@ -1223,7 +1223,7 @@
 
 <span class="doccomment">/// A majority of the Unit body from Rococo over XCM is our required administration origin.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AdminOrigin</span> <span class="op">=</span>
-	<span class="ident">EnsureOneOf</span><span class="op">&lt;</span><span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>, <span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">RocLocation</span>, <span class="ident">UnitBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+	<span class="ident">EitherOfDiverse</span><span class="op">&lt;</span><span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>, <span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">RocLocation</span>, <span class="ident">UnitBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">pallet_assets::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
