@@ -738,6 +738,8 @@
 <span id="733">733</span>
 <span id="734">734</span>
 <span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -762,6 +764,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="macro">include!</span>(<span class="macro">concat!</span>(<span class="macro">env!</span>(<span class="string">&quot;OUT_DIR&quot;</span>), <span class="string">&quot;/wasm_binary.rs&quot;</span>));
 
+<span class="kw">use</span> <span class="ident">cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases</span>;
 <span class="kw">use</span> <span class="ident">sp_api::impl_runtime_apis</span>;
 <span class="kw">use</span> <span class="ident">sp_core::OpaqueMetadata</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
@@ -1005,6 +1008,7 @@
 	<span class="kw">type</span> <span class="ident">ReservedDmpWeight</span> <span class="op">=</span> <span class="ident">ReservedDmpWeight</span>;
 	<span class="kw">type</span> <span class="ident">XcmpMessageHandler</span> <span class="op">=</span> <span class="ident">XcmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">ReservedXcmpWeight</span> <span class="op">=</span> <span class="ident">ReservedXcmpWeight</span>;
+	<span class="kw">type</span> <span class="ident">CheckAssociatedRelayNumber</span> <span class="op">=</span> <span class="ident">RelayNumberStrictlyIncreases</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">parachain_info::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}

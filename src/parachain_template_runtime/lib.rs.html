@@ -714,6 +714,8 @@
 <span id="709">709</span>
 <span id="710">710</span>
 <span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="comment">// `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;256&quot;</span>]</span>
@@ -725,6 +727,7 @@
 <span class="kw">mod</span> <span class="ident">weights</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">xcm_config</span>;
 
+<span class="kw">use</span> <span class="ident">cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases</span>;
 <span class="kw">use</span> <span class="ident">smallvec::smallvec</span>;
 <span class="kw">use</span> <span class="ident">sp_api::impl_runtime_apis</span>;
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">crypto::KeyTypeId</span>, <span class="ident">OpaqueMetadata</span>};
@@ -1085,11 +1088,12 @@
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 	<span class="kw">type</span> <span class="ident">OnSystemEvent</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">SelfParaId</span> <span class="op">=</span> <span class="ident">parachain_info::Pallet</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">OutboundXcmpMessageSource</span> <span class="op">=</span> <span class="ident">XcmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">DmpMessageHandler</span> <span class="op">=</span> <span class="ident">DmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">ReservedDmpWeight</span> <span class="op">=</span> <span class="ident">ReservedDmpWeight</span>;
-	<span class="kw">type</span> <span class="ident">OutboundXcmpMessageSource</span> <span class="op">=</span> <span class="ident">XcmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">XcmpMessageHandler</span> <span class="op">=</span> <span class="ident">XcmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">ReservedXcmpWeight</span> <span class="op">=</span> <span class="ident">ReservedXcmpWeight</span>;
+	<span class="kw">type</span> <span class="ident">CheckAssociatedRelayNumber</span> <span class="op">=</span> <span class="ident">RelayNumberStrictlyIncreases</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">parachain_info::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
