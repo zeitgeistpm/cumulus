@@ -940,9 +940,9 @@
 		<span class="ident">DefaultTestClientBuilderExt</span>, <span class="ident">ExecutionStrategy</span>, <span class="ident">InitPolkadotBlockBuilder</span>,
 		<span class="ident">TestClientBuilder</span>, <span class="ident">TestClientBuilderExt</span>,
 	};
-	<span class="kw">use</span> <span class="ident">sc_service::Arc</span>;
 	<span class="kw">use</span> <span class="ident">sp_consensus</span>::{<span class="ident">BlockOrigin</span>, <span class="ident">SyncOracle</span>};
 	<span class="kw">use</span> <span class="ident">sp_runtime::traits::Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>;
+	<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
 	<span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">executor::block_on</span>, <span class="ident">poll</span>, <span class="ident">task::Poll</span>};
 
