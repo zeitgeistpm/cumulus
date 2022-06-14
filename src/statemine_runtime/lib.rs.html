@@ -1054,7 +1054,7 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span>; <span class="comment">// 1 UNIT deposit to create asset</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">10</span>; <span class="comment">// 1 / 10 UNITS deposit to create asset</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetAccountDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">16</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ApprovalDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">EXISTENTIAL_DEPOSIT</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetsStringLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">50</span>;
@@ -1351,8 +1351,8 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CollectionDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span>; <span class="comment">// 1 UNIT deposit to create asset class</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ItemDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">100</span>; <span class="comment">// 1/100 UNIT deposit to create asset instance</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CollectionDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">10</span>; <span class="comment">// 1 / 10 UNIT deposit to create asset class</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ItemDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">1_000</span>; <span class="comment">// 1 / 1000 UNIT deposit to create asset instance</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KeyLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">32</span>;	<span class="comment">// Max 32 bytes per key</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ValueLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">64</span>;	<span class="comment">// Max 64 bytes per value</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UniquesMetadataDepositBase</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">129</span>);

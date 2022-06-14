@@ -104,8 +104,8 @@
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GRAND</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">constants::currency::GRAND</span>;
 
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">deposit</span>(<span class="ident">items</span>: <span class="ident">u32</span>, <span class="ident">bytes</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Balance</span> {
-		<span class="comment">// 1/10 of Westend testnet</span>
-		<span class="ident">constants::currency::deposit</span>(<span class="ident">items</span>, <span class="ident">bytes</span>) <span class="op">/</span> <span class="number">10</span>
+		<span class="comment">// 1/100 of Westend testnet</span>
+		<span class="ident">constants::currency::deposit</span>(<span class="ident">items</span>, <span class="ident">bytes</span>) <span class="op">/</span> <span class="number">100</span>
 	}
 }
 
