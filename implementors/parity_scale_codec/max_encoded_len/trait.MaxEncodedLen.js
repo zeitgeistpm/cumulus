@@ -1,4 +1,5 @@
 (function() {var implementors = {};
+implementors["cumulus_pallet_xcm"] = [{"text":"impl MaxEncodedLen for <a class=\"enum\" href=\"cumulus_pallet_xcm/pallet/enum.Origin.html\" title=\"enum cumulus_pallet_xcm::pallet::Origin\">Origin</a>","synthetic":false,"types":["cumulus_pallet_xcm::pallet::Origin"]}];
 implementors["statemine_runtime"] = [{"text":"impl MaxEncodedLen for <a class=\"enum\" href=\"statemine_runtime/enum.ProxyType.html\" title=\"enum statemine_runtime::ProxyType\">ProxyType</a>","synthetic":false,"types":["statemine_runtime::ProxyType"]}];
 implementors["statemint_runtime"] = [{"text":"impl MaxEncodedLen for <a class=\"enum\" href=\"statemint_runtime/enum.ProxyType.html\" title=\"enum statemint_runtime::ProxyType\">ProxyType</a>","synthetic":false,"types":["statemint_runtime::ProxyType"]}];
 implementors["westmint_runtime"] = [{"text":"impl MaxEncodedLen for <a class=\"enum\" href=\"westmint_runtime/enum.ProxyType.html\" title=\"enum westmint_runtime::ProxyType\">ProxyType</a>","synthetic":false,"types":["westmint_runtime::ProxyType"]}];
