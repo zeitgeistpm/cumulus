@@ -33,6 +33,7 @@ sourcesIndex["pallet_collator_selection"] = {"name":"","files":["lib.rs","weight
 sourcesIndex["pallet_template"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["parachain_collator"] = {"name":"","files":["chain_spec.rs","cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
 sourcesIndex["parachain_info"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["parachain_template_node"] = {"name":"","files":["chain_spec.rs","cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
 sourcesIndex["parachain_template_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["lib.rs","xcm_config.rs"]};
 sourcesIndex["parachains_common"] = {"name":"","files":["impls.rs","lib.rs","xcm_config.rs"]};
 sourcesIndex["polkadot_parachain"] = {"name":"","dirs":[{"name":"chain_spec","files":["contracts.rs","mod.rs","seedling.rs","shell.rs","statemint.rs"]}],"files":["cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
