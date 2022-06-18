@@ -342,11 +342,6 @@
 <span id="337">337</span>
 <span id="338">338</span>
 <span id="339">339</span>
-<span id="340">340</span>
-<span id="341">341</span>
-<span id="342">342</span>
-<span id="343">343</span>
-<span id="344">344</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -363,64 +358,16 @@
 <span class="comment">// You should have received a copy of the GNU General Public License</span>
 <span class="comment">// along with Cumulus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
-<span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">Parser</span>, <span class="ident">Subcommand</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">net::SocketAddr</span>, <span class="ident">path::PathBuf</span>};
+
 <span class="kw">use</span> <span class="ident">polkadot_service</span>::{<span class="ident">ChainSpec</span>, <span class="ident">ParaId</span>, <span class="ident">PrometheusConfig</span>};
 <span class="kw">use</span> <span class="ident">sc_cli</span>::{
 	<span class="ident">CliConfiguration</span>, <span class="ident">DefaultConfigurationValues</span>, <span class="ident">ImportParams</span>, <span class="ident">KeystoreParams</span>, <span class="ident">NetworkParams</span>,
 	<span class="prelude-ty">Result</span> <span class="kw">as</span> <span class="ident">CliResult</span>, <span class="ident">RuntimeVersion</span>, <span class="ident">SharedParams</span>, <span class="ident">SubstrateCli</span>,
 };
 <span class="kw">use</span> <span class="ident">sc_service::BasePath</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">net::SocketAddr</span>, <span class="ident">path::PathBuf</span>};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportGenesisStateCommand</span> {
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">default_value_t</span> <span class="op">=</span> <span class="number">2000u32</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">parachain_id</span>: <span class="ident">u32</span>,
-
-	<span class="doccomment">/// Output file name or stdout if unspecified.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">action</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">output</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
-
-	<span class="doccomment">/// Write output in binary. Default is to write in hex.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">action</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">raw</span>: <span class="ident">bool</span>,
-
-	<span class="doccomment">/// The name of the chain for that the genesis state should be exported.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">action</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">chain</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-}
-
-<span class="doccomment">/// Command for exporting the genesis wasm file.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportGenesisWasmCommand</span> {
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">default_value_t</span> <span class="op">=</span> <span class="number">2000u32</span>, <span class="ident">action</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">parachain_id</span>: <span class="ident">u32</span>,
-
-	<span class="doccomment">/// Output file name or stdout if unspecified.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">action</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">output</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
-
-	<span class="doccomment">/// Write output in binary. Default is to write in hex.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">action</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">raw</span>: <span class="ident">bool</span>,
-
-	<span class="doccomment">/// The name of the chain for that the genesis wasm file should be exported.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">action</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">chain</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-}
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Subcommand</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Commands</span> {
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;export-genesis-wasm&quot;</span>)]</span>
-	<span class="ident">ExportGenesisWasm</span>(<span class="ident">ExportGenesisWasmCommand</span>),
-
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;export-genesis-state&quot;</span>)]</span>
-	<span class="ident">ExportGenesisState</span>(<span class="ident">ExportGenesisStateCommand</span>),
-
-	<span class="doccomment">/// Build a chain specification.</span>
-	<span class="ident">BuildSpec</span>(<span class="ident">sc_cli::BuildSpecCmd</span>),
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
 <span class="attribute">#[<span class="ident">clap</span>(
 	<span class="ident">version</span>,
 	<span class="ident">propagate_version</span> <span class="op">=</span> <span class="bool-val">true</span>,
@@ -429,7 +376,7 @@
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestCollatorCli</span> {
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">subcommand</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Commands</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">subcommand</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Subcommand</span><span class="op">&gt;</span>,
 
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">run</span>: <span class="ident">cumulus_client_cli::RunCmd</span>,
@@ -446,6 +393,49 @@
 
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">disable_block_announcements</span>: <span class="ident">bool</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Subcommand</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Subcommand</span> {
+	<span class="doccomment">/// Build a chain specification.</span>
+	<span class="ident">BuildSpec</span>(<span class="ident">sc_cli::BuildSpecCmd</span>),
+
+	<span class="doccomment">/// Export the genesis state of the parachain.</span>
+	<span class="ident">ExportGenesisState</span>(<span class="ident">ExportGenesisStateCommand</span>),
+
+	<span class="doccomment">/// Export the genesis wasm of the parachain.</span>
+	<span class="ident">ExportGenesisWasm</span>(<span class="ident">ExportGenesisWasmCommand</span>),
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportGenesisStateCommand</span> {
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">default_value_t</span> <span class="op">=</span> <span class="number">2000u32</span>)]</span>
+	<span class="kw">pub</span> <span class="ident">parachain_id</span>: <span class="ident">u32</span>,
+
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
+	<span class="kw">pub</span> <span class="ident">base</span>: <span class="ident">cumulus_client_cli::ExportGenesisStateCommand</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">CliConfiguration</span> <span class="kw">for</span> <span class="ident">ExportGenesisStateCommand</span> {
+	<span class="kw">fn</span> <span class="ident">shared_params</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SharedParams</span> {
+		<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">base</span>.<span class="ident">shared_params</span>
+	}
+}
+
+<span class="doccomment">/// Command for exporting the genesis wasm file.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportGenesisWasmCommand</span> {
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">default_value_t</span> <span class="op">=</span> <span class="number">2000u32</span>)]</span>
+	<span class="kw">pub</span> <span class="ident">parachain_id</span>: <span class="ident">u32</span>,
+
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
+	<span class="kw">pub</span> <span class="ident">base</span>: <span class="ident">cumulus_client_cli::ExportGenesisWasmCommand</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">CliConfiguration</span> <span class="kw">for</span> <span class="ident">ExportGenesisWasmCommand</span> {
+	<span class="kw">fn</span> <span class="ident">shared_params</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">SharedParams</span> {
+		<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">base</span>.<span class="ident">shared_params</span>
+	}
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -467,7 +457,7 @@
 		<span class="ident">relay_chain_args</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span><span class="op">&gt;</span>,
 	) -&gt; <span class="self">Self</span> {
 		<span class="kw">let</span> <span class="ident">base_path</span> <span class="op">=</span> <span class="ident">para_config</span>.<span class="ident">base_path</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;polkadot&quot;</span>));
-		<span class="self">Self</span> { <span class="ident">base_path</span>, <span class="ident">chain_id</span>: <span class="prelude-val">None</span>, <span class="ident">base</span>: <span class="ident">polkadot_cli::RunCmd::parse_from</span>(<span class="ident">relay_chain_args</span>) }
+		<span class="self">Self</span> { <span class="ident">base_path</span>, <span class="ident">chain_id</span>: <span class="prelude-val">None</span>, <span class="ident">base</span>: <span class="ident">clap::Parser::parse_from</span>(<span class="ident">relay_chain_args</span>) }
 	}
 }
 
