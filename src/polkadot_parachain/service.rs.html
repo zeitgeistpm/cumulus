@@ -2770,8 +2770,8 @@
 	}
 }
 
-<span class="doccomment">/// Build the import queue for the statemint/statemine/westmine runtime.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statemint_build_import_queue</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">AuraId</span>: <span class="ident">AppKey</span><span class="op">&gt;</span>(
+<span class="doccomment">/// Build the import queue for Statemint and other Aura-based runtimes.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">aura_build_import_queue</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">AuraId</span>: <span class="ident">AppKey</span><span class="op">&gt;</span>(
 	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
@@ -2888,7 +2888,7 @@
 		<span class="ident">collator_options</span>,
 		<span class="ident">id</span>,
 		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
-		<span class="ident">statemint_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
+		<span class="ident">aura_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
 		<span class="op">|</span><span class="ident">client</span>,
 		 <span class="ident">prometheus_registry</span>,
 		 <span class="ident">telemetry</span>,
