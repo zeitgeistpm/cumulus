@@ -1178,7 +1178,7 @@
 
 		<span class="kw">fn</span> <span class="ident">get_storage</span>(
 			<span class="ident">address</span>: <span class="ident">AccountId</span>,
-			<span class="ident">key</span>: [<span class="ident">u8</span>; <span class="number">32</span>],
+			<span class="ident">key</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 		) -&gt; <span class="ident">pallet_contracts_primitives::GetStorageResult</span> {
 			<span class="ident">Contracts::get_storage</span>(<span class="ident">address</span>, <span class="ident">key</span>)
 		}
