@@ -677,7 +677,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ExportGenesisWasmCommand</span> {
-	<span class="doccomment">/// Run the export-genesis-state command</span>
+	<span class="doccomment">/// Run the export-genesis-wasm command</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">chain_spec</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span>) -&gt; <span class="ident">sc_cli::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">raw_wasm_blob</span> <span class="op">=</span> <span class="ident">extract_genesis_wasm</span>(<span class="ident">chain_spec</span>)<span class="question-mark">?</span>;
 		<span class="kw">let</span> <span class="ident">output_buf</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">raw</span> {

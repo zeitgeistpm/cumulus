@@ -1931,7 +1931,7 @@
 
 	<span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">backend</span>, <span class="ident">keystore_container</span>, <span class="ident">task_manager</span>) <span class="op">=</span>
 		<span class="ident">sc_service::new_full_parts</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
-			<span class="kw-2">&amp;</span><span class="ident">config</span>,
+			<span class="ident">config</span>,
 			<span class="ident">telemetry</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">telemetry</span>)<span class="op">|</span> <span class="ident">telemetry</span>.<span class="ident">handle</span>()),
 			<span class="ident">executor</span>,
 		)<span class="question-mark">?</span>;
@@ -2434,7 +2434,7 @@
 		<span class="kw">_</span>,
 	<span class="op">&gt;</span>(<span class="ident">cumulus_client_consensus_aura::ImportQueueParams</span> {
 		<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
-		<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+		<span class="ident">client</span>,
 		<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
@@ -2446,7 +2446,7 @@
 
 			<span class="prelude-val">Ok</span>((<span class="ident">timestamp</span>, <span class="ident">slot</span>))
 		},
-		<span class="ident">registry</span>: <span class="ident">config</span>.<span class="ident">prometheus_registry</span>().<span class="ident">clone</span>(),
+		<span class="ident">registry</span>: <span class="ident">config</span>.<span class="ident">prometheus_registry</span>(),
 		<span class="ident">can_author_with</span>: <span class="ident">sp_consensus::AlwaysCanAuthor</span>,
 		<span class="ident">spawner</span>: <span class="kw-2">&amp;</span><span class="ident">task_manager</span>.<span class="ident">spawn_essential_handle</span>(),
 		<span class="ident">telemetry</span>,
@@ -2487,7 +2487,7 @@
 				<span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>(),
 				<span class="ident">client</span>.<span class="ident">clone</span>(),
 				<span class="ident">transaction_pool</span>,
-				<span class="ident">prometheus_registry</span>.<span class="ident">clone</span>(),
+				<span class="ident">prometheus_registry</span>,
 				<span class="ident">telemetry</span>.<span class="ident">clone</span>(),
 			);
 
@@ -2524,7 +2524,7 @@
 						}
 					},
 					<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
-					<span class="ident">para_client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+					<span class="ident">para_client</span>: <span class="ident">client</span>,
 					<span class="ident">backoff_authoring_blocks</span>: <span class="prelude-ty">Option</span>::<span class="op">&lt;</span>()<span class="op">&gt;</span><span class="ident">::None</span>,
 					<span class="ident">sync_oracle</span>,
 					<span class="ident">keystore</span>,
@@ -2576,7 +2576,7 @@
 		<span class="ident">client</span>,
 		<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> { <span class="prelude-val">Ok</span>(()) },
 		<span class="kw-2">&amp;</span><span class="ident">task_manager</span>.<span class="ident">spawn_essential_handle</span>(),
-		<span class="ident">config</span>.<span class="ident">prometheus_registry</span>().<span class="ident">clone</span>(),
+		<span class="ident">config</span>.<span class="ident">prometheus_registry</span>(),
 	)
 	.<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
 }
@@ -2628,15 +2628,15 @@
 				<span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>(),
 				<span class="ident">client</span>.<span class="ident">clone</span>(),
 				<span class="ident">transaction_pool</span>,
-				<span class="ident">prometheus_registry</span>.<span class="ident">clone</span>(),
-				<span class="ident">telemetry</span>.<span class="ident">clone</span>(),
+				<span class="ident">prometheus_registry</span>,
+				<span class="ident">telemetry</span>,
 			);
 
 			<span class="prelude-val">Ok</span>(<span class="ident">cumulus_client_consensus_relay_chain::build_relay_chain_consensus</span>(
 				<span class="ident">cumulus_client_consensus_relay_chain::BuildRelayChainConsensusParams</span> {
 					<span class="ident">para_id</span>: <span class="ident">id</span>,
 					<span class="ident">proposer_factory</span>,
-					<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+					<span class="ident">block_import</span>: <span class="ident">client</span>,
 					<span class="ident">relay_chain_interface</span>: <span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(),
 					<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, (<span class="ident">relay_parent</span>, <span class="ident">validation_data</span>)<span class="op">|</span> {
 						<span class="kw">let</span> <span class="ident">relay_chain_interface</span> <span class="op">=</span> <span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>();
@@ -2839,12 +2839,12 @@
 		<span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
 	};
 
-	<span class="kw">let</span> <span class="ident">registry</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">prometheus_registry</span>().<span class="ident">clone</span>();
+	<span class="kw">let</span> <span class="ident">registry</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">prometheus_registry</span>();
 	<span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">task_manager</span>.<span class="ident">spawn_essential_handle</span>();
 
 	<span class="prelude-val">Ok</span>(<span class="ident">BasicQueue::new</span>(
 		<span class="ident">verifier</span>,
-		<span class="ident">Box::new</span>(<span class="ident">ParachainBlockImport::new</span>(<span class="ident">client</span>.<span class="ident">clone</span>())),
+		<span class="ident">Box::new</span>(<span class="ident">ParachainBlockImport::new</span>(<span class="ident">client</span>)),
 		<span class="prelude-val">None</span>,
 		<span class="kw-2">&amp;</span><span class="ident">spawner</span>,
 		<span class="ident">registry</span>,
@@ -2972,8 +2972,8 @@
 				<span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>(),
 				<span class="ident">client</span>.<span class="ident">clone</span>(),
 				<span class="ident">transaction_pool</span>,
-				<span class="ident">prometheus_registry</span>.<span class="ident">clone</span>(),
-				<span class="ident">telemetry</span>.<span class="ident">clone</span>(),
+				<span class="ident">prometheus_registry</span>,
+				<span class="ident">telemetry</span>,
 			);
 
 			<span class="kw">let</span> <span class="ident">relay_chain_consensus</span> <span class="op">=</span>
@@ -3007,7 +3007,7 @@
 				);
 
 			<span class="kw">let</span> <span class="ident">parachain_consensus</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">WaitForAuraConsensus</span> {
-				<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+				<span class="ident">client</span>,
 				<span class="ident">aura_consensus</span>: <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">aura_consensus</span>)),
 				<span class="ident">relay_chain_consensus</span>: <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">relay_chain_consensus</span>)),
 				<span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
@@ -3258,7 +3258,7 @@
 		<span class="kw">_</span>,
 	<span class="op">&gt;</span>(<span class="ident">cumulus_client_consensus_aura::ImportQueueParams</span> {
 		<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
-		<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+		<span class="ident">client</span>,
 		<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
