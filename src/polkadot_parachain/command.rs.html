@@ -748,6 +748,44 @@
 <span id="743">743</span>
 <span id="744">744</span>
 <span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -763,8 +801,6 @@
 
 <span class="comment">// You should have received a copy of the GNU General Public License</span>
 <span class="comment">// along with Cumulus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-
-<span class="kw">use</span> <span class="ident">std::net::SocketAddr</span>;
 
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_cli::generate_genesis_block</span>;
@@ -782,6 +818,7 @@
 };
 <span class="kw">use</span> <span class="ident">sp_core::hexdisplay::HexDisplay</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">AccountIdConversion</span>, <span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>};
+<span class="kw">use</span> <span class="ident">std::net::SocketAddr</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
 	<span class="ident">chain_spec</span>,
@@ -800,6 +837,7 @@
 	<span class="ident">Statemint</span>,
 	<span class="ident">Statemine</span>,
 	<span class="ident">Westmint</span>,
+	<span class="ident">Penpal</span>(<span class="ident">ParaId</span>),
 	<span class="ident">ContractsRococo</span>,
 }
 
@@ -823,6 +861,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">runtime</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">Runtime</span> {
+	<span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">id</span>, <span class="ident">para_id</span>) <span class="op">=</span> <span class="ident">extract_parachain_id</span>(<span class="ident">id</span>);
 	<span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;shell&quot;</span>) {
 		<span class="ident">Runtime::Shell</span>
 	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;seedling&quot;</span>) {
@@ -833,6 +872,8 @@
 		<span class="ident">Runtime::Statemine</span>
 	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;westmint&quot;</span>) {
 		<span class="ident">Runtime::Westmint</span>
+	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;penpal&quot;</span>) {
+		<span class="ident">Runtime::Penpal</span>(<span class="ident">para_id</span>.<span class="ident">unwrap_or</span>(<span class="ident">ParaId::new</span>(<span class="number">0</span>)))
 	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;contracts-rococo&quot;</span>) {
 		<span class="ident">Runtime::ContractsRococo</span>
 	} <span class="kw">else</span> {
@@ -841,6 +882,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">let</span> (<span class="ident">id</span>, <span class="kw">_</span>, <span class="ident">para_id</span>) <span class="op">=</span> <span class="ident">extract_parachain_id</span>(<span class="ident">id</span>);
 	<span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">id</span> {
 		<span class="string">&quot;staging&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::staging_test_net</span>()),
 		<span class="string">&quot;tick&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
@@ -892,6 +934,14 @@
 		)<span class="question-mark">?</span>),
 		<span class="comment">// -- Fallback (generic chainspec)</span>
 		<span class="string">&quot;&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_chain_spec</span>()),
+		<span class="string">&quot;penpal-kusama&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::penpal::get_penpal_chain_spec</span>(
+			<span class="ident">para_id</span>.<span class="ident">expect</span>(<span class="string">&quot;Must specify parachain id&quot;</span>),
+			<span class="string">&quot;kusama-local&quot;</span>,
+		)),
+		<span class="string">&quot;penpal-polkadot&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::penpal::get_penpal_chain_spec</span>(
+			<span class="ident">para_id</span>.<span class="ident">expect</span>(<span class="string">&quot;Must specify parachain id&quot;</span>),
+			<span class="string">&quot;polkadot-local&quot;</span>,
+		)),
 		<span class="comment">// -- Loading a specific spec from disk</span>
 		<span class="ident">path</span> =&gt; {
 			<span class="kw">let</span> <span class="ident">chain_spec</span> <span class="op">=</span> <span class="ident">chain_spec::ChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>;
@@ -911,10 +961,34 @@
 				<span class="ident">Runtime::ContractsRococo</span> =&gt; <span class="ident">Box::new</span>(
 					<span class="ident">chain_spec::contracts::ContractsRococoChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>,
 				),
+				<span class="ident">Runtime::Penpal</span>(<span class="ident">_para_id</span>) =&gt;
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::penpal::PenpalChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>),
 				<span class="ident">Runtime::Generic</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec</span>),
 			}
 		},
 	})
+}
+
+<span class="doccomment">/// Extracts the normalized chain id and parachain id from the input chain id.</span>
+<span class="doccomment">/// (H/T to Phala for the idea)</span>
+<span class="doccomment">/// E.g. &quot;penpal-kusama-2004&quot; yields (&quot;penpal-kusama&quot;, Some(2004))</span>
+<span class="kw">fn</span> <span class="ident">extract_parachain_id</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; (<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>) {
+	<span class="kw">const</span> <span class="ident">KUSAMA_TEST_PARA_PREFIX</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;penpal-kusama-&quot;</span>;
+	<span class="kw">const</span> <span class="ident">POLKADOT_TEST_PARA_PREFIX</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;penpal-polkadot-&quot;</span>;
+
+	<span class="kw">let</span> (<span class="ident">norm_id</span>, <span class="ident">orig_id</span>, <span class="ident">para</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="ident">KUSAMA_TEST_PARA_PREFIX</span>) {
+		<span class="kw">let</span> <span class="ident">suffix</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id</span>[<span class="ident">KUSAMA_TEST_PARA_PREFIX</span>.<span class="ident">len</span>()..];
+		<span class="kw">let</span> <span class="ident">para_id</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">suffix</span>.<span class="ident">parse</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid parachain-id suffix&quot;</span>);
+		(<span class="kw-2">&amp;</span><span class="ident">id</span>[..<span class="ident">KUSAMA_TEST_PARA_PREFIX</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>], <span class="ident">id</span>, <span class="prelude-val">Some</span>(<span class="ident">para_id</span>))
+	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="ident">POLKADOT_TEST_PARA_PREFIX</span>) {
+		<span class="kw">let</span> <span class="ident">suffix</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id</span>[<span class="ident">POLKADOT_TEST_PARA_PREFIX</span>.<span class="ident">len</span>()..];
+		<span class="kw">let</span> <span class="ident">para_id</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">suffix</span>.<span class="ident">parse</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid parachain-id suffix&quot;</span>);
+		(<span class="kw-2">&amp;</span><span class="ident">id</span>[..<span class="ident">POLKADOT_TEST_PARA_PREFIX</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>], <span class="ident">id</span>, <span class="prelude-val">Some</span>(<span class="ident">para_id</span>))
+	} <span class="kw">else</span> {
+		(<span class="ident">id</span>, <span class="ident">id</span>, <span class="prelude-val">None</span>)
+	};
+
+	(<span class="ident">norm_id</span>, <span class="ident">orig_id</span>, <span class="ident">para</span>.<span class="ident">map</span>(<span class="ident">Into::into</span>))
 }
 
 <span class="kw">impl</span> <span class="ident">SubstrateCli</span> <span class="kw">for</span> <span class="ident">Cli</span> {
@@ -960,6 +1034,7 @@
 			<span class="ident">Runtime::Shell</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">shell_runtime::VERSION</span>,
 			<span class="ident">Runtime::Seedling</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">seedling_runtime::VERSION</span>,
 			<span class="ident">Runtime::ContractsRococo</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">contracts_rococo_runtime::VERSION</span>,
+			<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) =&gt; <span class="kw-2">&amp;</span><span class="ident">penpal_runtime::VERSION</span>,
 			<span class="ident">Runtime::Generic</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">rococo_parachain_runtime::VERSION</span>,
 		}
 	}
@@ -1099,7 +1174,7 @@
 					{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
 				})
 			},
-			<span class="ident">Runtime::Generic</span> =&gt; {
+			<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">Runtime::Generic</span> =&gt; {
 				<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
 					<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span>
 						<span class="ident">rococo_parachain_runtime::RuntimeApi</span>,
@@ -1341,16 +1416,17 @@
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
 					.<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
-					<span class="ident">Runtime::Generic</span> =&gt; <span class="ident"><span class="kw">crate</span>::service::start_rococo_parachain_node</span>(
-						<span class="ident">config</span>,
-						<span class="ident">polkadot_config</span>,
-						<span class="ident">collator_options</span>,
-						<span class="ident">id</span>,
-						<span class="ident">hwbench</span>,
-					)
-					.<span class="kw">await</span>
-					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
-					.<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
+					<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">Runtime::Generic</span> =&gt;
+						<span class="ident"><span class="kw">crate</span>::service::start_rococo_parachain_node</span>(
+							<span class="ident">config</span>,
+							<span class="ident">polkadot_config</span>,
+							<span class="ident">collator_options</span>,
+							<span class="ident">id</span>,
+							<span class="ident">hwbench</span>,
+						)
+						.<span class="kw">await</span>
+						.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
+						.<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
 				}
 			})
 		},
