@@ -340,6 +340,9 @@
 <span id="335">335</span>
 <span id="336">336</span>
 <span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -526,8 +529,11 @@
 		<span class="self">self</span>.<span class="ident">base</span>.<span class="ident">base</span>.<span class="ident">role</span>(<span class="ident">is_dev</span>)
 	}
 
-	<span class="kw">fn</span> <span class="ident">transaction_pool</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">CliResult</span><span class="op">&lt;</span><span class="ident">sc_service::config::TransactionPoolOptions</span><span class="op">&gt;</span> {
-		<span class="self">self</span>.<span class="ident">base</span>.<span class="ident">base</span>.<span class="ident">transaction_pool</span>()
+	<span class="kw">fn</span> <span class="ident">transaction_pool</span>(
+		<span class="kw-2">&amp;</span><span class="self">self</span>,
+		<span class="ident">is_dev</span>: <span class="ident">bool</span>,
+	) -&gt; <span class="ident">CliResult</span><span class="op">&lt;</span><span class="ident">sc_service::config::TransactionPoolOptions</span><span class="op">&gt;</span> {
+		<span class="self">self</span>.<span class="ident">base</span>.<span class="ident">base</span>.<span class="ident">transaction_pool</span>(<span class="ident">is_dev</span>)
 	}
 
 	<span class="kw">fn</span> <span class="ident">state_cache_child_ratio</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">CliResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
@@ -678,5 +684,5 @@
 	}
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="test_parachain" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0 (fe5b13d68 2022-05-18)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="test_parachain" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

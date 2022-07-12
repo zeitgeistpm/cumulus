@@ -1,4 +1,4 @@
-var N = null;var sourcesIndex = {};
+var sourcesIndex = {};
 sourcesIndex["contracts_rococo_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","contracts.rs","lib.rs","xcm_config.rs"]};
 sourcesIndex["cumulus_client_cli"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_collator"] = {"name":"","files":["lib.rs"]};
@@ -31,7 +31,6 @@ sourcesIndex["cumulus_test_runtime"] = {"name":"","files":["lib.rs","test_pallet
 sourcesIndex["cumulus_test_service"] = {"name":"","files":["chain_spec.rs","genesis.rs","lib.rs"]};
 sourcesIndex["pallet_collator_selection"] = {"name":"","files":["lib.rs","weights.rs"]};
 sourcesIndex["pallet_template"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["parachain_collator"] = {"name":"","files":["chain_spec.rs","cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
 sourcesIndex["parachain_info"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["parachain_template_node"] = {"name":"","files":["chain_spec.rs","cli.rs","command.rs","main.rs","rpc.rs","service.rs"]};
 sourcesIndex["parachain_template_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["lib.rs","xcm_config.rs"]};
