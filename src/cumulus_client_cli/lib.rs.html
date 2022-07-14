@@ -639,7 +639,7 @@
 
 	<span class="kw">let</span> <span class="ident">extrinsics_root</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Header</span> <span class="kw">as</span> <span class="ident">HeaderT</span><span class="op">&gt;</span><span class="ident">::Hashing</span> <span class="kw">as</span> <span class="ident">HashT</span><span class="op">&gt;</span><span class="ident">::trie_root</span>(
 		<span class="ident">Vec::new</span>(),
-		<span class="ident">sp_runtime::StateVersion::V0</span>,
+		<span class="ident">genesis_state_version</span>,
 	);
 
 	<span class="prelude-val">Ok</span>(<span class="ident">Block::new</span>(
