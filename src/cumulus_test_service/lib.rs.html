@@ -810,10 +810,6 @@
 <span id="805">805</span>
 <span id="806">806</span>
 <span id="807">807</span>
-<span id="808">808</span>
-<span id="809">809</span>
-<span id="810">810</span>
-<span id="811">811</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1043,10 +1039,6 @@
 <span class="kw">where</span>
 	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-	<span class="kw">if</span> <span class="macro">matches!</span>(<span class="ident">parachain_config</span>.<span class="ident">role</span>, <span class="ident">Role::Light</span>) {
-		<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Light client not supported!&quot;</span>.<span class="ident">into</span>())
-	}
-
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parachain_config</span> <span class="op">=</span> <span class="ident">prepare_node_config</span>(<span class="ident">parachain_config</span>);
 
 	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">new_partial</span>(<span class="kw-2">&amp;mut</span> <span class="ident">parachain_config</span>)<span class="question-mark">?</span>;
