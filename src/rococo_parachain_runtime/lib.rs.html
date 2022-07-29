@@ -741,6 +741,7 @@
 <span id="736">736</span>
 <span id="737">737</span>
 <span id="738">738</span>
+<span id="739">739</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1313,6 +1314,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SignedExtra</span> <span class="op">=</span> (
 	<span class="ident">frame_system::CheckNonZeroSender</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckSpecVersion</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
+	<span class="ident">frame_system::CheckTxVersion</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckGenesis</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckEra</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckNonce</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
