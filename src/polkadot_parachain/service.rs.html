@@ -1672,6 +1672,8 @@
 <span id="1667">1667</span>
 <span id="1668">1668</span>
 <span id="1669">1669</span>
+<span id="1670">1670</span>
+<span id="1671">1671</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1704,7 +1706,7 @@
 };
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_inprocess_interface::build_inprocess_relay_chain</span>;
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_interface</span>::{<span class="ident">RelayChainError</span>, <span class="ident">RelayChainInterface</span>, <span class="ident">RelayChainResult</span>};
-<span class="kw">use</span> <span class="ident">cumulus_relay_chain_rpc_interface::RelayChainRPCInterface</span>;
+<span class="kw">use</span> <span class="ident">cumulus_relay_chain_rpc_interface</span>::{<span class="ident">create_client_and_start_worker</span>, <span class="ident">RelayChainRpcInterface</span>};
 <span class="kw">use</span> <span class="ident">polkadot_service::CollatorPair</span>;
 <span class="kw">use</span> <span class="ident">sp_core::Pair</span>;
 
@@ -1970,8 +1972,10 @@
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span>(<span class="ident">Arc</span><span class="op">&lt;</span>(<span class="kw">dyn</span> <span class="ident">RelayChainInterface</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CollatorPair</span><span class="op">&gt;</span>)<span class="op">&gt;</span> {
 	<span class="kw">match</span> <span class="ident">collator_options</span>.<span class="ident">relay_chain_rpc_url</span> {
-		<span class="prelude-val">Some</span>(<span class="ident">relay_chain_url</span>) =&gt;
-			<span class="prelude-val">Ok</span>((<span class="ident">Arc::new</span>(<span class="ident">RelayChainRPCInterface::new</span>(<span class="ident">relay_chain_url</span>).<span class="kw">await</span><span class="question-mark">?</span>) <span class="kw">as</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>, <span class="prelude-val">None</span>)),
+		<span class="prelude-val">Some</span>(<span class="ident">relay_chain_url</span>) =&gt; {
+			<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">create_client_and_start_worker</span>(<span class="ident">relay_chain_url</span>, <span class="ident">task_manager</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+			<span class="prelude-val">Ok</span>((<span class="ident">Arc::new</span>(<span class="ident">RelayChainRpcInterface::new</span>(<span class="ident">client</span>)) <span class="kw">as</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>, <span class="prelude-val">None</span>))
+		},
 		<span class="prelude-val">None</span> =&gt; <span class="ident">build_inprocess_relay_chain</span>(
 			<span class="ident">polkadot_config</span>,
 			<span class="ident">parachain_config</span>,

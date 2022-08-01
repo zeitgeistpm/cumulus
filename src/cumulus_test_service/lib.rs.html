@@ -810,6 +810,7 @@
 <span id="805">805</span>
 <span id="806">806</span>
 <span id="807">807</span>
+<span id="808">808</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -849,7 +850,7 @@
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_inprocess_interface::RelayChainInProcessInterface</span>;
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_interface</span>::{<span class="ident">RelayChainError</span>, <span class="ident">RelayChainInterface</span>, <span class="ident">RelayChainResult</span>};
-<span class="kw">use</span> <span class="ident">cumulus_relay_chain_rpc_interface::RelayChainRPCInterface</span>;
+<span class="kw">use</span> <span class="ident">cumulus_relay_chain_rpc_interface</span>::{<span class="ident">create_client_and_start_worker</span>, <span class="ident">RelayChainRpcInterface</span>};
 <span class="kw">use</span> <span class="ident">cumulus_test_runtime</span>::{<span class="ident">Hash</span>, <span class="ident">Header</span>, <span class="ident">NodeBlock</span> <span class="kw">as</span> <span class="ident">Block</span>, <span class="ident">RuntimeApi</span>};
 <span class="kw">use</span> <span class="ident">parking_lot::Mutex</span>;
 
@@ -994,7 +995,8 @@
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">TaskManager</span>,
 ) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">RelayChainInterface</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">relay_chain_url</span>) <span class="op">=</span> <span class="ident">collator_options</span>.<span class="ident">relay_chain_rpc_url</span> {
-		<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Arc::new</span>(<span class="ident">RelayChainRPCInterface::new</span>(<span class="ident">relay_chain_url</span>).<span class="kw">await</span><span class="question-mark">?</span>) <span class="kw">as</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>)
+		<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">create_client_and_start_worker</span>(<span class="ident">relay_chain_url</span>, <span class="ident">task_manager</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+		<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Arc::new</span>(<span class="ident">RelayChainRpcInterface::new</span>(<span class="ident">client</span>)) <span class="kw">as</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>)
 	}
 
 	<span class="kw">let</span> <span class="ident">relay_chain_full_node</span> <span class="op">=</span> <span class="ident">polkadot_test_service::new_full</span>(
