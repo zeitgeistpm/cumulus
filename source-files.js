@@ -1,4 +1,5 @@
 var sourcesIndex = {};
+sourcesIndex["asset_test_utils"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["contracts_rococo_runtime"] = {"name":"","dirs":[{"name":"weights","files":["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]}],"files":["constants.rs","contracts.rs","lib.rs","xcm_config.rs"]};
 sourcesIndex["cumulus_client_cli"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cumulus_client_collator"] = {"name":"","files":["lib.rs"]};
