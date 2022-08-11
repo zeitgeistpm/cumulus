@@ -789,6 +789,75 @@
 <span id="784">784</span>
 <span id="785">785</span>
 <span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -805,6 +874,14 @@
 <span class="comment">// You should have received a copy of the GNU General Public License</span>
 <span class="comment">// along with Cumulus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
+<span class="kw">use</span> <span class="kw">crate</span>::{
+	<span class="ident">chain_spec</span>,
+	<span class="ident">cli</span>::{<span class="ident">Cli</span>, <span class="ident">RelayChainCli</span>, <span class="ident">Subcommand</span>},
+	<span class="ident">service</span>::{
+		<span class="ident">new_partial</span>, <span class="ident">Block</span>, <span class="ident">CollectivesPolkadotRuntimeExecutor</span>, <span class="ident">ShellRuntimeExecutor</span>,
+		<span class="ident">StatemineRuntimeExecutor</span>, <span class="ident">StatemintRuntimeExecutor</span>, <span class="ident">WestmintRuntimeExecutor</span>,
+	},
+};
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_cli::generate_genesis_block</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
@@ -823,15 +900,7 @@
 <span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">AccountIdConversion</span>, <span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>};
 <span class="kw">use</span> <span class="ident">std::net::SocketAddr</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">chain_spec</span>,
-	<span class="ident">cli</span>::{<span class="ident">Cli</span>, <span class="ident">RelayChainCli</span>, <span class="ident">Subcommand</span>},
-	<span class="ident">service</span>::{
-		<span class="ident">new_partial</span>, <span class="ident">Block</span>, <span class="ident">ShellRuntimeExecutor</span>, <span class="ident">StatemineRuntimeExecutor</span>,
-		<span class="ident">StatemintRuntimeExecutor</span>, <span class="ident">WestmintRuntimeExecutor</span>,
-	},
-};
-
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Runtime</span> {
 	<span class="doccomment">/// This is the default runtime (based on rococo)</span>
 	<span class="ident">Generic</span>,
@@ -842,6 +911,8 @@
 	<span class="ident">Westmint</span>,
 	<span class="ident">Penpal</span>(<span class="ident">ParaId</span>),
 	<span class="ident">ContractsRococo</span>,
+	<span class="ident">CollectivesPolkadot</span>,
+	<span class="ident">CollectivesWestend</span>,
 }
 
 <span class="kw">trait</span> <span class="ident">ChainType</span> {
@@ -864,7 +935,9 @@
 }
 
 <span class="kw">fn</span> <span class="ident">runtime</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">Runtime</span> {
-	<span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">id</span>, <span class="ident">para_id</span>) <span class="op">=</span> <span class="ident">extract_parachain_id</span>(<span class="ident">id</span>);
+	<span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">replace</span>(<span class="string">&quot;_&quot;</span>, <span class="string">&quot;-&quot;</span>);
+	<span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">id</span>, <span class="ident">para_id</span>) <span class="op">=</span> <span class="ident">extract_parachain_id</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>);
+
 	<span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;shell&quot;</span>) {
 		<span class="ident">Runtime::Shell</span>
 	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;seedling&quot;</span>) {
@@ -879,6 +952,10 @@
 		<span class="ident">Runtime::Penpal</span>(<span class="ident">para_id</span>.<span class="ident">unwrap_or</span>(<span class="ident">ParaId::new</span>(<span class="number">0</span>)))
 	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;contracts-rococo&quot;</span>) {
 		<span class="ident">Runtime::ContractsRococo</span>
+	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;collectives-polkadot&quot;</span>) {
+		<span class="ident">Runtime::CollectivesPolkadot</span>
+	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;collectives-westend&quot;</span>) {
+		<span class="ident">Runtime::CollectivesWestend</span>
 	} <span class="kw">else</span> {
 		<span class="ident">Runtime::Generic</span>
 	}
@@ -908,6 +985,7 @@
 		<span class="string">&quot;statemint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/statemint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
+
 		<span class="comment">// -- Statemine</span>
 		<span class="string">&quot;statemine-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::statemine_development_config</span>()),
 		<span class="string">&quot;statemine-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::statemine_local_config</span>()),
@@ -917,6 +995,7 @@
 		<span class="string">&quot;statemine&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/statemine.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
+
 		<span class="comment">// -- Westmint</span>
 		<span class="string">&quot;westmint-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::westmint_development_config</span>()),
 		<span class="string">&quot;westmint-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::westmint_local_config</span>()),
@@ -926,6 +1005,19 @@
 		<span class="string">&quot;westmint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/westmint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
+
+		<span class="comment">// -- Polkadot Collectives</span>
+		<span class="string">&quot;collectives-polkadot-dev&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::collectives_polkadot_development_config</span>()),
+		<span class="string">&quot;collectives-polkadot-local&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::collectives_polkadot_local_config</span>()),
+		<span class="string">&quot;collectives-polkadot&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/collectives-polkadot.json&quot;</span>)[..],
+		)<span class="question-mark">?</span>),
+		<span class="string">&quot;collectives-westend&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/collectives-westend.json&quot;</span>)[..],
+		)<span class="question-mark">?</span>),
+
 		<span class="comment">// -- Contracts on Rococo</span>
 		<span class="string">&quot;contracts-rococo-dev&quot;</span> =&gt;
 			<span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts::contracts_rococo_development_config</span>()),
@@ -935,8 +1027,6 @@
 		<span class="string">&quot;contracts-rococo&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/contracts-rococo.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
-		<span class="comment">// -- Fallback (generic chainspec)</span>
-		<span class="string">&quot;&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_chain_spec</span>()),
 		<span class="string">&quot;penpal-kusama&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::penpal::get_penpal_chain_spec</span>(
 			<span class="ident">para_id</span>.<span class="ident">expect</span>(<span class="string">&quot;Must specify parachain id&quot;</span>),
 			<span class="string">&quot;kusama-local&quot;</span>,
@@ -945,6 +1035,10 @@
 			<span class="ident">para_id</span>.<span class="ident">expect</span>(<span class="string">&quot;Must specify parachain id&quot;</span>),
 			<span class="string">&quot;polkadot-local&quot;</span>,
 		)),
+
+		<span class="comment">// -- Fallback (generic chainspec)</span>
+		<span class="string">&quot;&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_chain_spec</span>()),
+
 		<span class="comment">// -- Loading a specific spec from disk</span>
 		<span class="ident">path</span> =&gt; {
 			<span class="kw">let</span> <span class="ident">chain_spec</span> <span class="op">=</span> <span class="ident">chain_spec::ChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>;
@@ -957,6 +1051,10 @@
 				),
 				<span class="ident">Runtime::Westmint</span> =&gt;
 					<span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::WestmintChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>),
+				<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt;
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::CollectivesPolkadotChainSpec::from_json_file</span>(
+						<span class="ident">path</span>.<span class="ident">into</span>(),
+					)<span class="question-mark">?</span>),
 				<span class="ident">Runtime::Shell</span> =&gt;
 					<span class="ident">Box::new</span>(<span class="ident">chain_spec::shell::ShellChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>),
 				<span class="ident">Runtime::Seedling</span> =&gt;
@@ -1034,6 +1132,8 @@
 			<span class="ident">Runtime::Statemint</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">statemint_runtime::VERSION</span>,
 			<span class="ident">Runtime::Statemine</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">statemine_runtime::VERSION</span>,
 			<span class="ident">Runtime::Westmint</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">westmint_runtime::VERSION</span>,
+			<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt;
+				<span class="kw-2">&amp;</span><span class="ident">collectives_polkadot_runtime::VERSION</span>,
 			<span class="ident">Runtime::Shell</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">shell_runtime::VERSION</span>,
 			<span class="ident">Runtime::Seedling</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">seedling_runtime::VERSION</span>,
 			<span class="ident">Runtime::ContractsRococo</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">contracts_rococo_runtime::VERSION</span>,
@@ -1108,6 +1208,13 @@
 				)<span class="question-mark">?</span>;
 				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
 			},
+			<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt; {
+				<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">partials</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">collectives_polkadot_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+					<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
+					<span class="ident"><span class="kw">crate</span>::service::aura_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
+				)<span class="question-mark">?</span>;
+				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
+			},
 			<span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;The chain is not supported&quot;</span>.<span class="ident">into</span>()),
 		}
 	};
@@ -1142,6 +1249,16 @@
 					<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">statemint_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 						<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
 						<span class="ident"><span class="kw">crate</span>::service::aura_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">StatemintAuraId</span><span class="op">&gt;</span>,
+					)<span class="question-mark">?</span>;
+					<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
+					{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
+				})
+			},
+			<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt; {
+				<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
+					<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">collectives_polkadot_runtime::RuntimeApi</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+						<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>,
+						<span class="ident"><span class="kw">crate</span>::service::aura_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
 					)<span class="question-mark">?</span>;
 					<span class="kw">let</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span>.<span class="ident">task_manager</span>;
 					{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
@@ -1273,7 +1390,13 @@
 							<span class="ident">Runtime::Westmint</span> =&gt; <span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">WestmintRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>),
 							<span class="ident">Runtime::Statemint</span> =&gt;
 								<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">StatemintRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>),
-							<span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Chain doesn&#39;t support benchmarking&quot;</span>.<span class="ident">into</span>()),
+							<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt;
+								<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">CollectivesPolkadotRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>),
+							<span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="macro">format!</span>(
+								<span class="string">&quot;Chain &#39;{:?}&#39; doesn&#39;t support benchmarking&quot;</span>,
+								<span class="ident">config</span>.<span class="ident">chain_spec</span>.<span class="ident">runtime</span>()
+							)
+							.<span class="ident">into</span>()),
 						})
 					} <span class="kw">else</span> {
 						<span class="prelude-val">Err</span>(<span class="string">&quot;Benchmarking wasn&#39;t enabled when building the node. \
@@ -1318,6 +1441,13 @@
 					<span class="ident">Runtime::Statemint</span> =&gt; <span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 						<span class="prelude-val">Ok</span>((<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">StatemintRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>), <span class="ident">task_manager</span>))
 					}),
+					<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt;
+						<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+							<span class="prelude-val">Ok</span>((
+								<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">CollectivesPolkadotRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>),
+								<span class="ident">task_manager</span>,
+							))
+						}),
 					<span class="ident">Runtime::Shell</span> =&gt; <span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 						<span class="prelude-val">Ok</span>((<span class="ident">cmd</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ShellRuntimeExecutor</span><span class="op">&gt;</span>(<span class="ident">config</span>), <span class="ident">task_manager</span>))
 					}),
@@ -1395,6 +1525,14 @@
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
 					.<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
+					<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt;
+						<span class="ident"><span class="kw">crate</span>::service::start_generic_aura_node</span>::<span class="op">&lt;</span>
+							<span class="ident">collectives_polkadot_runtime::RuntimeApi</span>,
+							<span class="ident">AuraId</span>,
+						<span class="op">&gt;</span>(<span class="ident">config</span>, <span class="ident">polkadot_config</span>, <span class="ident">collator_options</span>, <span class="ident">id</span>, <span class="ident">hwbench</span>)
+						.<span class="kw">await</span>
+						.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
+						.<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
 					<span class="ident">Runtime::Shell</span> =&gt;
 						<span class="ident"><span class="kw">crate</span>::service::start_shell_node</span>::<span class="op">&lt;</span><span class="ident">shell_runtime::RuntimeApi</span><span class="op">&gt;</span>(
 							<span class="ident">config</span>,
