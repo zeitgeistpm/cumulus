@@ -181,7 +181,6 @@
 <span id="176">176</span>
 <span id="177">177</span>
 <span id="178">178</span>
-<span id="179">179</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -202,8 +201,7 @@
 	<span class="ident">get_account_id_from_seed</span>, <span class="ident">get_collator_keys_from_seed</span>, <span class="ident">Extensions</span>, <span class="ident">SAFE_XCM_VERSION</span>,
 };
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
-<span class="kw">use</span> <span class="ident">parachains_common::Balance</span> <span class="kw">as</span> <span class="ident">CollectivesBalance</span>;
-<span class="kw">use</span> <span class="ident">rococo_parachain_runtime</span>::{<span class="ident">AccountId</span>, <span class="ident">AuraId</span>};
+<span class="kw">use</span> <span class="ident">parachains_common</span>::{<span class="ident">AccountId</span>, <span class="ident">AuraId</span>, <span class="ident">Balance</span> <span class="kw">as</span> <span class="ident">CollectivesBalance</span>};
 <span class="kw">use</span> <span class="ident">sc_service::ChainType</span>;
 <span class="kw">use</span> <span class="ident">sp_core::sr25519</span>;
 

@@ -858,6 +858,147 @@
 <span id="853">853</span>
 <span id="854">854</span>
 <span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
+<span id="986">986</span>
+<span id="987">987</span>
+<span id="988">988</span>
+<span id="989">989</span>
+<span id="990">990</span>
+<span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -898,12 +1039,15 @@
 };
 <span class="kw">use</span> <span class="ident">sp_core::hexdisplay::HexDisplay</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">AccountIdConversion</span>, <span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>};
-<span class="kw">use</span> <span class="ident">std::net::SocketAddr</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">net::SocketAddr</span>, <span class="ident">path::PathBuf</span>};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="doccomment">/// Helper enum that is used for better distinction of different parachain/runtime configuration</span>
+<span class="doccomment">/// (it is based/calculated on ChainSpec&#39;s ID attribute)</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Runtime</span> {
-	<span class="doccomment">/// This is the default runtime (based on rococo)</span>
-	<span class="ident">Generic</span>,
+	<span class="doccomment">/// This is the default runtime (actually based on rococo)</span>
+	<span class="attribute">#[<span class="ident">default</span>]</span>
+	<span class="ident">Default</span>,
 	<span class="ident">Shell</span>,
 	<span class="ident">Seedling</span>,
 	<span class="ident">Statemint</span>,
@@ -915,22 +1059,30 @@
 	<span class="ident">CollectivesWestend</span>,
 }
 
-<span class="kw">trait</span> <span class="ident">ChainType</span> {
+<span class="kw">trait</span> <span class="ident">RuntimeResolver</span> {
 	<span class="kw">fn</span> <span class="ident">runtime</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Runtime</span>;
 }
 
-<span class="kw">impl</span> <span class="ident">ChainType</span> <span class="kw">for</span> <span class="kw">dyn</span> <span class="ident">ChainSpec</span> {
+<span class="kw">impl</span> <span class="ident">RuntimeResolver</span> <span class="kw">for</span> <span class="kw">dyn</span> <span class="ident">ChainSpec</span> {
 	<span class="kw">fn</span> <span class="ident">runtime</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Runtime</span> {
 		<span class="ident">runtime</span>(<span class="self">self</span>.<span class="ident">id</span>())
 	}
 }
 
-<span class="kw">use</span> <span class="ident">sc_chain_spec::GenericChainSpec</span>;
-<span class="kw">impl</span> <span class="ident">ChainType</span>
-	<span class="kw">for</span> <span class="ident">GenericChainSpec</span><span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::GenesisConfig</span>, <span class="ident">chain_spec::Extensions</span><span class="op">&gt;</span>
-{
+<span class="doccomment">/// Implementation, that can resolve [`Runtime`] from any json configuration file</span>
+<span class="kw">impl</span> <span class="ident">RuntimeResolver</span> <span class="kw">for</span> <span class="ident">PathBuf</span> {
 	<span class="kw">fn</span> <span class="ident">runtime</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Runtime</span> {
-		<span class="ident">runtime</span>(<span class="self">self</span>.<span class="ident">id</span>())
+		<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">serde::Deserialize</span>)]</span>
+		<span class="kw">struct</span> <span class="ident">EmptyChainSpecWithId</span> {
+			<span class="ident">id</span>: <span class="ident">String</span>,
+		}
+
+		<span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">std::fs::File::open</span>(<span class="self">self</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to open file&quot;</span>);
+		<span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">std::io::BufReader::new</span>(<span class="ident">file</span>);
+		<span class="kw">let</span> <span class="ident">chain_spec</span>: <span class="ident">EmptyChainSpecWithId</span> <span class="op">=</span> <span class="ident">sp_serializer::from_reader</span>(<span class="ident">reader</span>)
+			.<span class="ident">expect</span>(<span class="string">&quot;Failed to read &#39;json&#39; file with ChainSpec configuration&quot;</span>);
+
+		<span class="ident">runtime</span>(<span class="kw-2">&amp;</span><span class="ident">chain_spec</span>.<span class="ident">id</span>)
 	}
 }
 
@@ -957,32 +1109,41 @@
 	} <span class="kw">else</span> <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">starts_with</span>(<span class="string">&quot;collectives-westend&quot;</span>) {
 		<span class="ident">Runtime::CollectivesWestend</span>
 	} <span class="kw">else</span> {
-		<span class="ident">Runtime::Generic</span>
+		<span class="macro">log::warn!</span>(<span class="string">&quot;No specific runtime was recognized for ChainSpec&#39;s id: &#39;{}&#39;, so Runtime::default() will be used&quot;</span>, <span class="ident">id</span>);
+		<span class="ident">Runtime::default</span>()
 	}
 }
 
 <span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> (<span class="ident">id</span>, <span class="kw">_</span>, <span class="ident">para_id</span>) <span class="op">=</span> <span class="ident">extract_parachain_id</span>(<span class="ident">id</span>);
 	<span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">id</span> {
-		<span class="string">&quot;staging&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::staging_test_net</span>()),
-		<span class="string">&quot;tick&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/tick.json&quot;</span>)[..],
-		)<span class="question-mark">?</span>),
-		<span class="string">&quot;trick&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/trick.json&quot;</span>)[..],
-		)<span class="question-mark">?</span>),
-		<span class="string">&quot;track&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/track.json&quot;</span>)[..],
-		)<span class="question-mark">?</span>),
+		<span class="comment">// - Defaul-like</span>
+		<span class="string">&quot;staging&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::rococo_parachain::staging_rococo_parachain_local_config</span>()),
+		<span class="string">&quot;tick&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::rococo_parachain::RococoParachainChainSpec::from_json_bytes</span>(
+				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/tick.json&quot;</span>)[..],
+			)<span class="question-mark">?</span>),
+		<span class="string">&quot;trick&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::rococo_parachain::RococoParachainChainSpec::from_json_bytes</span>(
+				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/trick.json&quot;</span>)[..],
+			)<span class="question-mark">?</span>),
+		<span class="string">&quot;track&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::rococo_parachain::RococoParachainChainSpec::from_json_bytes</span>(
+				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/track.json&quot;</span>)[..],
+			)<span class="question-mark">?</span>),
+
+		<span class="comment">// -- Starters</span>
 		<span class="string">&quot;shell&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::shell::get_shell_chain_spec</span>()),
-		<span class="comment">// -- Statemint</span>
 		<span class="string">&quot;seedling&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::seedling::get_seedling_chain_spec</span>()),
+
+		<span class="comment">// -- Statemint</span>
 		<span class="string">&quot;statemint-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::statemint_development_config</span>()),
 		<span class="string">&quot;statemint-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::statemint_local_config</span>()),
 		<span class="comment">// the chain spec as used for generating the upgrade genesis values</span>
 		<span class="string">&quot;statemint-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::statemint_config</span>()),
 		<span class="comment">// the shell-based chain spec as used for syncing</span>
-		<span class="string">&quot;statemint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
+		<span class="string">&quot;statemint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::StatemintChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/statemint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 
@@ -992,7 +1153,7 @@
 		<span class="comment">// the chain spec as used for generating the upgrade genesis values</span>
 		<span class="string">&quot;statemine-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::statemine_config</span>()),
 		<span class="comment">// the shell-based chain spec as used for syncing</span>
-		<span class="string">&quot;statemine&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
+		<span class="string">&quot;statemine&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::StatemineChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/statemine.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 
@@ -1002,7 +1163,7 @@
 		<span class="comment">// the chain spec as used for generating the upgrade genesis values</span>
 		<span class="string">&quot;westmint-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::westmint_config</span>()),
 		<span class="comment">// the shell-based chain spec as used for syncing</span>
-		<span class="string">&quot;westmint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
+		<span class="string">&quot;westmint&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::WestmintChainSpec::from_json_bytes</span>(
 			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/westmint.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 
@@ -1011,12 +1172,14 @@
 			<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::collectives_polkadot_development_config</span>()),
 		<span class="string">&quot;collectives-polkadot-local&quot;</span> =&gt;
 			<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::collectives_polkadot_local_config</span>()),
-		<span class="string">&quot;collectives-polkadot&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/collectives-polkadot.json&quot;</span>)[..],
-		)<span class="question-mark">?</span>),
-		<span class="string">&quot;collectives-westend&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/collectives-westend.json&quot;</span>)[..],
-		)<span class="question-mark">?</span>),
+		<span class="string">&quot;collectives-polkadot&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::CollectivesPolkadotChainSpec::from_json_bytes</span>(
+				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/collectives-polkadot.json&quot;</span>)[..],
+			)<span class="question-mark">?</span>),
+		<span class="string">&quot;collectives-westend&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::CollectivesPolkadotChainSpec::from_json_bytes</span>(
+				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/collectives-westend.json&quot;</span>)[..],
+			)<span class="question-mark">?</span>),
 
 		<span class="comment">// -- Contracts on Rococo</span>
 		<span class="string">&quot;contracts-rococo-dev&quot;</span> =&gt;
@@ -1024,9 +1187,12 @@
 		<span class="string">&quot;contracts-rococo-local&quot;</span> =&gt;
 			<span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts::contracts_rococo_local_config</span>()),
 		<span class="string">&quot;contracts-rococo-genesis&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts::contracts_rococo_config</span>()),
-		<span class="string">&quot;contracts-rococo&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::ChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/contracts-rococo.json&quot;</span>)[..],
-		)<span class="question-mark">?</span>),
+		<span class="string">&quot;contracts-rococo&quot;</span> =&gt;
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts::ContractsRococoChainSpec::from_json_bytes</span>(
+				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../parachains/chain-specs/contracts-rococo.json&quot;</span>)[..],
+			)<span class="question-mark">?</span>),
+
+		<span class="comment">// -- Penpall</span>
 		<span class="string">&quot;penpal-kusama&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::penpal::get_penpal_chain_spec</span>(
 			<span class="ident">para_id</span>.<span class="ident">expect</span>(<span class="string">&quot;Must specify parachain id&quot;</span>),
 			<span class="string">&quot;kusama-local&quot;</span>,
@@ -1037,34 +1203,35 @@
 		)),
 
 		<span class="comment">// -- Fallback (generic chainspec)</span>
-		<span class="string">&quot;&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec::get_chain_spec</span>()),
+		<span class="string">&quot;&quot;</span> =&gt; {
+			<span class="macro">log::warn!</span>(<span class="string">&quot;No ChainSpec.id specified, so using default one, based on rococo-parachain runtime&quot;</span>);
+			<span class="ident">Box::new</span>(<span class="ident">chain_spec::rococo_parachain::rococo_parachain_local_config</span>())
+		},
 
 		<span class="comment">// -- Loading a specific spec from disk</span>
 		<span class="ident">path</span> =&gt; {
-			<span class="kw">let</span> <span class="ident">chain_spec</span> <span class="op">=</span> <span class="ident">chain_spec::ChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>;
-			<span class="kw">match</span> <span class="ident">chain_spec</span>.<span class="ident">runtime</span>() {
-				<span class="ident">Runtime::Statemint</span> =&gt; <span class="ident">Box::new</span>(
-					<span class="ident">chain_spec::statemint::StatemintChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>,
-				),
-				<span class="ident">Runtime::Statemine</span> =&gt; <span class="ident">Box::new</span>(
-					<span class="ident">chain_spec::statemint::StatemineChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>,
-				),
+			<span class="kw">let</span> <span class="ident">path</span>: <span class="ident">PathBuf</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">into</span>();
+			<span class="kw">match</span> <span class="ident">path</span>.<span class="ident">runtime</span>() {
+				<span class="ident">Runtime::Statemint</span> =&gt;
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::StatemintChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>),
+				<span class="ident">Runtime::Statemine</span> =&gt;
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::StatemineChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>),
 				<span class="ident">Runtime::Westmint</span> =&gt;
-					<span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::WestmintChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>),
-				<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt;
-					<span class="ident">Box::new</span>(<span class="ident">chain_spec::collectives::CollectivesPolkadotChainSpec::from_json_file</span>(
-						<span class="ident">path</span>.<span class="ident">into</span>(),
-					)<span class="question-mark">?</span>),
-				<span class="ident">Runtime::Shell</span> =&gt;
-					<span class="ident">Box::new</span>(<span class="ident">chain_spec::shell::ShellChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>),
-				<span class="ident">Runtime::Seedling</span> =&gt;
-					<span class="ident">Box::new</span>(<span class="ident">chain_spec::seedling::SeedlingChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>),
-				<span class="ident">Runtime::ContractsRococo</span> =&gt; <span class="ident">Box::new</span>(
-					<span class="ident">chain_spec::contracts::ContractsRococoChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>,
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::statemint::WestmintChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>),
+				<span class="ident">Runtime::CollectivesPolkadot</span> <span class="op">|</span> <span class="ident">Runtime::CollectivesWestend</span> =&gt; <span class="ident">Box::new</span>(
+					<span class="ident">chain_spec::collectives::CollectivesPolkadotChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>,
 				),
+				<span class="ident">Runtime::Shell</span> =&gt;
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::shell::ShellChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>),
+				<span class="ident">Runtime::Seedling</span> =&gt;
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::seedling::SeedlingChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>),
+				<span class="ident">Runtime::ContractsRococo</span> =&gt;
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::contracts::ContractsRococoChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>),
 				<span class="ident">Runtime::Penpal</span>(<span class="ident">_para_id</span>) =&gt;
-					<span class="ident">Box::new</span>(<span class="ident">chain_spec::penpal::PenpalChainSpec::from_json_file</span>(<span class="ident">path</span>.<span class="ident">into</span>())<span class="question-mark">?</span>),
-				<span class="ident">Runtime::Generic</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">chain_spec</span>),
+					<span class="ident">Box::new</span>(<span class="ident">chain_spec::penpal::PenpalChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>),
+				<span class="ident">Runtime::Default</span> =&gt; <span class="ident">Box::new</span>(
+					<span class="ident">chain_spec::rococo_parachain::RococoParachainChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>,
+				),
 			}
 		},
 	})
@@ -1123,7 +1290,7 @@
 		<span class="number">2017</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="ident">load_spec</span>(<span class="ident">id</span>)
 	}
 
@@ -1138,7 +1305,7 @@
 			<span class="ident">Runtime::Seedling</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">seedling_runtime::VERSION</span>,
 			<span class="ident">Runtime::ContractsRococo</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">contracts_rococo_runtime::VERSION</span>,
 			<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) =&gt; <span class="kw-2">&amp;</span><span class="ident">penpal_runtime::VERSION</span>,
-			<span class="ident">Runtime::Generic</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">rococo_parachain_runtime::VERSION</span>,
+			<span class="ident">Runtime::Default</span> =&gt; <span class="kw-2">&amp;</span><span class="ident">rococo_parachain_runtime::VERSION</span>,
 		}
 	}
 }
@@ -1174,7 +1341,7 @@
 		<span class="number">2017</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="ident">polkadot_cli::Cli::from_iter</span>([<span class="ident">RelayChainCli::executable_name</span>()].<span class="ident">iter</span>()).<span class="ident">load_spec</span>(<span class="ident">id</span>)
 	}
 
@@ -1294,7 +1461,7 @@
 					{ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> )<span class="op">*</span> }.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">task_manager</span>))
 				})
 			},
-			<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">Runtime::Generic</span> =&gt; {
+			<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">Runtime::Default</span> =&gt; {
 				<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span><span class="op">|</span> {
 					<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">components</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span>
 						<span class="ident">rococo_parachain_runtime::RuntimeApi</span>,
@@ -1560,7 +1727,7 @@
 					.<span class="kw">await</span>
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
 					.<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
-					<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">Runtime::Generic</span> =&gt;
+					<span class="ident">Runtime::Penpal</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">Runtime::Default</span> =&gt;
 						<span class="ident"><span class="kw">crate</span>::service::start_rococo_parachain_node</span>(
 							<span class="ident">config</span>,
 							<span class="ident">polkadot_config</span>,
@@ -1711,6 +1878,121 @@
 
 	<span class="kw">fn</span> <span class="ident">node_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">base</span>.<span class="ident">base</span>.<span class="ident">node_name</span>()
+	}
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+	<span class="kw">use</span> <span class="kw">crate</span>::{
+		<span class="ident">chain_spec</span>::{<span class="ident">get_account_id_from_seed</span>, <span class="ident">get_from_seed</span>},
+		<span class="ident">command</span>::{<span class="ident">Runtime</span>, <span class="ident">RuntimeResolver</span>},
+	};
+	<span class="kw">use</span> <span class="ident">sc_chain_spec</span>::{<span class="ident">ChainSpec</span>, <span class="ident">ChainSpecExtension</span>, <span class="ident">ChainSpecGroup</span>, <span class="ident">ChainType</span>, <span class="ident">Extension</span>};
+	<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+	<span class="kw">use</span> <span class="ident">sp_core::sr25519</span>;
+	<span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
+	<span class="kw">use</span> <span class="ident">tempfile::TempDir</span>;
+
+	<span class="attribute">#[<span class="ident">derive</span>(
+		<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">ChainSpecGroup</span>, <span class="ident">ChainSpecExtension</span>, <span class="ident">Default</span>,
+	)]</span>
+	<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
+	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Extensions1</span> {
+		<span class="kw">pub</span> <span class="ident">attribute1</span>: <span class="ident">String</span>,
+		<span class="kw">pub</span> <span class="ident">attribute2</span>: <span class="ident">u32</span>,
+	}
+
+	<span class="attribute">#[<span class="ident">derive</span>(
+		<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">ChainSpecGroup</span>, <span class="ident">ChainSpecExtension</span>, <span class="ident">Default</span>,
+	)]</span>
+	<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>)]</span>
+	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Extensions2</span> {
+		<span class="kw">pub</span> <span class="ident">attribute_x</span>: <span class="ident">String</span>,
+		<span class="kw">pub</span> <span class="ident">attribute_y</span>: <span class="ident">String</span>,
+		<span class="kw">pub</span> <span class="ident">attribute_z</span>: <span class="ident">u32</span>,
+	}
+
+	<span class="kw">fn</span> <span class="ident">store_configuration</span>(<span class="ident">dir</span>: <span class="kw-2">&amp;</span><span class="ident">TempDir</span>, <span class="ident">spec</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>) -&gt; <span class="ident">PathBuf</span> {
+		<span class="kw">let</span> <span class="ident">raw_output</span> <span class="op">=</span> <span class="bool-val">true</span>;
+		<span class="kw">let</span> <span class="ident">json</span> <span class="op">=</span> <span class="ident">sc_service::chain_ops::build_spec</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">spec</span>, <span class="ident">raw_output</span>)
+			.<span class="ident">expect</span>(<span class="string">&quot;Failed to build json string&quot;</span>);
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cfg_file_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">to_path_buf</span>();
+		<span class="ident">cfg_file_path</span>.<span class="ident">push</span>(<span class="ident">spec</span>.<span class="ident">id</span>());
+		<span class="ident">cfg_file_path</span>.<span class="ident">set_extension</span>(<span class="string">&quot;json&quot;</span>);
+		<span class="ident">std::fs::write</span>(<span class="kw-2">&amp;</span><span class="ident">cfg_file_path</span>, <span class="ident">json</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to write to json file&quot;</span>);
+		<span class="ident">cfg_file_path</span>
+	}
+
+	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DummyChainSpec</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> <span class="op">=</span>
+		<span class="ident">sc_service::GenericChainSpec</span><span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::GenesisConfig</span>, <span class="ident">E</span><span class="op">&gt;</span>;
+
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_default_with_extensions</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Extension</span><span class="op">&gt;</span>(
+		<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+		<span class="ident">extension</span>: <span class="ident">E</span>,
+	) -&gt; <span class="ident">DummyChainSpec</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
+		<span class="ident">DummyChainSpec::from_genesis</span>(
+			<span class="string">&quot;Dummy local testnet&quot;</span>,
+			<span class="ident">id</span>,
+			<span class="ident">ChainType::Local</span>,
+			<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+				<span class="ident"><span class="kw">crate</span>::chain_spec::rococo_parachain::testnet_genesis</span>(
+					<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
+					<span class="macro">vec!</span>[
+						<span class="ident">get_from_seed</span>::<span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
+						<span class="ident">get_from_seed</span>::<span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
+					],
+					<span class="macro">vec!</span>[<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>)],
+					<span class="number">1000</span>.<span class="ident">into</span>(),
+				)
+			},
+			<span class="ident">Vec::new</span>(),
+			<span class="prelude-val">None</span>,
+			<span class="prelude-val">None</span>,
+			<span class="prelude-val">None</span>,
+			<span class="prelude-val">None</span>,
+			<span class="ident">extension</span>,
+		)
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">test_resolve_runtime_for_different_configuration_files</span>() {
+		<span class="kw">let</span> <span class="ident">temp_dir</span> <span class="op">=</span> <span class="ident">tempfile::tempdir</span>().<span class="ident">expect</span>(<span class="string">&quot;Failed to access tempdir&quot;</span>);
+
+		<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">store_configuration</span>(
+			<span class="kw-2">&amp;</span><span class="ident">temp_dir</span>,
+			<span class="ident">Box::new</span>(<span class="ident">create_default_with_extensions</span>(<span class="string">&quot;shell-1&quot;</span>, <span class="ident">Extensions1::default</span>())),
+		);
+		<span class="macro">assert_eq!</span>(<span class="ident">Runtime::Shell</span>, <span class="ident">path</span>.<span class="ident">runtime</span>());
+
+		<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">store_configuration</span>(
+			<span class="kw-2">&amp;</span><span class="ident">temp_dir</span>,
+			<span class="ident">Box::new</span>(<span class="ident">create_default_with_extensions</span>(<span class="string">&quot;shell-2&quot;</span>, <span class="ident">Extensions2::default</span>())),
+		);
+		<span class="macro">assert_eq!</span>(<span class="ident">Runtime::Shell</span>, <span class="ident">path</span>.<span class="ident">runtime</span>());
+
+		<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">store_configuration</span>(
+			<span class="kw-2">&amp;</span><span class="ident">temp_dir</span>,
+			<span class="ident">Box::new</span>(<span class="ident">create_default_with_extensions</span>(<span class="string">&quot;seedling&quot;</span>, <span class="ident">Extensions2::default</span>())),
+		);
+		<span class="macro">assert_eq!</span>(<span class="ident">Runtime::Seedling</span>, <span class="ident">path</span>.<span class="ident">runtime</span>());
+
+		<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">store_configuration</span>(
+			<span class="kw-2">&amp;</span><span class="ident">temp_dir</span>,
+			<span class="ident">Box::new</span>(<span class="ident"><span class="kw">crate</span>::chain_spec::rococo_parachain::rococo_parachain_local_config</span>()),
+		);
+		<span class="macro">assert_eq!</span>(<span class="ident">Runtime::Default</span>, <span class="ident">path</span>.<span class="ident">runtime</span>());
+
+		<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">store_configuration</span>(
+			<span class="kw-2">&amp;</span><span class="ident">temp_dir</span>,
+			<span class="ident">Box::new</span>(<span class="ident"><span class="kw">crate</span>::chain_spec::statemint::statemine_local_config</span>()),
+		);
+		<span class="macro">assert_eq!</span>(<span class="ident">Runtime::Statemine</span>, <span class="ident">path</span>.<span class="ident">runtime</span>());
+
+		<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">store_configuration</span>(
+			<span class="kw-2">&amp;</span><span class="ident">temp_dir</span>,
+			<span class="ident">Box::new</span>(<span class="ident"><span class="kw">crate</span>::chain_spec::contracts::contracts_rococo_local_config</span>()),
+		);
+		<span class="macro">assert_eq!</span>(<span class="ident">Runtime::ContractsRococo</span>, <span class="ident">path</span>.<span class="ident">runtime</span>());
 	}
 }
 </code></pre></div>

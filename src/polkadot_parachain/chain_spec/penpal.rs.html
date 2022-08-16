@@ -139,6 +139,7 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
+<span id="137">137</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -155,10 +156,11 @@
 <span class="comment">// You should have received a copy of the GNU General Public License</span>
 <span class="comment">// along with Cumulus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::chain_spec</span>::{<span class="ident">get_account_id_from_seed</span>, <span class="ident">Extensions</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::chain_spec</span>::{
+	<span class="ident">get_account_id_from_seed</span>, <span class="ident">get_collator_keys_from_seed</span>, <span class="ident">Extensions</span>, <span class="ident">SAFE_XCM_VERSION</span>,
+};
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
-<span class="comment">// use rococo_parachain_runtime::{AuraId};</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::chain_spec</span>::{<span class="ident">get_collator_keys_from_seed</span>, <span class="ident">SAFE_XCM_VERSION</span>};
+<span class="kw">use</span> <span class="ident">parachains_common</span>::{<span class="ident">AccountId</span>, <span class="ident">AuraId</span>};
 <span class="kw">use</span> <span class="ident">sc_service::ChainType</span>;
 <span class="kw">use</span> <span class="ident">sp_core::sr25519</span>;
 <span class="doccomment">/// Specialized `ChainSpec` for the normal parachain runtime.</span>
@@ -183,11 +185,11 @@
 				<span class="macro">vec!</span>[
 					(
 						<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
-						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">penpal_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
+						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
 					),
 					(
 						<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
-						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">penpal_runtime::AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
+						<span class="ident">get_collator_keys_from_seed</span>::<span class="op">&lt;</span><span class="ident">AuraId</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
 					),
 				],
 				<span class="macro">vec!</span>[
@@ -220,8 +222,8 @@
 }
 
 <span class="kw">fn</span> <span class="ident">penpal_testnet_genesis</span>(
-	<span class="ident">invulnerables</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">penpal_runtime::AccountId</span>, <span class="ident">penpal_runtime::AuraId</span>)<span class="op">&gt;</span>,
-	<span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">penpal_runtime::AccountId</span><span class="op">&gt;</span>,
+	<span class="ident">invulnerables</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">AccountId</span>, <span class="ident">AuraId</span>)<span class="op">&gt;</span>,
+	<span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
 ) -&gt; <span class="ident">penpal_runtime::GenesisConfig</span> {
 	<span class="ident">penpal_runtime::GenesisConfig</span> {
@@ -272,7 +274,7 @@
 <span class="doccomment">/// Generate the session keys from individual elements.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The input must be a tuple of individual keys (a single arg for now since we have just one key).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">penpal_session_keys</span>(<span class="ident">keys</span>: <span class="ident">penpal_runtime::AuraId</span>) -&gt; <span class="ident">penpal_runtime::SessionKeys</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">penpal_session_keys</span>(<span class="ident">keys</span>: <span class="ident">AuraId</span>) -&gt; <span class="ident">penpal_runtime::SessionKeys</span> {
 	<span class="ident">penpal_runtime::SessionKeys</span> { <span class="ident">aura</span>: <span class="ident">keys</span> }
 }
 </code></pre></div>

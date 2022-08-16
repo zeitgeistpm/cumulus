@@ -772,12 +772,6 @@
 <span id="767">767</span>
 <span id="768">768</span>
 <span id="769">769</span>
-<span id="770">770</span>
-<span id="771">771</span>
-<span id="772">772</span>
-<span id="773">773</span>
-<span id="774">774</span>
-<span id="775">775</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -830,9 +824,9 @@
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">crypto::KeyTypeId</span>, <span class="ident">OpaqueMetadata</span>};
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
 	<span class="ident">create_runtime_str</span>, <span class="ident">generic</span>, <span class="ident">impl_opaque_keys</span>,
-	<span class="ident">traits</span>::{<span class="ident">AccountIdLookup</span>, <span class="ident">BlakeTwo256</span>, <span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>, <span class="ident">IdentifyAccount</span>, <span class="ident">Verify</span>},
+	<span class="ident">traits</span>::{<span class="ident">AccountIdLookup</span>, <span class="ident">BlakeTwo256</span>, <span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>},
 	<span class="ident">transaction_validity</span>::{<span class="ident">TransactionSource</span>, <span class="ident">TransactionValidity</span>},
-	<span class="ident">ApplyExtrinsicResult</span>, <span class="ident">MultiSignature</span>,
+	<span class="ident">ApplyExtrinsicResult</span>,
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">traits::ConvertInto</span>, <span class="ident">MultiAddress</span>, <span class="ident">Perbill</span>, <span class="ident">Permill</span>};
 <span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
@@ -850,15 +844,9 @@
 <span class="kw">use</span> <span class="ident">weights</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>, <span class="ident">RocksDbWeight</span>};
 
 <span class="comment">// XCM Imports</span>
+<span class="kw">use</span> <span class="ident">parachains_common</span>::{<span class="ident">AccountId</span>, <span class="ident">Signature</span>};
 <span class="kw">use</span> <span class="ident">xcm::latest::prelude::BodyId</span>;
 <span class="kw">use</span> <span class="ident">xcm_executor::XcmExecutor</span>;
-
-<span class="doccomment">/// Alias to 512-bit hash when used in the context of a transaction signature on the chain.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Signature</span> <span class="op">=</span> <span class="ident">MultiSignature</span>;
-
-<span class="doccomment">/// Some way of identifying an account on the chain. We intentionally make it equivalent</span>
-<span class="doccomment">/// to the public key of our transaction signing scheme.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AccountId</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">Signature</span> <span class="kw">as</span> <span class="ident">Verify</span><span class="op">&gt;</span><span class="ident">::Signer</span> <span class="kw">as</span> <span class="ident">IdentifyAccount</span><span class="op">&gt;</span><span class="ident">::AccountId</span>;
 
 <span class="doccomment">/// Balance of an account.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">u128</span>;
