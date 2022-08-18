@@ -811,7 +811,6 @@
 <span id="805">805</span>
 <span id="806">806</span>
 <span id="807">807</span>
-<span id="808">808</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1464,8 +1463,7 @@
 		<span class="ident">keystore</span>: <span class="ident">KeystoreConfig::InMemory</span>,
 		<span class="ident">keystore_remote</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">database</span>: <span class="ident">DatabaseSource::RocksDb</span> { <span class="ident">path</span>: <span class="ident">root</span>.<span class="ident">join</span>(<span class="string">&quot;db&quot;</span>), <span class="ident">cache_size</span>: <span class="number">128</span> },
-		<span class="ident">state_cache_size</span>: <span class="number">67108864</span>,
-		<span class="ident">state_cache_child_ratio</span>: <span class="prelude-val">None</span>,
+		<span class="ident">trie_cache_maximum_size</span>: <span class="prelude-val">Some</span>(<span class="number">64</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>),
 		<span class="ident">state_pruning</span>: <span class="prelude-val">Some</span>(<span class="ident">PruningMode::ArchiveAll</span>),
 		<span class="ident">blocks_pruning</span>: <span class="ident">BlocksPruning::All</span>,
 		<span class="ident">chain_spec</span>: <span class="ident">spec</span>,

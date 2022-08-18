@@ -274,7 +274,7 @@
 	) -&gt; (<span class="ident">polkadot_primitives::v2::Hash</span>, <span class="ident">sp_state_machine::StorageProof</span>) {
 		<span class="kw">let</span> (<span class="ident">db</span>, <span class="ident">root</span>) <span class="op">=</span> <span class="ident">MemoryDB</span>::<span class="op">&lt;</span><span class="ident">HashFor</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v2::Block</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::default_with_root</span>();
 		<span class="kw">let</span> <span class="ident">state_version</span> <span class="op">=</span> <span class="ident">Default::default</span>(); <span class="comment">// for test using default.</span>
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">sp_state_machine::TrieBackend::new</span>(<span class="ident">db</span>, <span class="ident">root</span>);
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">sp_state_machine::TrieBackendBuilder::new</span>(<span class="ident">db</span>, <span class="ident">root</span>).<span class="ident">build</span>();
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">relevant_keys</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 		{
