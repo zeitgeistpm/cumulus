@@ -847,6 +847,23 @@
 <span id="841">841</span>
 <span id="842">842</span>
 <span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1588,6 +1605,23 @@
 			<span class="ident">len</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">pallet_transaction_payment::FeeDetails</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
 			<span class="ident">TransactionPayment::query_fee_details</span>(<span class="ident">uxt</span>, <span class="ident">len</span>)
+		}
+	}
+
+	<span class="kw">impl</span> <span class="ident">pallet_transaction_payment_rpc_runtime_api::TransactionPaymentCallApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Balance</span>, <span class="ident">Call</span><span class="op">&gt;</span>
+		<span class="kw">for</span> <span class="ident">Runtime</span>
+	{
+		<span class="kw">fn</span> <span class="ident">query_call_info</span>(
+			<span class="ident">call</span>: <span class="ident">Call</span>,
+			<span class="ident">len</span>: <span class="ident">u32</span>,
+		) -&gt; <span class="ident">pallet_transaction_payment::RuntimeDispatchInfo</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
+			<span class="ident">TransactionPayment::query_call_info</span>(<span class="ident">call</span>, <span class="ident">len</span>)
+		}
+		<span class="kw">fn</span> <span class="ident">query_call_fee_details</span>(
+			<span class="ident">call</span>: <span class="ident">Call</span>,
+			<span class="ident">len</span>: <span class="ident">u32</span>,
+		) -&gt; <span class="ident">pallet_transaction_payment::FeeDetails</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
+			<span class="ident">TransactionPayment::query_call_fee_details</span>(<span class="ident">call</span>, <span class="ident">len</span>)
 		}
 	}
 
