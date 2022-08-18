@@ -142,6 +142,23 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -160,7 +177,7 @@
 
 <span class="kw">mod</span> <span class="ident">cli</span>;
 
-<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">io::Write</span>, <span class="ident">sync::Arc</span>};
 
 <span class="kw">use</span> <span class="ident">cli</span>::{<span class="ident">RelayChainCli</span>, <span class="ident">Subcommand</span>, <span class="ident">TestCollatorCli</span>};
 <span class="kw">use</span> <span class="ident">cumulus_client_cli::generate_genesis_block</span>;
@@ -187,14 +204,31 @@
 			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
 			<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>(<span class="ident">config</span>.<span class="ident">chain_spec</span>, <span class="ident">config</span>.<span class="ident">network</span>))
 		},
-		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::ExportGenesisState</span>(<span class="ident">cmd</span>)) =&gt; {
-			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
-			<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">_config</span><span class="op">|</span> {
-				<span class="kw">let</span> <span class="ident">parachain_id</span> <span class="op">=</span> <span class="ident">ParaId::from</span>(<span class="ident">cmd</span>.<span class="ident">parachain_id</span>);
-				<span class="kw">let</span> <span class="ident">spec</span> <span class="op">=</span> <span class="ident">cumulus_test_service::get_chain_spec</span>(<span class="ident">parachain_id</span>);
-				<span class="kw">let</span> <span class="ident">state_version</span> <span class="op">=</span> <span class="ident">cumulus_test_service::runtime::VERSION</span>.<span class="ident">state_version</span>();
-				<span class="ident">cmd</span>.<span class="ident">base</span>.<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">parachains_common::Block</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">spec</span>, <span class="ident">state_version</span>)
-			})
+
+		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::ExportGenesisState</span>(<span class="ident">params</span>)) =&gt; {
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">sc_cli::LoggerBuilder::new</span>(<span class="string">&quot;&quot;</span>);
+			<span class="ident">builder</span>.<span class="ident">with_profiling</span>(<span class="ident">sc_tracing::TracingReceiver::Log</span>, <span class="string">&quot;&quot;</span>);
+			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">builder</span>.<span class="ident">init</span>();
+
+			<span class="kw">let</span> <span class="ident">spec</span> <span class="op">=</span>
+				<span class="ident">cli</span>.<span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="ident">params</span>.<span class="ident">base</span>.<span class="ident">shared_params</span>.<span class="ident">chain</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>())<span class="question-mark">?</span>;
+			<span class="kw">let</span> <span class="ident">state_version</span> <span class="op">=</span> <span class="ident">cumulus_test_service::runtime::VERSION</span>.<span class="ident">state_version</span>();
+
+			<span class="kw">let</span> <span class="ident">block</span>: <span class="ident">parachains_common::Block</span> <span class="op">=</span> <span class="ident">generate_genesis_block</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">spec</span>, <span class="ident">state_version</span>)<span class="question-mark">?</span>;
+			<span class="kw">let</span> <span class="ident">raw_header</span> <span class="op">=</span> <span class="ident">block</span>.<span class="ident">header</span>().<span class="ident">encode</span>();
+			<span class="kw">let</span> <span class="ident">output_buf</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">params</span>.<span class="ident">base</span>.<span class="ident">raw</span> {
+				<span class="ident">raw_header</span>
+			} <span class="kw">else</span> {
+				<span class="macro">format!</span>(<span class="string">&quot;0x{:?}&quot;</span>, <span class="ident">HexDisplay::from</span>(<span class="kw-2">&amp;</span><span class="ident">block</span>.<span class="ident">header</span>().<span class="ident">encode</span>())).<span class="ident">into_bytes</span>()
+			};
+
+			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">output</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">params</span>.<span class="ident">base</span>.<span class="ident">output</span> {
+				<span class="ident">std::fs::write</span>(<span class="ident">output</span>, <span class="ident">output_buf</span>)<span class="question-mark">?</span>;
+			} <span class="kw">else</span> {
+				<span class="ident">std::io::stdout</span>().<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">output_buf</span>)<span class="question-mark">?</span>;
+			}
+
+			<span class="prelude-val">Ok</span>(())
 		},
 		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::ExportGenesisWasm</span>(<span class="ident">cmd</span>)) =&gt; {
 			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
@@ -250,7 +284,7 @@
 				<span class="kw">if</span> <span class="ident">config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>() { <span class="string">&quot;yes&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;no&quot;</span> }
 			);
 
-			<span class="kw">let</span> <span class="ident">collator_key</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">CollatorPair::generate</span>().<span class="number">0</span>);
+			<span class="kw">let</span> <span class="ident">collator_key</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>().<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">CollatorPair::generate</span>().<span class="number">0</span>);
 
 			<span class="kw">let</span> <span class="ident">consensus</span> <span class="op">=</span> <span class="ident">cli</span>
 				.<span class="ident">use_null_consensus</span>
