@@ -778,6 +778,16 @@
 <span id="772">772</span>
 <span id="773">773</span>
 <span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1203,9 +1213,10 @@
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_collator_selection::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
-<span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AllianceMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">5</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ALLIANCE_MOTION_DURATION</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">5</span> <span class="op">*</span> <span class="ident">DAYS</span>;
 
+<span class="macro">parameter_types!</span> {
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AllianceMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="ident">ALLIANCE_MOTION_DURATION</span>;
 }
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ALLIANCE_MAX_PROPOSALS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ALLIANCE_MAX_MEMBERS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
@@ -1231,6 +1242,9 @@
 	<span class="comment">// account used to temporarily deposit slashed imbalance before teleporting</span>
 	<span class="kw">pub</span> <span class="ident">SlashedImbalanceAccId</span>: <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">constants::account::SLASHED_IMBALANCE_ACC_ID</span>.<span class="ident">into</span>();
 	<span class="kw">pub</span> <span class="ident">RelayTreasuryAccId</span>: <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">constants::account::RELAY_TREASURY_PALL_ID</span>.<span class="ident">into_account_truncating</span>();
+	<span class="comment">// The number of blocks a member must wait between giving a retirement notice and retiring.</span>
+	<span class="comment">// Supposed to be greater than time required to `kick_member` with alliance motion.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AllianceRetirementPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> (<span class="number">90</span> <span class="op">*</span> <span class="ident">DAYS</span>) <span class="op">+</span> <span class="ident">ALLIANCE_MOTION_DURATION</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_alliance::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
@@ -1243,6 +1257,7 @@
 	<span class="kw">type</span> <span class="ident">Slashed</span> <span class="op">=</span> <span class="ident">ToParentTreasury</span><span class="op">&lt;</span><span class="ident">RelayTreasuryAccId</span>, <span class="ident">SlashedImbalanceAccId</span>, <span class="ident">Runtime</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">InitializeMembers</span> <span class="op">=</span> <span class="ident">AllianceMotion</span>;
 	<span class="kw">type</span> <span class="ident">MembershipChanged</span> <span class="op">=</span> <span class="ident">AllianceMotion</span>;
+	<span class="kw">type</span> <span class="ident">RetirementPeriod</span> <span class="op">=</span> <span class="ident">AllianceRetirementPeriod</span>;
 	<span class="kw">type</span> <span class="ident">IdentityVerifier</span> <span class="op">=</span> (); <span class="comment">// Don&#39;t block accounts on identity criteria</span>
 	<span class="kw">type</span> <span class="ident">ProposalProvider</span> <span class="op">=</span> <span class="ident">AllianceProposalProvider</span><span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">AllianceCollective</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">MaxProposals</span> <span class="op">=</span> <span class="ident">ConstU32</span><span class="op">&lt;</span><span class="ident">ALLIANCE_MAX_MEMBERS</span><span class="op">&gt;</span>;
@@ -1329,7 +1344,12 @@
 	<span class="ident">frame_system::ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">Runtime</span>,
 	<span class="ident">AllPalletsWithSystem</span>,
+	<span class="ident">Migrations</span>,
 <span class="op">&gt;</span>;
+
+<span class="comment">// All migrations executed on runtime upgrade as a nested tuple of types implementing `OnRuntimeUpgrade`.</span>
+<span class="comment">// Included migrations must be idempotent.</span>
+<span class="kw">type</span> <span class="ident">Migrations</span> <span class="op">=</span> (<span class="ident">pallet_alliance::migration::Migration</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,);
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
