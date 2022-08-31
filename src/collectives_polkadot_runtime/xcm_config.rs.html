@@ -195,6 +195,7 @@
 <span id="189">189</span>
 <span id="190">190</span>
 <span id="191">191</span>
+<span id="192">192</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -222,15 +223,15 @@
 <span class="kw">use</span> <span class="ident">pallet_xcm::XcmPassthrough</span>;
 <span class="kw">use</span> <span class="ident">parachains_common</span>::{
 	<span class="ident">impls::ToStakingPot</span>,
-	<span class="ident">xcm_config</span>::{<span class="ident">DenyReserveTransferToRelayChain</span>, <span class="ident">DenyThenTry</span>},
+	<span class="ident">xcm_config</span>::{<span class="ident">ConcreteNativeAssetFrom</span>, <span class="ident">DenyReserveTransferToRelayChain</span>, <span class="ident">DenyThenTry</span>},
 };
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::Sibling</span>;
 <span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">xcm_builder</span>::{
 	<span class="ident">AccountId32Aliases</span>, <span class="ident">AllowKnownQueryResponses</span>, <span class="ident">AllowSubscriptionsFrom</span>,
 	<span class="ident">AllowTopLevelPaidExecutionFrom</span>, <span class="ident">AllowUnpaidExecutionFrom</span>, <span class="ident">CurrencyAdapter</span>, <span class="ident">EnsureXcmOrigin</span>,
-	<span class="ident">FixedWeightBounds</span>, <span class="ident">IsConcrete</span>, <span class="ident">LocationInverter</span>, <span class="ident">NativeAsset</span>, <span class="ident">ParentAsSuperuser</span>,
-	<span class="ident">ParentIsPreset</span>, <span class="ident">RelayChainAsNative</span>, <span class="ident">SiblingParachainAsNative</span>, <span class="ident">SiblingParachainConvertsVia</span>,
+	<span class="ident">FixedWeightBounds</span>, <span class="ident">IsConcrete</span>, <span class="ident">LocationInverter</span>, <span class="ident">ParentAsSuperuser</span>, <span class="ident">ParentIsPreset</span>,
+	<span class="ident">RelayChainAsNative</span>, <span class="ident">SiblingParachainAsNative</span>, <span class="ident">SiblingParachainConvertsVia</span>,
 	<span class="ident">SignedAccountId32AsNative</span>, <span class="ident">SignedToAccountId32</span>, <span class="ident">SovereignSignedViaLocation</span>, <span class="ident">TakeWeightCredit</span>,
 	<span class="ident">UsingComponents</span>,
 };
@@ -337,7 +338,8 @@
 	<span class="comment">// Collectives does not recognize a reserve location for any asset. Users must teleport DOT</span>
 	<span class="comment">// where allowed (e.g. with the Relay Chain).</span>
 	<span class="kw">type</span> <span class="ident">IsReserve</span> <span class="op">=</span> ();
-	<span class="kw">type</span> <span class="ident">IsTeleporter</span> <span class="op">=</span> <span class="ident">NativeAsset</span>; <span class="comment">// &lt;- should be enough to allow teleportation of DOT</span>
+	<span class="doccomment">/// Only allow teleportation of DOT.</span>
+	<span class="kw">type</span> <span class="ident">IsTeleporter</span> <span class="op">=</span> <span class="ident">ConcreteNativeAssetFrom</span><span class="op">&lt;</span><span class="ident">DotLocation</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">LocationInverter</span> <span class="op">=</span> <span class="ident">LocationInverter</span><span class="op">&lt;</span><span class="ident">Ancestry</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">Barrier</span> <span class="op">=</span> <span class="ident">Barrier</span>;
 	<span class="kw">type</span> <span class="ident">Weigher</span> <span class="op">=</span> <span class="ident">FixedWeightBounds</span><span class="op">&lt;</span><span class="ident">UnitWeightCost</span>, <span class="ident">Call</span>, <span class="ident">MaxInstructions</span><span class="op">&gt;</span>;
