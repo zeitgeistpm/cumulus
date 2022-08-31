@@ -83,7 +83,7 @@
 
 <span class="doccomment">/// Call this during the next runtime upgrade for this module.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>() -&gt; <span class="ident">Weight</span> {
-	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">0</span>;
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">Weight::new</span>();
 
 	<span class="kw">if</span> <span class="ident">StorageVersion::get</span>::<span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">0</span> {
 		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>

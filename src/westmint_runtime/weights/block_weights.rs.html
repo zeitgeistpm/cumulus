@@ -75,7 +75,7 @@
 
 	<span class="macro">parameter_types!</span> {
 		<span class="doccomment">/// Importing a block with 0 Extrinsics.</span>
-		<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockExecutionWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">5_000_000</span> <span class="op">*</span> <span class="ident">constants::WEIGHT_PER_NANOS</span>;
+		<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockExecutionWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">constants::WEIGHT_PER_NANOS</span>.<span class="ident">scalar_saturating_mul</span>(<span class="number">5_000_000</span>);
 	}
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>

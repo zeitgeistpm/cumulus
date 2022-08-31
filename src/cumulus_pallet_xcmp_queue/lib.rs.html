@@ -1123,6 +1123,23 @@
 <span id="1117">1117</span>
 <span id="1118">1118</span>
 <span id="1119">1119</span>
+<span id="1120">1120</span>
+<span id="1121">1121</span>
+<span id="1122">1122</span>
+<span id="1123">1123</span>
+<span id="1124">1124</span>
+<span id="1125">1125</span>
+<span id="1126">1126</span>
+<span id="1127">1127</span>
+<span id="1128">1128</span>
+<span id="1129">1129</span>
+<span id="1130">1130</span>
+<span id="1131">1131</span>
+<span id="1132">1132</span>
+<span id="1133">1133</span>
+<span id="1134">1134</span>
+<span id="1135">1135</span>
+<span id="1136">1136</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1255,7 +1272,7 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// Events:</span>
 		<span class="doccomment">/// - `OverweightServiced`: On success.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">weight_limit</span>.<span class="ident">saturating_add</span>(<span class="number">1_000_000</span>), <span class="ident">DispatchClass::Operational</span>,))]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">weight_limit</span>.<span class="ident">saturating_add</span>(<span class="ident">Weight::from_ref_time</span>(<span class="number">1_000_000</span>)), <span class="ident">DispatchClass::Operational</span>,))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">service_overweight</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">index</span>: <span class="ident">OverweightIndex</span>,
@@ -1274,7 +1291,7 @@
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::WeightOverLimit</span>)<span class="question-mark">?</span>;
 			<span class="ident">Overweight</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="ident">index</span>);
 			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::OverweightServiced</span> { <span class="ident">index</span>, <span class="ident">used</span> });
-			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">used</span>.<span class="ident">saturating_add</span>(<span class="number">1_000_000</span>)).<span class="ident">into</span>())
+			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">used</span>.<span class="ident">saturating_add</span>(<span class="ident">Weight::from_ref_time</span>(<span class="number">1_000_000</span>))).<span class="ident">into</span>())
 		}
 
 		<span class="doccomment">/// Suspends all XCM executions for the XCMP queue, regardless of the sender&#39;s origin.</span>
@@ -1574,8 +1591,8 @@
 			<span class="ident">suspend_threshold</span>: <span class="number">2</span>,
 			<span class="ident">drop_threshold</span>: <span class="number">5</span>,
 			<span class="ident">resume_threshold</span>: <span class="number">1</span>,
-			<span class="ident">threshold_weight</span>: <span class="number">100_000</span>,
-			<span class="ident">weight_restrict_decay</span>: <span class="number">2</span>,
+			<span class="ident">threshold_weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="number">100_000</span>),
+			<span class="ident">weight_restrict_decay</span>: <span class="ident">Weight::from_ref_time</span>(<span class="number">2</span>),
 			<span class="ident">xcmp_max_individual_weight</span>: <span class="number">20</span> <span class="op">*</span> <span class="ident">WEIGHT_PER_MILLIS</span>,
 		}
 	}
@@ -1730,15 +1747,28 @@
 			<span class="prelude-val">Ok</span>(<span class="ident">xcm</span>) =&gt; {
 				<span class="kw">let</span> <span class="ident">location</span> <span class="op">=</span> (<span class="number">1</span>, <span class="ident">Parachain</span>(<span class="ident">sender</span>.<span class="ident">into</span>()));
 
-				<span class="kw">match</span> <span class="ident">T::XcmExecutor::execute_xcm</span>(<span class="ident">location</span>, <span class="ident">xcm</span>, <span class="ident">max_weight</span>) {
-					<span class="ident">Outcome::Error</span>(<span class="ident">e</span>) =&gt;
-						(<span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="ident">Event::Fail</span> { <span class="ident">message_hash</span>: <span class="prelude-val">Some</span>(<span class="ident">hash</span>), <span class="ident">error</span>: <span class="ident">e</span>, <span class="ident">weight</span>: <span class="number">0</span> }),
-					<span class="ident">Outcome::Complete</span>(<span class="ident">w</span>) =&gt;
-						(<span class="prelude-val">Ok</span>(<span class="ident">w</span>), <span class="ident">Event::Success</span> { <span class="ident">message_hash</span>: <span class="prelude-val">Some</span>(<span class="ident">hash</span>), <span class="ident">weight</span>: <span class="ident">w</span> }),
+				<span class="kw">match</span> <span class="ident">T::XcmExecutor::execute_xcm</span>(<span class="ident">location</span>, <span class="ident">xcm</span>, <span class="ident">max_weight</span>.<span class="ident">ref_time</span>()) {
+					<span class="ident">Outcome::Error</span>(<span class="ident">e</span>) =&gt; (
+						<span class="prelude-val">Err</span>(<span class="ident">e</span>),
+						<span class="ident">Event::Fail</span> { <span class="ident">message_hash</span>: <span class="prelude-val">Some</span>(<span class="ident">hash</span>), <span class="ident">error</span>: <span class="ident">e</span>, <span class="ident">weight</span>: <span class="ident">Weight::zero</span>() },
+					),
+					<span class="ident">Outcome::Complete</span>(<span class="ident">w</span>) =&gt; (
+						<span class="prelude-val">Ok</span>(<span class="ident">Weight::from_ref_time</span>(<span class="ident">w</span>)),
+						<span class="ident">Event::Success</span> {
+							<span class="ident">message_hash</span>: <span class="prelude-val">Some</span>(<span class="ident">hash</span>),
+							<span class="ident">weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="ident">w</span>),
+						},
+					),
 					<span class="comment">// As far as the caller is concerned, this was dispatched without error, so</span>
 					<span class="comment">// we just report the weight used.</span>
-					<span class="ident">Outcome::Incomplete</span>(<span class="ident">w</span>, <span class="ident">e</span>) =&gt;
-						(<span class="prelude-val">Ok</span>(<span class="ident">w</span>), <span class="ident">Event::Fail</span> { <span class="ident">message_hash</span>: <span class="prelude-val">Some</span>(<span class="ident">hash</span>), <span class="ident">error</span>: <span class="ident">e</span>, <span class="ident">weight</span>: <span class="ident">w</span> }),
+					<span class="ident">Outcome::Incomplete</span>(<span class="ident">w</span>, <span class="ident">e</span>) =&gt; (
+						<span class="prelude-val">Ok</span>(<span class="ident">Weight::from_ref_time</span>(<span class="ident">w</span>)),
+						<span class="ident">Event::Fail</span> {
+							<span class="ident">message_hash</span>: <span class="prelude-val">Some</span>(<span class="ident">hash</span>),
+							<span class="ident">error</span>: <span class="ident">e</span>,
+							<span class="ident">weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="ident">w</span>),
+						},
+					),
 				}
 			},
 			<span class="prelude-val">Err</span>(()) =&gt;
@@ -1757,7 +1787,7 @@
 		<span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">InboundXcmpMessages</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>);
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last_remaining_fragments</span>;
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining_fragments</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>[..];
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="number">0</span>;
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">Weight::zero</span>();
 		<span class="kw">match</span> <span class="ident">format</span> {
 			<span class="ident">XcmpMessageFormat::ConcatenatedVersionedXcm</span> =&gt; {
 				<span class="kw">while</span> <span class="op">!</span><span class="ident">remaining_fragments</span>.<span class="ident">is_empty</span>() {
@@ -1770,7 +1800,7 @@
 						<span class="kw">match</span> <span class="ident"><span class="self">Self</span>::handle_xcm_message</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">xcm</span>, <span class="ident">weight</span>) {
 							<span class="prelude-val">Ok</span>(<span class="ident">used</span>) =&gt; <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">weight_used</span>.<span class="ident">saturating_add</span>(<span class="ident">used</span>),
 							<span class="prelude-val">Err</span>(<span class="ident">XcmError::WeightLimitReached</span>(<span class="ident">required</span>))
-								<span class="kw">if</span> <span class="ident">required</span> <span class="op">&gt;</span> <span class="ident">max_individual_weight</span> =&gt;
+								<span class="kw">if</span> <span class="ident">required</span> <span class="op">&gt;</span> <span class="ident">max_individual_weight</span>.<span class="ident">ref_time</span>() =&gt;
 							{
 								<span class="comment">// overweight - add to overweight queue and continue with message</span>
 								<span class="comment">// execution consuming the message.</span>
@@ -1779,12 +1809,16 @@
 									.<span class="ident">saturating_sub</span>(<span class="ident">remaining_fragments</span>.<span class="ident">len</span>());
 								<span class="kw">let</span> <span class="ident">overweight_xcm</span> <span class="op">=</span> <span class="ident">last_remaining_fragments</span>[..<span class="ident">msg_len</span>].<span class="ident">to_vec</span>();
 								<span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::stash_overweight</span>(<span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">overweight_xcm</span>);
-								<span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span>
-									<span class="ident">Event::OverweightEnqueued</span> { <span class="ident">sender</span>, <span class="ident">sent_at</span>, <span class="ident">index</span>, <span class="ident">required</span> };
+								<span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">Event::OverweightEnqueued</span> {
+									<span class="ident">sender</span>,
+									<span class="ident">sent_at</span>,
+									<span class="ident">index</span>,
+									<span class="ident">required</span>: <span class="ident">Weight::from_ref_time</span>(<span class="ident">required</span>),
+								};
 								<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">e</span>);
 							},
 							<span class="prelude-val">Err</span>(<span class="ident">XcmError::WeightLimitReached</span>(<span class="ident">required</span>))
-								<span class="kw">if</span> <span class="ident">required</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">max_weight</span> =&gt;
+								<span class="kw">if</span> <span class="ident">required</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">max_weight</span>.<span class="ident">ref_time</span>() =&gt;
 							{
 								<span class="comment">// That message didn&#39;t get processed this time because of being</span>
 								<span class="comment">// too heavy. We leave it around for next time and bail.</span>
@@ -1891,7 +1925,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">InboundXcmpStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>(); <span class="comment">// &lt;- sorted.</span>
 		<span class="kw">if</span> <span class="ident">status</span>.<span class="ident">is_empty</span>() {
-			<span class="kw">return</span> <span class="number">0</span>
+			<span class="kw">return</span> <span class="ident">Weight::zero</span>()
 		}
 
 		<span class="kw">let</span> <span class="ident">QueueConfigData</span> {
@@ -1903,8 +1937,8 @@
 		} <span class="op">=</span> <span class="op">&lt;</span><span class="ident">QueueConfig</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shuffled</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::create_shuffle</span>(<span class="ident">status</span>.<span class="ident">len</span>());
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="number">0</span>;
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_available</span> <span class="op">=</span> <span class="number">0</span>;
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">Weight::new</span>();
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_available</span> <span class="op">=</span> <span class="ident">Weight::new</span>();
 
 		<span class="comment">// We don&#39;t want the possibility of a chain sending a series of really heavy messages and</span>
 		<span class="comment">// tying up the block&#39;s execution time from other chains. Therefore we execute any remaining</span>
@@ -1938,7 +1972,7 @@
 				<span class="comment">// on the first round to unlocking everything, then we do so.</span>
 				<span class="kw">if</span> <span class="ident">shuffle_index</span> <span class="op">&lt;</span> <span class="ident">status</span>.<span class="ident">len</span>() {
 					<span class="ident">weight_available</span> <span class="op">+</span><span class="op">=</span>
-						(<span class="ident">max_weight</span> <span class="op">-</span> <span class="ident">weight_available</span>) <span class="op">/</span> (<span class="ident">weight_restrict_decay</span> <span class="op">+</span> <span class="number">1</span>);
+						(<span class="ident">max_weight</span> <span class="op">-</span> <span class="ident">weight_available</span>) <span class="op">/</span> (<span class="ident">weight_restrict_decay</span>.<span class="ident">ref_time</span>() <span class="op">+</span> <span class="number">1</span>);
 					<span class="kw">if</span> <span class="ident">weight_available</span> <span class="op">+</span> <span class="ident">threshold_weight</span> <span class="op">&gt;</span> <span class="ident">max_weight</span> {
 						<span class="ident">weight_available</span> <span class="op">=</span> <span class="ident">max_weight</span>;
 					}
@@ -1949,7 +1983,7 @@
 
 			<span class="kw">let</span> <span class="ident">weight_processed</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">message_metadata</span>.<span class="ident">is_empty</span>() {
 				<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>, <span class="string">&quot;channel exists in status; there must be messages; qed&quot;</span>);
-				<span class="number">0</span>
+				<span class="ident">Weight::zero</span>()
 			} <span class="kw">else</span> {
 				<span class="comment">// Process up to one block&#39;s worth for now.</span>
 				<span class="kw">let</span> <span class="ident">weight_remaining</span> <span class="op">=</span> <span class="ident">weight_available</span>.<span class="ident">saturating_sub</span>(<span class="ident">weight_used</span>);
@@ -1979,7 +2013,7 @@
 			<span class="comment">// other channels a look in. If we&#39;ve still not unlocked all weight, then we set them</span>
 			<span class="comment">// up for processing a second time anyway.</span>
 			<span class="kw">if</span> <span class="op">!</span><span class="ident">status</span>[<span class="ident">index</span>].<span class="ident">message_metadata</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span>
-				(<span class="ident">weight_processed</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">weight_available</span> <span class="op">!</span><span class="op">=</span> <span class="ident">max_weight</span>)
+				(<span class="ident">weight_processed</span> <span class="op">&gt;</span> <span class="ident">Weight::zero</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">weight_available</span> <span class="op">!</span><span class="op">=</span> <span class="ident">max_weight</span>)
 			{
 				<span class="kw">if</span> <span class="ident">shuffle_index</span> <span class="op">+</span> <span class="number">1</span> <span class="op">==</span> <span class="ident">shuffled</span>.<span class="ident">len</span>() {
 					<span class="comment">// Only this queue left. Just run around this loop once more.</span>

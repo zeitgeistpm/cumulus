@@ -221,7 +221,6 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
-<span id="218">218</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -244,7 +243,6 @@
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">match_types</span>, <span class="ident">parameter_types</span>,
 	<span class="ident">traits</span>::{<span class="ident">Everything</span>, <span class="ident">Nothing</span>, <span class="ident">PalletInfoAccess</span>},
-	<span class="ident">weights::Weight</span>,
 };
 <span class="kw">use</span> <span class="ident">pallet_xcm::XcmPassthrough</span>;
 <span class="kw">use</span> <span class="ident">parachains_common</span>::{
@@ -351,7 +349,7 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="comment">// One XCM operation is 1_000_000_000 weight - almost certainly a conservative estimate.</span>
-	<span class="kw">pub</span> <span class="ident">UnitWeightCost</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
+	<span class="kw">pub</span> <span class="ident">UnitWeightCost</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxInstructions</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 	<span class="kw">pub</span> <span class="ident">XcmAssetFeesReceiver</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Authorship::author</span>();
 }

@@ -889,7 +889,7 @@
 <span class="doccomment">/// by  Operational  extrinsics.</span>
 <span class="kw">const</span> <span class="ident">NORMAL_DISPATCH_RATIO</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::from_percent</span>(<span class="number">75</span>);
 <span class="doccomment">/// We allow for .5 seconds of compute with a 12 second average block time.</span>
-<span class="kw">const</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">WEIGHT_PER_SECOND</span> <span class="op">/</span> <span class="number">2</span>;
+<span class="kw">const</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">WEIGHT_PER_SECOND</span>.<span class="ident">scalar_div</span>(<span class="number">2</span>);
 
 <span class="macro">parameter_types!</span> {
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockHashCount</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">250</span>;
@@ -1011,8 +1011,8 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedXcmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span> <span class="op">/</span> <span class="number">4</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedDmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span> <span class="op">/</span> <span class="number">4</span>;
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedXcmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>.<span class="ident">scalar_div</span>(<span class="number">4</span>);
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedDmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>.<span class="ident">scalar_div</span>(<span class="number">4</span>);
 }
 
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_parachain_system::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
@@ -1115,7 +1115,7 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="comment">// One XCM operation is 1_000_000_000 weight - almost certainly a conservative estimate.</span>
-	<span class="kw">pub</span> <span class="ident">UnitWeightCost</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
+	<span class="kw">pub</span> <span class="ident">UnitWeightCost</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
 	<span class="comment">// One ROC buys 1 second of weight.</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WeightPrice</span>: (<span class="ident">MultiLocation</span>, <span class="ident">u128</span>) <span class="op">=</span> (<span class="ident">MultiLocation::parent</span>(), <span class="ident">ROC</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxInstructions</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;

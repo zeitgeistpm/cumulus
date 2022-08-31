@@ -273,6 +273,11 @@
 <span id="267">267</span>
 <span id="268">268</span>
 <span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -303,7 +308,10 @@
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">traits::Saturating</span>, <span class="ident">SaturatedConversion</span>};
 
 <span class="kw">use</span> <span class="ident">sp_std::marker::PhantomData</span>;
-<span class="kw">use</span> <span class="ident">xcm</span>::{<span class="ident">latest::prelude</span>::<span class="kw-2">*</span>, <span class="ident">WrapVersion</span>};
+<span class="kw">use</span> <span class="ident">xcm</span>::{
+	<span class="ident">latest</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Weight</span> <span class="kw">as</span> <span class="ident">XCMWeight</span>},
+	<span class="ident">WrapVersion</span>,
+};
 <span class="kw">use</span> <span class="ident">xcm_builder::TakeRevenue</span>;
 <span class="kw">use</span> <span class="ident">xcm_executor::traits</span>::{<span class="ident">MatchesFungibles</span>, <span class="ident">TransactAsset</span>, <span class="ident">WeightTrader</span>};
 <span class="doccomment">/// Xcm router which recognises the `Parent` destination and handles it by sending the message into</span>
@@ -380,7 +388,7 @@
 	<span class="comment">// If everything goes well, we charge.</span>
 	<span class="kw">fn</span> <span class="ident">buy_weight</span>(
 		<span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-		<span class="ident">weight</span>: <span class="ident">Weight</span>,
+		<span class="ident">weight</span>: <span class="ident">XCMWeight</span>,
 		<span class="ident">payment</span>: <span class="ident">xcm_executor::Assets</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">xcm_executor::Assets</span>, <span class="ident">XcmError</span><span class="op">&gt;</span> {
 		<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="string">&quot;xcm::weight&quot;</span>, <span class="string">&quot;TakeFirstAssetTrader::buy_weight weight: {:?}, payment: {:?}&quot;</span>, <span class="ident">weight</span>, <span class="ident">payment</span>);
@@ -389,6 +397,8 @@
 		<span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">is_some</span>() {
 			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">XcmError::NotWithdrawable</span>)
 		}
+
+		<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">Weight::from_ref_time</span>(<span class="ident">weight</span>);
 
 		<span class="comment">// We take the very first multiasset from payment</span>
 		<span class="kw">let</span> <span class="ident">multiassets</span>: <span class="ident">MultiAssets</span> <span class="op">=</span> <span class="ident">payment</span>.<span class="ident">clone</span>().<span class="ident">into</span>();
@@ -430,14 +440,14 @@
 		<span class="prelude-val">Ok</span>(<span class="ident">unused</span>)
 	}
 
-	<span class="kw">fn</span> <span class="ident">refund_weight</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">weight</span>: <span class="ident">Weight</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MultiAsset</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">refund_weight</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">weight</span>: <span class="ident">XCMWeight</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MultiAsset</span><span class="op">&gt;</span> {
 		<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="string">&quot;xcm::weight&quot;</span>, <span class="string">&quot;TakeFirstAssetTrader::refund_weight weight: {:?}&quot;</span>, <span class="ident">weight</span>);
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">AssetTraderRefunder</span> {
 			<span class="kw-2">mut</span> <span class="ident">weight_outstanding</span>,
 			<span class="ident">outstanding_concrete_asset</span>: <span class="ident">MultiAsset</span> { <span class="ident">id</span>, <span class="ident">fun</span> },
 		}) <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>()
 		{
-			<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">min</span>(<span class="ident">weight_outstanding</span>);
+			<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">Weight::from_ref_time</span>(<span class="ident">weight</span>).<span class="ident">min</span>(<span class="ident">weight_outstanding</span>);
 
 			<span class="comment">// Get the local asset id in which we can refund fees</span>
 			<span class="kw">let</span> (<span class="ident">local_asset_id</span>, <span class="ident">outstanding_balance</span>) <span class="op">=</span>

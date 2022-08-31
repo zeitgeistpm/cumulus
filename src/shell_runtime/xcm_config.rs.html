@@ -94,7 +94,7 @@
 <span class="comment">// limitations under the License.</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">AccountId</span>, <span class="ident">Call</span>, <span class="ident">Event</span>, <span class="ident">Origin</span>, <span class="ident">ParachainInfo</span>, <span class="ident">Runtime</span>};
-<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">match_types</span>, <span class="ident">parameter_types</span>, <span class="ident">weights::Weight</span>};
+<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">match_types</span>, <span class="ident">parameter_types</span>};
 <span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">xcm_builder</span>::{
 	<span class="ident">AllowUnpaidExecutionFrom</span>, <span class="ident">FixedWeightBounds</span>, <span class="ident">LocationInverter</span>, <span class="ident">ParentAsSuperuser</span>,
@@ -126,7 +126,7 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="comment">// One XCM operation is 1_000_000_000 weight - almost certainly a conservative estimate.</span>
-	<span class="kw">pub</span> <span class="ident">UnitWeightCost</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
+	<span class="kw">pub</span> <span class="ident">UnitWeightCost</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxInstructions</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 }
 

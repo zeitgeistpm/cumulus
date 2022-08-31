@@ -102,9 +102,9 @@
 		<span class="ident">RuntimeBlockWeights::get</span>().<span class="ident">max_block</span>;
 	<span class="comment">// The weight needed for decoding the queue should be less or equal than a fifth</span>
 	<span class="comment">// of the overall weight dedicated to the lazy deletion.</span>
-	<span class="kw">pub</span> <span class="ident">DeletionQueueDepth</span>: <span class="ident">u32</span> <span class="op">=</span> ((<span class="ident">DeletionWeightLimit::get</span>() <span class="op">/</span> (
-			<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::on_initialize_per_queue_item</span>(<span class="number">1</span>) <span class="op">-</span>
-			<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::on_initialize_per_queue_item</span>(<span class="number">0</span>)
+	<span class="kw">pub</span> <span class="ident">DeletionQueueDepth</span>: <span class="ident">u32</span> <span class="op">=</span> ((<span class="ident">DeletionWeightLimit::get</span>().<span class="ident">ref_time</span>() <span class="op">/</span> (
+			<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::on_initialize_per_queue_item</span>(<span class="number">1</span>).<span class="ident">ref_time</span>() <span class="op">-</span>
+			<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::on_initialize_per_queue_item</span>(<span class="number">0</span>).<span class="ident">ref_time</span>()
 		)) <span class="op">/</span> <span class="number">5</span>) <span class="kw">as</span> <span class="ident">u32</span>;
 	<span class="kw">pub</span> <span class="ident">MySchedule</span>: <span class="ident">Schedule</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
 }

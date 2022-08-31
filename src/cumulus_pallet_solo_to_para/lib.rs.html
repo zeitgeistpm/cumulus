@@ -357,7 +357,7 @@
 
 			<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">who</span> <span class="op">==</span> <span class="ident">root_account</span> {
 				<span class="prelude-val">Ok</span>(<span class="ident">ValidTransaction</span> {
-					<span class="ident">priority</span>: <span class="ident">info</span>.<span class="ident">weight</span> <span class="kw">as</span> <span class="ident">TransactionPriority</span>,
+					<span class="ident">priority</span>: <span class="ident">info</span>.<span class="ident">weight</span>.<span class="ident">ref_time</span>() <span class="kw">as</span> <span class="ident">TransactionPriority</span>,
 					<span class="ident">longevity</span>: <span class="ident">TransactionLongevity::max_value</span>(),
 					<span class="ident">propagate</span>: <span class="bool-val">true</span>,
 					..<span class="ident">Default::default</span>()

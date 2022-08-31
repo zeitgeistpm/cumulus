@@ -811,6 +811,10 @@
 <span id="805">805</span>
 <span id="806">806</span>
 <span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -841,6 +845,7 @@
 };
 <span class="kw">use</span> <span class="ident">url::Url</span>;
 
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::runtime::Weight</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_cli::CollatorOptions</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_consensus_common</span>::{<span class="ident">ParachainCandidate</span>, <span class="ident">ParachainConsensus</span>};
 <span class="kw">use</span> <span class="ident">cumulus_client_network::BlockAnnounceValidator</span>;
@@ -1530,7 +1535,10 @@
 		<span class="kw">let</span> <span class="ident">call</span> <span class="op">=</span> <span class="ident">frame_system::Call::set_code</span> { <span class="ident">code</span>: <span class="ident">validation</span> };
 
 		<span class="self">self</span>.<span class="ident">send_extrinsic</span>(
-			<span class="ident">runtime::SudoCall::sudo_unchecked_weight</span> { <span class="ident">call</span>: <span class="ident">Box::new</span>(<span class="ident">call</span>.<span class="ident">into</span>()), <span class="ident">weight</span>: <span class="number">1_000</span> },
+			<span class="ident">runtime::SudoCall::sudo_unchecked_weight</span> {
+				<span class="ident">call</span>: <span class="ident">Box::new</span>(<span class="ident">call</span>.<span class="ident">into</span>()),
+				<span class="ident">weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="number">1_000</span>),
+			},
 			<span class="ident">Sr25519Keyring::Alice</span>,
 		)
 		.<span class="kw">await</span>
