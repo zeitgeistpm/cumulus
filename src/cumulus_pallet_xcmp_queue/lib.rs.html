@@ -1593,7 +1593,7 @@
 			<span class="ident">resume_threshold</span>: <span class="number">1</span>,
 			<span class="ident">threshold_weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="number">100_000</span>),
 			<span class="ident">weight_restrict_decay</span>: <span class="ident">Weight::from_ref_time</span>(<span class="number">2</span>),
-			<span class="ident">xcmp_max_individual_weight</span>: <span class="number">20</span> <span class="op">*</span> <span class="ident">WEIGHT_PER_MILLIS</span>,
+			<span class="ident">xcmp_max_individual_weight</span>: <span class="number">20u64</span> <span class="op">*</span> <span class="ident">WEIGHT_PER_MILLIS</span>,
 		}
 	}
 }
@@ -1937,8 +1937,8 @@
 		} <span class="op">=</span> <span class="op">&lt;</span><span class="ident">QueueConfig</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shuffled</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::create_shuffle</span>(<span class="ident">status</span>.<span class="ident">len</span>());
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">Weight::new</span>();
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_available</span> <span class="op">=</span> <span class="ident">Weight::new</span>();
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_used</span> <span class="op">=</span> <span class="ident">Weight::zero</span>();
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_available</span> <span class="op">=</span> <span class="ident">Weight::zero</span>();
 
 		<span class="comment">// We don&#39;t want the possibility of a chain sending a series of really heavy messages and</span>
 		<span class="comment">// tying up the block&#39;s execution time from other chains. Therefore we execute any remaining</span>
