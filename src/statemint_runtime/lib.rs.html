@@ -893,6 +893,106 @@
 <span id="887">887</span>
 <span id="888">888</span>
 <span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
+<span id="986">986</span>
+<span id="987">987</span>
+<span id="988">988</span>
+<span id="989">989</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1562,6 +1662,10 @@
 		[<span class="ident">pallet_timestamp</span>, <span class="ident">Timestamp</span>]
 		[<span class="ident">pallet_collator_selection</span>, <span class="ident">CollatorSelection</span>]
 		[<span class="ident">cumulus_pallet_xcmp_queue</span>, <span class="ident">XcmpQueue</span>]
+		<span class="comment">// XCM</span>
+		<span class="comment">// NOTE: Make sure you point to the individual modules below.</span>
+		[<span class="ident">pallet_xcm_benchmarks::fungible</span>, <span class="ident">XcmBalances</span>]
+		[<span class="ident">pallet_xcm_benchmarks::generic</span>, <span class="ident">XcmGeneric</span>]
 	);
 }
 
@@ -1708,10 +1812,17 @@
 			<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_benchmarking::BenchmarkList</span><span class="op">&gt;</span>,
 			<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_support::traits::StorageInfo</span><span class="op">&gt;</span>,
 		) {
+
 			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkList</span>};
 			<span class="kw">use</span> <span class="ident">frame_support::traits::StorageInfoTrait</span>;
 			<span class="kw">use</span> <span class="ident">frame_system_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SystemBench</span>;
 			<span class="kw">use</span> <span class="ident">cumulus_pallet_session_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SessionBench</span>;
+
+			<span class="comment">// This is defined once again in dispatch_benchmark, because list_benchmarks!</span>
+			<span class="comment">// and add_benchmarks! are macros exported by define_benchmarks! macros and those types</span>
+			<span class="comment">// are referenced in that call.</span>
+			<span class="kw">type</span> <span class="ident">XcmBalances</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::fungible::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+			<span class="kw">type</span> <span class="ident">XcmGeneric</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::generic::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">BenchmarkList</span><span class="op">&gt;</span><span class="ident">::new</span>();
 			<span class="macro">list_benchmarks!</span>(<span class="ident">list</span>, <span class="ident">extra</span>);
@@ -1723,13 +1834,101 @@
 		<span class="kw">fn</span> <span class="ident">dispatch_benchmark</span>(
 			<span class="ident">config</span>: <span class="ident">frame_benchmarking::BenchmarkConfig</span>
 		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_benchmarking::BenchmarkBatch</span><span class="op">&gt;</span>, <span class="ident">sp_runtime::RuntimeString</span><span class="op">&gt;</span> {
-			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkBatch</span>, <span class="ident">TrackedStorageKey</span>};
+			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkBatch</span>, <span class="ident">TrackedStorageKey</span>, <span class="ident">BenchmarkError</span>};
 
 			<span class="kw">use</span> <span class="ident">frame_system_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SystemBench</span>;
 			<span class="kw">impl</span> <span class="ident">frame_system_benchmarking::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
 			<span class="kw">use</span> <span class="ident">cumulus_pallet_session_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SessionBench</span>;
 			<span class="kw">impl</span> <span class="ident">cumulus_pallet_session_benchmarking::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
+
+			<span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
+			<span class="kw">use</span> <span class="ident">xcm_config::DotLocation</span>;
+			<span class="kw">use</span> <span class="ident">pallet_xcm_benchmarks::asset_instance_from</span>;
+
+			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+				<span class="kw">type</span> <span class="ident">XcmConfig</span> <span class="op">=</span> <span class="ident">xcm_config::XcmConfig</span>;
+				<span class="kw">type</span> <span class="ident">AccountIdConverter</span> <span class="op">=</span> <span class="ident">xcm_config::LocationToAccountId</span>;
+				<span class="kw">fn</span> <span class="ident">valid_destination</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">DotLocation::get</span>())
+				}
+				<span class="kw">fn</span> <span class="ident">worst_case_holding</span>() -&gt; <span class="ident">MultiAssets</span> {
+					<span class="comment">// A mix of fungible, non-fungible, and concrete assets.</span>
+					<span class="kw">const</span> <span class="ident">HOLDING_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
+					<span class="kw">const</span> <span class="ident">HOLDING_NON_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
+					<span class="kw">let</span> <span class="ident">fungibles_amount</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">100</span>;
+					<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">assets</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">HOLDING_FUNGIBLES</span>)
+						.<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
+							<span class="ident">MultiAsset</span> {
+								<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">GeneralIndex</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u128</span>).<span class="ident">into</span>()),
+								<span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="ident">fungibles_amount</span> <span class="op">*</span> <span class="ident">i</span> <span class="kw">as</span> <span class="ident">u128</span>),
+							}
+							.<span class="ident">into</span>()
+						})
+						.<span class="ident">chain</span>(<span class="ident">core::iter::once</span>(<span class="ident">MultiAsset</span> { <span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">Here</span>.<span class="ident">into</span>()), <span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="ident">u128::MAX</span>) }))
+						.<span class="ident">chain</span>((<span class="number">0</span>..<span class="ident">HOLDING_NON_FUNGIBLES</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">MultiAsset</span> {
+							<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">GeneralIndex</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u128</span>).<span class="ident">into</span>()),
+							<span class="ident">fun</span>: <span class="ident">NonFungible</span>(<span class="ident">asset_instance_from</span>(<span class="ident">i</span>)),
+						}))
+						.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+
+						<span class="ident">assets</span>.<span class="ident">push</span>(<span class="ident">MultiAsset</span>{
+							<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">DotLocation::get</span>()),
+							<span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">UNITS</span>),
+						});
+						<span class="ident">assets</span>.<span class="ident">into</span>()
+				}
+			}
+
+			<span class="macro">parameter_types!</span> {
+				<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TrustedTeleporter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiAsset</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">Some</span>((
+					<span class="ident">DotLocation::get</span>(),
+					<span class="ident">MultiAsset</span> { <span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="number">1</span> <span class="op">*</span> <span class="ident">UNITS</span>), <span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">DotLocation::get</span>()) },
+				));
+				<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TrustedReserve</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiAsset</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+				<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CheckedAccount</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+			}
+
+			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::fungible::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+				<span class="kw">type</span> <span class="ident">TransactAsset</span> <span class="op">=</span> <span class="ident">Balances</span>;
+
+				<span class="kw">type</span> <span class="ident">CheckedAccount</span> <span class="op">=</span> <span class="ident">CheckedAccount</span>;
+				<span class="kw">type</span> <span class="ident">TrustedTeleporter</span> <span class="op">=</span> <span class="ident">TrustedTeleporter</span>;
+				<span class="kw">type</span> <span class="ident">TrustedReserve</span> <span class="op">=</span> <span class="ident">TrustedReserve</span>;
+
+				<span class="kw">fn</span> <span class="ident">get_multi_asset</span>() -&gt; <span class="ident">MultiAsset</span> {
+					<span class="ident">MultiAsset</span> {
+						<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">DotLocation::get</span>()),
+						<span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="number">1</span> <span class="op">*</span> <span class="ident">UNITS</span>),
+					}
+				}
+			}
+
+			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::generic::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+				<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
+
+				<span class="kw">fn</span> <span class="ident">worst_case_response</span>() -&gt; (<span class="ident">u64</span>, <span class="ident">Response</span>) {
+					(<span class="number">0u64</span>, <span class="ident">Response::Version</span>(<span class="ident">Default::default</span>()))
+				}
+
+				<span class="kw">fn</span> <span class="ident">transact_origin</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">DotLocation::get</span>())
+				}
+
+				<span class="kw">fn</span> <span class="ident">subscribe_origin</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">DotLocation::get</span>())
+				}
+
+				<span class="kw">fn</span> <span class="ident">claimable_asset</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiLocation</span>, <span class="ident">MultiAssets</span>), <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">DotLocation::get</span>();
+					<span class="kw">let</span> <span class="ident">assets</span>: <span class="ident">MultiAssets</span> <span class="op">=</span> (<span class="ident">Concrete</span>(<span class="ident">DotLocation::get</span>()), <span class="number">1_000</span> <span class="op">*</span> <span class="ident">UNITS</span>).<span class="ident">into</span>();
+					<span class="kw">let</span> <span class="ident">ticket</span> <span class="op">=</span> <span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">0</span>, <span class="ident">interior</span>: <span class="ident">Here</span> };
+					<span class="prelude-val">Ok</span>((<span class="ident">origin</span>, <span class="ident">ticket</span>, <span class="ident">assets</span>))
+				}
+			}
+
+			<span class="kw">type</span> <span class="ident">XcmBalances</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::fungible::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+			<span class="kw">type</span> <span class="ident">XcmGeneric</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::generic::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 
 			<span class="kw">let</span> <span class="ident">whitelist</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TrackedStorageKey</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[
 				<span class="comment">// Block Number</span>
@@ -1742,13 +1941,14 @@
 				<span class="macro">hex_literal::hex!</span>(<span class="string">&quot;26aa394eea5630e07c48ae0c9558cef70a98fdbe9ce6c55837576c60c7af3850&quot;</span>).<span class="ident">to_vec</span>().<span class="ident">into</span>(),
 				<span class="comment">// System Events</span>
 				<span class="macro">hex_literal::hex!</span>(<span class="string">&quot;26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7&quot;</span>).<span class="ident">to_vec</span>().<span class="ident">into</span>(),
+				<span class="comment">//TODO: use from relay_well_known_keys::ACTIVE_CONFIG</span>
+				<span class="macro">hex_literal::hex!</span>(<span class="string">&quot;06de3d8a54d27e44a9d5ce189618f22db4b49d95320d9021994c850f25b8e385&quot;</span>).<span class="ident">to_vec</span>().<span class="ident">into</span>(),
 			];
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batches</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">BenchmarkBatch</span><span class="op">&gt;</span><span class="ident">::new</span>();
 			<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="ident">config</span>, <span class="kw-2">&amp;</span><span class="ident">whitelist</span>);
 			<span class="macro">add_benchmarks!</span>(<span class="ident">params</span>, <span class="ident">batches</span>);
 
-			<span class="kw">if</span> <span class="ident">batches</span>.<span class="ident">is_empty</span>() { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Benchmark not found for this pallet.&quot;</span>.<span class="ident">into</span>()) }
 			<span class="prelude-val">Ok</span>(<span class="ident">batches</span>)
 		}
 	}
