@@ -660,6 +660,13 @@
 <span id="654">654</span>
 <span id="655">655</span>
 <span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2018-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0</span>
 <span class="comment">//</span>
@@ -1231,8 +1238,15 @@
 			(<span class="ident">weight</span>, <span class="ident">RuntimeBlockWeights::get</span>().<span class="ident">max_block</span>)
 		}
 
-		<span class="kw">fn</span> <span class="ident">execute_block_no_check</span>(<span class="ident">block</span>: <span class="ident">Block</span>) -&gt; <span class="ident">Weight</span> {
-			<span class="ident">Executive::execute_block_no_check</span>(<span class="ident">block</span>)
+		<span class="kw">fn</span> <span class="ident">execute_block</span>(<span class="ident">block</span>: <span class="ident">Block</span>, <span class="ident">state_root_check</span>: <span class="ident">bool</span>, <span class="ident">select</span>: <span class="ident">frame_try_runtime::TryStateSelect</span>) -&gt; <span class="ident">Weight</span> {
+			<span class="macro">log::info!</span>(
+				<span class="ident">target</span>: <span class="string">&quot;runtime::contracts&quot;</span>, <span class="string">&quot;try-runtime: executing block #{} ({:?}) / root checks: {:?} / sanity-checks: {:?}&quot;</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">number</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">hash</span>(),
+				<span class="ident">state_root_check</span>,
+				<span class="ident">select</span>,
+			);
+			<span class="ident">Executive::try_execute_block</span>(<span class="ident">block</span>, <span class="ident">state_root_check</span>, <span class="ident">select</span>).<span class="ident">expect</span>(<span class="string">&quot;try_execute_block failed&quot;</span>)
 		}
 	}
 

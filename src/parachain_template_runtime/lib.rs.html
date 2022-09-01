@@ -735,6 +735,13 @@
 <span id="729">729</span>
 <span id="730">730</span>
 <span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="comment">// `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;256&quot;</span>]</span>
@@ -1381,8 +1388,15 @@
 			(<span class="ident">weight</span>, <span class="ident">RuntimeBlockWeights::get</span>().<span class="ident">max_block</span>)
 		}
 
-		<span class="kw">fn</span> <span class="ident">execute_block_no_check</span>(<span class="ident">block</span>: <span class="ident">Block</span>) -&gt; <span class="ident">Weight</span> {
-			<span class="ident">Executive::execute_block_no_check</span>(<span class="ident">block</span>)
+		<span class="kw">fn</span> <span class="ident">execute_block</span>(<span class="ident">block</span>: <span class="ident">Block</span>, <span class="ident">state_root_check</span>: <span class="ident">bool</span>, <span class="ident">select</span>: <span class="ident">frame_try_runtime::TryStateSelect</span>) -&gt; <span class="ident">Weight</span> {
+			<span class="macro">log::info!</span>(
+				<span class="ident">target</span>: <span class="string">&quot;runtime::parachain-template&quot;</span>, <span class="string">&quot;try-runtime: executing block #{} ({:?}) / root checks: {:?} / sanity-checks: {:?}&quot;</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">number</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">hash</span>(),
+				<span class="ident">state_root_check</span>,
+				<span class="ident">select</span>,
+			);
+			<span class="ident">Executive::try_execute_block</span>(<span class="ident">block</span>, <span class="ident">state_root_check</span>, <span class="ident">select</span>).<span class="ident">expect</span>(<span class="string">&quot;try_execute_block failed&quot;</span>)
 		}
 	}
 

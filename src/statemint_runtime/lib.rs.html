@@ -993,6 +993,13 @@
 <span id="987">987</span>
 <span id="988">988</span>
 <span id="989">989</span>
+<span id="990">990</span>
+<span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1801,8 +1808,15 @@
 			(<span class="ident">weight</span>, <span class="ident">RuntimeBlockWeights::get</span>().<span class="ident">max_block</span>)
 		}
 
-		<span class="kw">fn</span> <span class="ident">execute_block_no_check</span>(<span class="ident">block</span>: <span class="ident">Block</span>) -&gt; <span class="ident">Weight</span> {
-			<span class="ident">Executive::execute_block_no_check</span>(<span class="ident">block</span>)
+		<span class="kw">fn</span> <span class="ident">execute_block</span>(<span class="ident">block</span>: <span class="ident">Block</span>, <span class="ident">state_root_check</span>: <span class="ident">bool</span>, <span class="ident">select</span>: <span class="ident">frame_try_runtime::TryStateSelect</span>) -&gt; <span class="ident">Weight</span> {
+			<span class="macro">log::info!</span>(
+				<span class="ident">target</span>: <span class="string">&quot;runtime::statemint&quot;</span>, <span class="string">&quot;try-runtime: executing block #{} ({:?}) / root checks: {:?} / sanity-checks: {:?}&quot;</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">number</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">hash</span>(),
+				<span class="ident">state_root_check</span>,
+				<span class="ident">select</span>,
+			);
+			<span class="ident">Executive::try_execute_block</span>(<span class="ident">block</span>, <span class="ident">state_root_check</span>, <span class="ident">select</span>).<span class="ident">expect</span>(<span class="string">&quot;try_execute_block failed&quot;</span>)
 		}
 	}
 
