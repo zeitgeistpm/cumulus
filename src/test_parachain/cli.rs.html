@@ -490,7 +490,7 @@
 	<span class="kw">fn</span> <span class="ident">base_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">CliResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BasePath</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Ok</span>(<span class="self">self</span>
 			.<span class="ident">shared_params</span>()
-			.<span class="ident">base_path</span>()
+			.<span class="ident">base_path</span>()<span class="question-mark">?</span>
 			.<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">base_path</span>.<span class="ident">clone</span>().<span class="ident">map</span>(<span class="ident">Into::into</span>)))
 	}
 
