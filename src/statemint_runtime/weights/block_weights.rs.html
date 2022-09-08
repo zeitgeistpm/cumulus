@@ -53,6 +53,9 @@
 <span id="47">47</span>
 <span id="48">48</span>
 <span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
 </pre><pre class="rust"><code><span class="comment">// This file is part of Substrate.</span>
 
 <span class="comment">// Copyright (C) 2022 Parity Technologies (UK) Ltd.</span>
@@ -94,11 +97,14 @@
 
 			<span class="comment">// At least 100 µs.</span>
 			<span class="macro">assert!</span>(
-				<span class="ident">w</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">100u64</span> <span class="op">*</span> <span class="ident">constants::WEIGHT_PER_MICROS</span>,
+				<span class="ident">w</span>.<span class="ident">ref_time</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">100u64</span> <span class="op">*</span> <span class="ident">constants::WEIGHT_PER_MICROS</span>.<span class="ident">ref_time</span>(),
 				<span class="string">&quot;Weight should be at least 100 µs.&quot;</span>
 			);
 			<span class="comment">// At most 50 ms.</span>
-			<span class="macro">assert!</span>(<span class="ident">w</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">50u64</span> <span class="op">*</span> <span class="ident">constants::WEIGHT_PER_MILLIS</span>, <span class="string">&quot;Weight should be at most 50 ms.&quot;</span>);
+			<span class="macro">assert!</span>(
+				<span class="ident">w</span>.<span class="ident">ref_time</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">50u64</span> <span class="op">*</span> <span class="ident">constants::WEIGHT_PER_MILLIS</span>.<span class="ident">ref_time</span>(),
+				<span class="string">&quot;Weight should be at most 50 ms.&quot;</span>
+			);
 		}
 	}
 }

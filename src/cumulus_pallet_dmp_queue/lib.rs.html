@@ -1093,7 +1093,7 @@
 						<span class="prelude-val">Err</span>((<span class="ident">message_id</span>, <span class="ident">required_weight</span>)) =&gt;
 						<span class="comment">// Too much weight required right now.</span>
 						{
-							<span class="kw">if</span> <span class="ident">required_weight</span> <span class="op">&gt;</span> <span class="ident">config</span>.<span class="ident">max_individual</span> {
+							<span class="kw">if</span> <span class="ident">required_weight</span>.<span class="ident">any_gt</span>(<span class="ident">config</span>.<span class="ident">max_individual</span>) {
 								<span class="comment">// overweight - add to overweight queue and continue with</span>
 								<span class="comment">// message execution.</span>
 								<span class="kw">let</span> <span class="ident">overweight_index</span> <span class="op">=</span> <span class="ident">page_index</span>.<span class="ident">overweight_count</span>;
