@@ -287,13 +287,13 @@
 	<span class="attribute">#[<span class="ident">pallet::config</span>]</span>
 	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Config</span>: <span class="ident">frame_system::Config</span> {
 		<span class="doccomment">/// The overarching event type.</span>
-		<span class="kw">type</span> <span class="ident">Event</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IsType</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Event</span><span class="op">&gt;</span>;
+		<span class="kw">type</span> <span class="ident">RuntimeEvent</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IsType</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::RuntimeEvent</span><span class="op">&gt;</span>;
 
 		<span class="kw">type</span> <span class="ident">Origin</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">SystemConfig</span><span class="op">&gt;</span><span class="ident">::Origin</span><span class="op">&gt;</span>
 			<span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CumulusOrigin</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Origin</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// The overarching call type; we assume sibling chains use the same type.</span>
-		<span class="kw">type</span> <span class="ident">Call</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Call</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Encode</span>;
+		<span class="kw">type</span> <span class="ident">RuntimeCall</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Call</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Encode</span>;
 
 		<span class="kw">type</span> <span class="ident">XcmSender</span>: <span class="ident">SendXcm</span>;
 	}
@@ -348,7 +348,7 @@
 					<span class="ident">Xcm</span>(<span class="macro">vec!</span>[<span class="ident">Transact</span> {
 						<span class="ident">origin_type</span>: <span class="ident">OriginKind::Native</span>,
 						<span class="ident">require_weight_at_most</span>: <span class="number">1_000</span>,
-						<span class="ident">call</span>: <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Call::from</span>(<span class="ident">Call</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::ping</span> {
+						<span class="ident">call</span>: <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::RuntimeCall::from</span>(<span class="ident">Call</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::ping</span> {
 							<span class="ident">seq</span>,
 							<span class="ident">payload</span>: <span class="ident">payload</span>.<span class="ident">clone</span>().<span class="ident">to_vec</span>(),
 						})
@@ -438,7 +438,7 @@
 				<span class="ident">Xcm</span>(<span class="macro">vec!</span>[<span class="ident">Transact</span> {
 					<span class="ident">origin_type</span>: <span class="ident">OriginKind::Native</span>,
 					<span class="ident">require_weight_at_most</span>: <span class="number">1_000</span>,
-					<span class="ident">call</span>: <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Call::from</span>(<span class="ident">Call</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::pong</span> {
+					<span class="ident">call</span>: <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::RuntimeCall::from</span>(<span class="ident">Call</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::pong</span> {
 						<span class="ident">seq</span>,
 						<span class="ident">payload</span>: <span class="ident">payload</span>.<span class="ident">clone</span>(),
 					})
