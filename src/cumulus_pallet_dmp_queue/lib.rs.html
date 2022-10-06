@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/dmp-queue/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../cumulus_pallet_dmp_queue/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../cumulus_pallet_dmp_queue/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../cumulus_pallet_dmp_queue/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/dmp-queue/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../cumulus_pallet_dmp_queue/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../cumulus_pallet_dmp_queue/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../cumulus_pallet_dmp_queue/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -806,6 +800,22 @@
 <span id="800">800</span>
 <span id="801">801</span>
 <span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -832,7 +842,8 @@
 <span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">DecodeLimit</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{<span class="ident">relay_chain::BlockNumber</span> <span class="kw">as</span> <span class="ident">RelayBlockNumber</span>, <span class="ident">DmpMessageHandler</span>};
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
-	<span class="ident">dispatch::Weight</span>, <span class="ident">traits::EnsureOrigin</span>, <span class="ident">weights::constants::WEIGHT_PER_MILLIS</span>,
+	<span class="ident">traits::EnsureOrigin</span>,
+	<span class="ident">weights</span>::{<span class="ident">constants::WEIGHT_PER_MILLIS</span>, <span class="ident">Weight</span>},
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
@@ -897,7 +908,7 @@
 		<span class="kw">type</span> <span class="ident">XcmExecutor</span>: <span class="ident">ExecuteXcm</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::RuntimeCall</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// Origin which is allowed to execute overweight messages.</span>
-		<span class="kw">type</span> <span class="ident">ExecuteOverweightOrigin</span>: <span class="ident">EnsureOrigin</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Origin</span><span class="op">&gt;</span>;
+		<span class="kw">type</span> <span class="ident">ExecuteOverweightOrigin</span>: <span class="ident">EnsureOrigin</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::RuntimeOrigin</span><span class="op">&gt;</span>;
 	}
 
 	<span class="doccomment">/// The configuration.</span>
@@ -1194,7 +1205,7 @@
 	<span class="kw">type</span> <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">u64</span>;
 
 	<span class="kw">impl</span> <span class="ident">frame_system::Config</span> <span class="kw">for</span> <span class="ident">Test</span> {
-		<span class="kw">type</span> <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">Origin</span>;
+		<span class="kw">type</span> <span class="ident">RuntimeOrigin</span> <span class="op">=</span> <span class="ident">RuntimeOrigin</span>;
 		<span class="kw">type</span> <span class="ident">RuntimeCall</span> <span class="op">=</span> <span class="ident">RuntimeCall</span>;
 		<span class="kw">type</span> <span class="ident">Index</span> <span class="op">=</span> <span class="ident">u64</span>;
 		<span class="kw">type</span> <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="ident">u64</span>;
@@ -1551,15 +1562,23 @@
 			<span class="macro">assert_eq!</span>(<span class="ident">overweights</span>(), <span class="macro">vec!</span>[<span class="number">0</span>]);
 
 			<span class="macro">assert_noop!</span>(
-				<span class="ident">DmpQueue::service_overweight</span>(<span class="ident">Origin::signed</span>(<span class="number">1</span>), <span class="number">0</span>, <span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>)),
+				<span class="ident">DmpQueue::service_overweight</span>(
+					<span class="ident">RuntimeOrigin::signed</span>(<span class="number">1</span>),
+					<span class="number">0</span>,
+					<span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>)
+				),
 				<span class="ident">BadOrigin</span>
 			);
 			<span class="macro">assert_noop!</span>(
-				<span class="ident">DmpQueue::service_overweight</span>(<span class="ident">Origin::root</span>(), <span class="number">1</span>, <span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>)),
+				<span class="ident">DmpQueue::service_overweight</span>(
+					<span class="ident">RuntimeOrigin::root</span>(),
+					<span class="number">1</span>,
+					<span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>)
+				),
 				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::Unknown</span>
 			);
 			<span class="macro">assert_noop!</span>(
-				<span class="ident">DmpQueue::service_overweight</span>(<span class="ident">Origin::root</span>(), <span class="number">0</span>, <span class="ident">Weight::from_ref_time</span>(<span class="number">9999</span>)),
+				<span class="ident">DmpQueue::service_overweight</span>(<span class="ident">RuntimeOrigin::root</span>(), <span class="number">0</span>, <span class="ident">Weight::from_ref_time</span>(<span class="number">9999</span>)),
 				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::OverLimit</span>
 			);
 			<span class="macro">assert_eq!</span>(<span class="ident">take_trace</span>(), <span class="macro">vec!</span>[<span class="ident">msg_limit_reached</span>(<span class="number">10000</span>)]);
@@ -1568,17 +1587,24 @@
 				<span class="ident"><span class="kw">super</span>::Call</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::service_overweight</span> { <span class="ident">index</span>: <span class="number">0</span>, <span class="ident">weight_limit</span>: <span class="ident">Weight::zero</span>() }
 					.<span class="ident">get_dispatch_info</span>()
 					.<span class="ident">weight</span>;
-			<span class="kw">use</span> <span class="ident">frame_support::weights::GetDispatchInfo</span>;
-			<span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span>
-				<span class="ident">DmpQueue::service_overweight</span>(<span class="ident">Origin::root</span>(), <span class="number">0</span>, <span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>))
-					.<span class="ident">unwrap</span>();
+			<span class="kw">use</span> <span class="ident">frame_support::dispatch::GetDispatchInfo</span>;
+			<span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">DmpQueue::service_overweight</span>(
+				<span class="ident">RuntimeOrigin::root</span>(),
+				<span class="number">0</span>,
+				<span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>),
+			)
+			.<span class="ident">unwrap</span>();
 			<span class="kw">let</span> <span class="ident">actual_weight</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">actual_weight</span>.<span class="ident">unwrap</span>();
 			<span class="macro">assert_eq!</span>(<span class="ident">actual_weight</span>, <span class="ident">base_weight</span> <span class="op">+</span> <span class="ident">Weight::from_ref_time</span>(<span class="number">10000</span>));
 			<span class="macro">assert_eq!</span>(<span class="ident">take_trace</span>(), <span class="macro">vec!</span>[<span class="ident">msg_complete</span>(<span class="number">10000</span>)]);
 			<span class="macro">assert!</span>(<span class="ident">overweights</span>().<span class="ident">is_empty</span>());
 
 			<span class="macro">assert_noop!</span>(
-				<span class="ident">DmpQueue::service_overweight</span>(<span class="ident">Origin::root</span>(), <span class="number">0</span>, <span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>)),
+				<span class="ident">DmpQueue::service_overweight</span>(
+					<span class="ident">RuntimeOrigin::root</span>(),
+					<span class="number">0</span>,
+					<span class="ident">Weight::from_ref_time</span>(<span class="number">20000</span>)
+				),
 				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::Unknown</span>
 			);
 		});
@@ -1609,5 +1635,4 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cumulus_pallet_dmp_queue" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cumulus_pallet_dmp_queue" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>

@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parachains/runtimes/assets/westmint/src/weights/xcm/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../westmint_runtime/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../../westmint_runtime/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../westmint_runtime/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
-                                <a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parachains/runtimes/assets/westmint/src/weights/xcm/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../westmint_runtime/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../westmint_runtime/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../westmint_runtime/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -186,6 +180,12 @@
 <span id="180">180</span>
 <span id="181">181</span>
 <span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -209,7 +209,7 @@
 <span class="kw">use</span> <span class="ident">frame_support::weights::Weight</span>;
 <span class="kw">use</span> <span class="ident">pallet_xcm_benchmarks_fungible::WeightInfo</span> <span class="kw">as</span> <span class="ident">XcmFungibleWeight</span>;
 <span class="kw">use</span> <span class="ident">pallet_xcm_benchmarks_generic::WeightInfo</span> <span class="kw">as</span> <span class="ident">XcmGeneric</span>;
-<span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">cmp</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
 <span class="kw">use</span> <span class="ident">xcm</span>::{
 	<span class="ident">latest</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Weight</span> <span class="kw">as</span> <span class="ident">XCMWeight</span>},
 	<span class="ident">DoubleEncoded</span>,
@@ -245,7 +245,7 @@
 	}
 	<span class="comment">// Currently there is no trusted reserve</span>
 	<span class="kw">fn</span> <span class="ident">reserve_asset_deposited</span>(<span class="ident">_assets</span>: <span class="kw-2">&amp;</span><span class="ident">MultiAssets</span>) -&gt; <span class="ident">XCMWeight</span> {
-		<span class="macro">unimplemented!</span>()
+		<span class="ident">u64::MAX</span>
 	}
 	<span class="kw">fn</span> <span class="ident">receive_teleported_asset</span>(<span class="ident">assets</span>: <span class="kw-2">&amp;</span><span class="ident">MultiAssets</span>) -&gt; <span class="ident">XCMWeight</span> {
 		<span class="ident">assets</span>.<span class="ident">weigh_multi_assets</span>(<span class="ident">XcmFungibleWeight</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::receive_teleported_asset</span>())
@@ -305,7 +305,10 @@
 		<span class="ident">_max_assets</span>: <span class="kw-2">&amp;</span><span class="ident">u32</span>,
 		<span class="ident">_dest</span>: <span class="kw-2">&amp;</span><span class="ident">MultiLocation</span>,
 	) -&gt; <span class="ident">XCMWeight</span> {
-		<span class="ident">assets</span>.<span class="ident">weigh_multi_assets</span>(<span class="ident">XcmFungibleWeight</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::deposit_asset</span>())
+		<span class="comment">// Hardcoded till the XCM pallet is fixed</span>
+		<span class="kw">let</span> <span class="ident">hardcoded_weight</span> <span class="op">=</span> <span class="ident">Weight::from_ref_time</span>(<span class="number">1_000_000_000</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">ref_time</span>();
+		<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">assets</span>.<span class="ident">weigh_multi_assets</span>(<span class="ident">XcmFungibleWeight</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::deposit_asset</span>());
+		<span class="ident">cmp::min</span>(<span class="ident">hardcoded_weight</span>, <span class="ident">weight</span>)
 	}
 	<span class="kw">fn</span> <span class="ident">deposit_reserve_asset</span>(
 		<span class="ident">assets</span>: <span class="kw-2">&amp;</span><span class="ident">MultiAssetFilter</span>,
@@ -330,7 +333,10 @@
 		<span class="ident">_dest</span>: <span class="kw-2">&amp;</span><span class="ident">MultiLocation</span>,
 		<span class="ident">_xcm</span>: <span class="kw-2">&amp;</span><span class="ident">Xcm</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
 	) -&gt; <span class="ident">XCMWeight</span> {
-		<span class="ident">assets</span>.<span class="ident">weigh_multi_assets</span>(<span class="ident">XcmFungibleWeight</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::initiate_teleport</span>())
+		<span class="comment">// Hardcoded till the XCM pallet is fixed</span>
+		<span class="kw">let</span> <span class="ident">hardcoded_weight</span> <span class="op">=</span> <span class="ident">Weight::from_ref_time</span>(<span class="number">200_000_000</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">ref_time</span>();
+		<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">assets</span>.<span class="ident">weigh_multi_assets</span>(<span class="ident">XcmFungibleWeight</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::initiate_teleport</span>());
+		<span class="ident">cmp::min</span>(<span class="ident">hardcoded_weight</span>, <span class="ident">weight</span>)
 	}
 	<span class="kw">fn</span> <span class="ident">query_holding</span>(
 		<span class="ident">_query_id</span>: <span class="kw-2">&amp;</span><span class="ident">u64</span>,
@@ -369,5 +375,4 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="westmint_runtime" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="westmint_runtime" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
