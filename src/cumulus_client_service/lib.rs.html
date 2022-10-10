@@ -259,19 +259,6 @@
 <span id="259">259</span>
 <span id="260">260</span>
 <span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -292,7 +279,6 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides functions for starting a collator node or a normal full node.</span>
 
-<span class="kw">use</span> <span class="ident">cumulus_client_cli::CollatorOptions</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_consensus_common::ParachainConsensus</span>;
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core</span>::{<span class="ident">CollectCollationInfo</span>, <span class="ident">ParaId</span>};
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_interface::RelayChainInterface</span>;
@@ -382,8 +368,7 @@
 
 	<span class="kw">let</span> <span class="ident">overseer_handle</span> <span class="op">=</span> <span class="ident">relay_chain_interface</span>
 		.<span class="ident">overseer_handle</span>()
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">sc_service::Error::Application</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>
-		.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Polkadot full node did not provide an `OverseerHandle`!&quot;</span>)<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">sc_service::Error::Application</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 	<span class="kw">let</span> <span class="ident">pov_recovery</span> <span class="op">=</span> <span class="ident">cumulus_client_pov_recovery::PoVRecovery::new</span>(
 		<span class="ident">overseer_handle</span>.<span class="ident">clone</span>(),
@@ -423,7 +408,6 @@
 	<span class="kw">pub</span> <span class="ident">announce_block</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Fn</span>(<span class="ident">Block::Hash</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
 	<span class="kw">pub</span> <span class="ident">relay_chain_slot_duration</span>: <span class="ident">Duration</span>,
 	<span class="kw">pub</span> <span class="ident">import_queue</span>: <span class="ident">IQ</span>,
-	<span class="kw">pub</span> <span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
 }
 
 <span class="doccomment">/// Start a full node for a parachain.</span>
@@ -439,7 +423,6 @@
 		<span class="ident">para_id</span>,
 		<span class="ident">relay_chain_slot_duration</span>,
 		<span class="ident">import_queue</span>,
-		<span class="ident">collator_options</span>,
 	}: <span class="ident">StartFullNodeParams</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Client</span>, <span class="ident">RCInterface</span>, <span class="ident">IQ</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 <span class="kw">where</span>
@@ -467,18 +450,9 @@
 		.<span class="ident">spawn_essential_handle</span>()
 		.<span class="ident">spawn</span>(<span class="string">&quot;cumulus-consensus&quot;</span>, <span class="prelude-val">None</span>, <span class="ident">consensus</span>);
 
-	<span class="comment">// PoV Recovery is currently not supported when we connect to the</span>
-	<span class="comment">// relay chain via RPC, so we return early. The node will work, but not be able to recover PoVs from the</span>
-	<span class="comment">// relay chain if blocks are not announced on parachain. This will be enabled again once</span>
-	<span class="comment">// https://github.com/paritytech/cumulus/issues/545 is finished.</span>
-	<span class="kw">if</span> <span class="ident">collator_options</span>.<span class="ident">relay_chain_rpc_url</span>.<span class="ident">is_some</span>() {
-		<span class="kw">return</span> <span class="prelude-val">Ok</span>(())
-	}
-
 	<span class="kw">let</span> <span class="ident">overseer_handle</span> <span class="op">=</span> <span class="ident">relay_chain_interface</span>
 		.<span class="ident">overseer_handle</span>()
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">sc_service::Error::Application</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>
-		.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;Polkadot full node did not provide an `OverseerHandle`!&quot;</span>)<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">sc_service::Error::Application</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 	<span class="kw">let</span> <span class="ident">pov_recovery</span> <span class="op">=</span> <span class="ident">cumulus_client_pov_recovery::PoVRecovery::new</span>(
 		<span class="ident">overseer_handle</span>,

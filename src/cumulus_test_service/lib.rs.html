@@ -810,6 +810,10 @@
 <span id="810">810</span>
 <span id="811">811</span>
 <span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -850,7 +854,8 @@
 <span class="kw">use</span> <span class="ident">cumulus_primitives_core::ParaId</span>;
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_inprocess_interface::RelayChainInProcessInterface</span>;
 <span class="kw">use</span> <span class="ident">cumulus_relay_chain_interface</span>::{<span class="ident">RelayChainError</span>, <span class="ident">RelayChainInterface</span>, <span class="ident">RelayChainResult</span>};
-<span class="kw">use</span> <span class="ident">cumulus_relay_chain_rpc_interface</span>::{<span class="ident">create_client_and_start_worker</span>, <span class="ident">RelayChainRpcInterface</span>};
+<span class="kw">use</span> <span class="ident">cumulus_relay_chain_minimal_node::build_minimal_relay_chain_node</span>;
+
 <span class="kw">use</span> <span class="ident">cumulus_test_runtime</span>::{<span class="ident">Hash</span>, <span class="ident">Header</span>, <span class="ident">NodeBlock</span> <span class="kw">as</span> <span class="ident">Block</span>, <span class="ident">RuntimeApi</span>};
 
 <span class="kw">use</span> <span class="ident">frame_system_rpc_runtime_api::AccountNonceApi</span>;
@@ -995,8 +1000,9 @@
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">TaskManager</span>,
 ) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">RelayChainInterface</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">relay_chain_url</span>) <span class="op">=</span> <span class="ident">collator_options</span>.<span class="ident">relay_chain_rpc_url</span> {
-		<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">create_client_and_start_worker</span>(<span class="ident">relay_chain_url</span>, <span class="ident">task_manager</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-		<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Arc::new</span>(<span class="ident">RelayChainRpcInterface::new</span>(<span class="ident">client</span>)) <span class="kw">as</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>)
+		<span class="kw">return</span> <span class="ident">build_minimal_relay_chain_node</span>(<span class="ident">relay_chain_config</span>, <span class="ident">task_manager</span>, <span class="ident">relay_chain_url</span>)
+			.<span class="kw">await</span>
+			.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="number">0</span>)
 	}
 
 	<span class="kw">let</span> <span class="ident">relay_chain_full_node</span> <span class="op">=</span> <span class="ident">polkadot_test_service::new_full</span>(
@@ -1010,12 +1016,15 @@
 	)<span class="question-mark">?</span>;
 
 	<span class="ident">task_manager</span>.<span class="ident">add_child</span>(<span class="ident">relay_chain_full_node</span>.<span class="ident">task_manager</span>);
+	<span class="macro">tracing::info!</span>(<span class="string">&quot;Using inprocess node.&quot;</span>);
 	<span class="prelude-val">Ok</span>(<span class="ident">Arc::new</span>(<span class="ident">RelayChainInProcessInterface::new</span>(
 		<span class="ident">relay_chain_full_node</span>.<span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">relay_chain_full_node</span>.<span class="ident">backend</span>.<span class="ident">clone</span>(),
 		<span class="ident">Arc::new</span>(<span class="ident">relay_chain_full_node</span>.<span class="ident">network</span>.<span class="ident">clone</span>()),
-		<span class="ident">relay_chain_full_node</span>.<span class="ident">overseer_handle</span>,
-	)) <span class="kw">as</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>)
+		<span class="ident">relay_chain_full_node</span>.<span class="ident">overseer_handle</span>.<span class="ident">ok_or</span>(<span class="ident">RelayChainError::GenericError</span>(
+			<span class="string">&quot;Overseer should be running in full node.&quot;</span>.<span class="ident">to_string</span>(),
+		))<span class="question-mark">?</span>,
+	)))
 }
 
 <span class="doccomment">/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.</span>
@@ -1179,7 +1188,6 @@
 			<span class="comment">// the recovery delay of pov-recovery. We don&#39;t want to wait for too</span>
 			<span class="comment">// long on the full node to recover, so we reduce this time here.</span>
 			<span class="ident">relay_chain_slot_duration</span>: <span class="ident">Duration::from_millis</span>(<span class="number">6</span>),
-			<span class="ident">collator_options</span>,
 		};
 
 		<span class="ident">start_full_node</span>(<span class="ident">params</span>)<span class="question-mark">?</span>;
@@ -1285,9 +1293,9 @@
 	<span class="doccomment">/// node.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect_to_parachain_nodes</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
 		<span class="kw-2">mut</span> <span class="self">self</span>,
-		<span class="ident">nodes</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TestNode</span><span class="op">&gt;</span>,
+		<span class="ident">nodes</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TestNode</span><span class="op">&gt;</span>,
 	) -&gt; <span class="self">Self</span> {
-		<span class="self">self</span>.<span class="ident">parachain_nodes</span>.<span class="ident">extend</span>(<span class="ident">nodes</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="ident">n</span>.<span class="ident">addr</span>.<span class="ident">clone</span>()));
+		<span class="self">self</span>.<span class="ident">parachain_nodes</span>.<span class="ident">extend</span>(<span class="ident">nodes</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="ident">n</span>.<span class="ident">addr</span>.<span class="ident">clone</span>()));
 		<span class="self">self</span>
 	}
 

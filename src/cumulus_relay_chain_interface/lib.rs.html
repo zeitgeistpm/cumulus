@@ -263,6 +263,23 @@
 <span id="263">263</span>
 <span id="264">264</span>
 <span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -288,7 +305,8 @@
 	},
 	<span class="ident">InboundDownwardMessage</span>, <span class="ident">ParaId</span>, <span class="ident">PersistedValidationData</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_overseer::Handle</span> <span class="kw">as</span> <span class="ident">OverseerHandle</span>;
+<span class="kw">use</span> <span class="ident">polkadot_overseer</span>::{<span class="ident">prometheus::PrometheusError</span>, <span class="ident">Handle</span> <span class="kw">as</span> <span class="ident">OverseerHandle</span>};
+<span class="kw">use</span> <span class="ident">polkadot_service::SubstrateServiceError</span>;
 <span class="kw">use</span> <span class="ident">sc_client_api::StorageProof</span>;
 
 <span class="kw">use</span> <span class="ident">futures::Stream</span>;
@@ -323,15 +341,31 @@
 	<span class="ident">WorkerCommunicationError</span>(<span class="ident">String</span>),
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Scale codec deserialization error: {0}&quot;</span>)]</span>
 	<span class="ident">DeserializationError</span>(<span class="ident">CodecError</span>),
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Scale codec deserialization error: {0}&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Polkadot service error: {0}&quot;</span>)]</span>
 	<span class="ident">ServiceError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">polkadot_service::Error</span>),
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Substrate service error: {0}&quot;</span>)]</span>
+	<span class="ident">SubServiceError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">SubstrateServiceError</span>),
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Prometheus error: {0}&quot;</span>)]</span>
+	<span class="ident">PrometheusError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">PrometheusError</span>),
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Unspecified error occured: {0}&quot;</span>)]</span>
 	<span class="ident">GenericError</span>(<span class="ident">String</span>),
+}
+
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">RelayChainError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ApiError</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">RelayChainError</span>) -&gt; <span class="self">Self</span> {
+		<span class="ident">sp_api::ApiError::Application</span>(<span class="ident">Box::new</span>(<span class="ident">r</span>))
+	}
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CodecError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RelayChainError</span> {
 	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">CodecError</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">RelayChainError::DeserializationError</span>(<span class="ident">e</span>)
+	}
+}
+
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">RelayChainError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">sp_blockchain::Error</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">RelayChainError</span>) -&gt; <span class="self">Self</span> {
+		<span class="ident">sp_blockchain::Error::Application</span>(<span class="ident">Box::new</span>(<span class="ident">r</span>))
 	}
 }
 
@@ -420,7 +454,7 @@
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">is_major_syncing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Get a handle to the overseer.</span>
-	<span class="kw">fn</span> <span class="ident">overseer_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OverseerHandle</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+	<span class="kw">fn</span> <span class="ident">overseer_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="ident">OverseerHandle</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Generate a storage read proof.</span>
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">prove_read</span>(
@@ -498,7 +532,7 @@
 		(<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">is_major_syncing</span>().<span class="kw">await</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">overseer_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OverseerHandle</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">overseer_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="ident">OverseerHandle</span><span class="op">&gt;</span> {
 		(<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">overseer_handle</span>()
 	}
 

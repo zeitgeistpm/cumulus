@@ -25,6 +25,7 @@ var sourcesIndex = JSON.parse('{\
 "cumulus_primitives_utility":["",[],["lib.rs"]],\
 "cumulus_relay_chain_inprocess_interface":["",[],["lib.rs"]],\
 "cumulus_relay_chain_interface":["",[],["lib.rs"]],\
+"cumulus_relay_chain_minimal_node":["",[],["blockchain_rpc_client.rs","collator_overseer.rs","lib.rs","network.rs"]],\
 "cumulus_relay_chain_rpc_interface":["",[],["lib.rs","rpc_client.rs"]],\
 "cumulus_test_client":["",[],["block_builder.rs","lib.rs"]],\
 "cumulus_test_relay_sproof_builder":["",[],["lib.rs"]],\

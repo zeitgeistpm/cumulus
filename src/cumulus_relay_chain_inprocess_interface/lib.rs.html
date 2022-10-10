@@ -516,6 +516,10 @@
 <span id="516">516</span>
 <span id="517">517</span>
 <span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -568,7 +572,7 @@
 	<span class="ident">full_client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>,
 	<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FullBackend</span><span class="op">&gt;</span>,
 	<span class="ident">sync_oracle</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SyncOracle</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
-	<span class="ident">overseer_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Handle</span><span class="op">&gt;</span>,
+	<span class="ident">overseer_handle</span>: <span class="ident">Handle</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span> <span class="ident">RelayChainInProcessInterface</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span> {
@@ -577,7 +581,7 @@
 		<span class="ident">full_client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>,
 		<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FullBackend</span><span class="op">&gt;</span>,
 		<span class="ident">sync_oracle</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SyncOracle</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
-		<span class="ident">overseer_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Handle</span><span class="op">&gt;</span>,
+		<span class="ident">overseer_handle</span>: <span class="ident">Handle</span>,
 	) -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span> { <span class="ident">full_client</span>, <span class="ident">backend</span>, <span class="ident">sync_oracle</span>, <span class="ident">overseer_handle</span> }
 	}
@@ -689,7 +693,7 @@
 		<span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">sync_oracle</span>.<span class="ident">is_major_syncing</span>())
 	}
 
-	<span class="kw">fn</span> <span class="ident">overseer_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Handle</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">overseer_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelayChainResult</span><span class="op">&lt;</span><span class="ident">Handle</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">overseer_handle</span>.<span class="ident">clone</span>())
 	}
 
@@ -806,7 +810,7 @@
 	<span class="ident">polkadot_client</span>: <span class="ident">polkadot_client::Client</span>,
 	<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FullBackend</span><span class="op">&gt;</span>,
 	<span class="ident">sync_oracle</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SyncOracle</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
-	<span class="ident">overseer_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Handle</span><span class="op">&gt;</span>,
+	<span class="ident">overseer_handle</span>: <span class="ident">Handle</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">RelayChainInProcessInterfaceBuilder</span> {
@@ -896,7 +900,9 @@
 		<span class="ident">polkadot_client</span>: <span class="ident">full_node</span>.<span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">backend</span>: <span class="ident">full_node</span>.<span class="ident">backend</span>.<span class="ident">clone</span>(),
 		<span class="ident">sync_oracle</span>,
-		<span class="ident">overseer_handle</span>: <span class="ident">full_node</span>.<span class="ident">overseer_handle</span>.<span class="ident">clone</span>(),
+		<span class="ident">overseer_handle</span>: <span class="ident">full_node</span>.<span class="ident">overseer_handle</span>.<span class="ident">clone</span>().<span class="ident">ok_or</span>(<span class="ident">RelayChainError::GenericError</span>(
+			<span class="string">&quot;Overseer not running in full node.&quot;</span>.<span class="ident">to_string</span>(),
+		))<span class="question-mark">?</span>,
 	};
 
 	<span class="ident">task_manager</span>.<span class="ident">add_child</span>(<span class="ident">full_node</span>.<span class="ident">task_manager</span>);
@@ -943,10 +949,12 @@
 		<span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">block_builder</span>.<span class="ident">build</span>().<span class="ident">expect</span>(<span class="string">&quot;Finalizes the block&quot;</span>).<span class="ident">block</span>;
 		<span class="kw">let</span> <span class="ident">dummy_network</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SyncOracle</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">DummyNetwork</span> {});
 
+		<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">_rx</span>) <span class="op">=</span> <span class="ident">metered::channel</span>(<span class="number">30</span>);
+		<span class="kw">let</span> <span class="ident">mock_handle</span> <span class="op">=</span> <span class="ident">Handle::new</span>(<span class="ident">tx</span>);
 		(
 			<span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">block</span>,
-			<span class="ident">RelayChainInProcessInterface::new</span>(<span class="ident">client</span>, <span class="ident">backend</span>.<span class="ident">clone</span>(), <span class="ident">dummy_network</span>, <span class="prelude-val">None</span>),
+			<span class="ident">RelayChainInProcessInterface::new</span>(<span class="ident">client</span>, <span class="ident">backend</span>.<span class="ident">clone</span>(), <span class="ident">dummy_network</span>, <span class="ident">mock_handle</span>),
 		)
 	}
 
