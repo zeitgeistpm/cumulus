@@ -448,6 +448,22 @@
 <span id="448">448</span>
 <span id="449">449</span>
 <span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -476,6 +492,7 @@
 		<span class="ident">NonDefaultSetConfig</span>, <span class="ident">NonReservedPeerMode</span>, <span class="ident">NotificationHandshake</span>, <span class="ident">ProtocolId</span>, <span class="ident">SetConfig</span>,
 	},
 	<span class="ident">protocol::role::Roles</span>,
+	<span class="ident">service::NetworkSyncForkRequest</span>,
 	<span class="ident">sync</span>::{<span class="ident">message::BlockAnnouncesHandshake</span>, <span class="ident">Metrics</span>, <span class="ident">SyncStatus</span>},
 };
 <span class="kw">use</span> <span class="ident">sc_network_light::light_client_requests</span>;
@@ -542,6 +559,7 @@
 		<span class="ident">protocol_id</span>,
 		<span class="ident">metrics_registry</span>: <span class="ident">config</span>.<span class="ident">prometheus_config</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">registry</span>.<span class="ident">clone</span>()),
 		<span class="ident">block_announce_config</span>,
+		<span class="ident">chain_sync_service</span>: <span class="ident">Box::new</span>(<span class="ident">DummyChainSyncService</span>::<span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">Default::default</span>())),
 		<span class="ident">block_request_protocol_config</span>,
 		<span class="ident">state_request_protocol_config</span>,
 		<span class="ident">warp_sync_protocol_config</span>: <span class="prelude-val">None</span>,
@@ -870,6 +888,14 @@
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">sc_network_common::sync::OpaqueStateResponse</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="macro">unimplemented!</span>(<span class="string">&quot;Not supported on the RPC collator&quot;</span>)
 	}
+
+	<span class="kw">fn</span> <span class="ident">poll</span>(
+		<span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+		<span class="ident">_cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::task::Context</span>,
+	) -&gt; <span class="ident">std::task::Poll</span><span class="op">&lt;</span><span class="ident">sc_network_common::sync::PollBlockAnnounceValidation</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">B</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Header</span><span class="op">&gt;</span><span class="op">&gt;</span>
+	{
+		<span class="ident">std::task::Poll::Pending</span>
+	}
 }
 
 <span class="kw">struct</span> <span class="ident">DummyImportQueue</span>;
@@ -897,6 +923,12 @@
 		<span class="ident">_link</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">sc_consensus::import_queue::Link</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 	) {
 	}
+}
+
+<span class="kw">struct</span> <span class="ident">DummyChainSyncService</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">std::marker::PhantomData</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">BlockT</span><span class="op">&gt;</span> <span class="ident">NetworkSyncForkRequest</span><span class="op">&lt;</span><span class="ident">B::Hash</span>, <span class="ident">NumberFor</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DummyChainSyncService</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">set_sync_fork_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_peers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PeerId</span><span class="op">&gt;</span>, <span class="ident">_hash</span>: <span class="ident">B::Hash</span>, <span class="ident">_number</span>: <span class="ident">NumberFor</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) {}
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cumulus_relay_chain_minimal_node" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
