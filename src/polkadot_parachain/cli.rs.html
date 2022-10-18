@@ -133,7 +133,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Subcommand</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Subcommand</span> {
 	<span class="doccomment">/// Key management CLI utilities</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">Key</span>(<span class="ident">sc_cli::KeySubcommand</span>),
 
 	<span class="doccomment">/// Build a chain specification.</span>
@@ -165,7 +165,7 @@
 
 	<span class="doccomment">/// Sub-commands concerned with benchmarking.</span>
 	<span class="doccomment">/// The pallet benchmarking moved to the `pallet` sub-command.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">Benchmark</span>(<span class="ident">frame_benchmarking_cli::BenchmarkCmd</span>),
 
 	<span class="doccomment">/// Try some testing command against a specified runtime state.</span>
@@ -173,16 +173,16 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
-<span class="attribute">#[<span class="ident">clap</span>(
+<span class="attribute">#[<span class="ident">command</span>(
 	<span class="ident">propagate_version</span> <span class="op">=</span> <span class="bool-val">true</span>,
 	<span class="ident">args_conflicts_with_subcommands</span> <span class="op">=</span> <span class="bool-val">true</span>,
 	<span class="ident">subcommand_negates_reqs</span> <span class="op">=</span> <span class="bool-val">true</span>
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cli</span> {
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">subcommand</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Subcommand</span><span class="op">&gt;</span>,
 
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">flatten</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">run</span>: <span class="ident">cumulus_client_cli::RunCmd</span>,
 
 	<span class="doccomment">/// Disable automatic hardware benchmarks.</span>
@@ -192,11 +192,11 @@
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// The results are then printed out in the logs, and also sent as part of</span>
 	<span class="doccomment">/// telemetry, if telemetry is enabled.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>)]</span>
+	<span class="attribute">#[<span class="ident">arg</span>(<span class="ident">long</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">no_hardware_benchmarks</span>: <span class="ident">bool</span>,
 
 	<span class="doccomment">/// Relay chain arguments</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">raw</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span>
+	<span class="attribute">#[<span class="ident">arg</span>(<span class="ident">raw</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">relaychain_args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 

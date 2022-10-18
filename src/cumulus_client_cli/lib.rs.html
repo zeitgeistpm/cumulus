@@ -443,6 +443,8 @@
 <span id="443">443</span>
 <span id="444">444</span>
 <span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -485,17 +487,18 @@
 
 <span class="doccomment">/// The `purge-chain` command used to remove the whole chain: the parachain and the relay chain.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
+<span class="attribute">#[<span class="ident">group</span>(<span class="ident">skip</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PurgeChainCmd</span> {
 	<span class="doccomment">/// The base struct of the purge-chain command.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">flatten</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">base</span>: <span class="ident">sc_cli::PurgeChainCmd</span>,
 
 	<span class="doccomment">/// Only delete the para chain database</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">aliases</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;para&quot;</span>]</span>)]
+	<span class="attribute">#[<span class="ident">arg</span>(<span class="ident">long</span>, <span class="ident">aliases</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;para&quot;</span>]</span>)]
 	<span class="kw">pub</span> <span class="ident">parachain</span>: <span class="ident">bool</span>,
 
 	<span class="doccomment">/// Only delete the relay chain database</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">aliases</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;relay&quot;</span>]</span>)]
+	<span class="attribute">#[<span class="ident">arg</span>(<span class="ident">long</span>, <span class="ident">aliases</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;relay&quot;</span>]</span>)]
 	<span class="kw">pub</span> <span class="ident">relaychain</span>: <span class="ident">bool</span>,
 }
 
@@ -576,15 +579,15 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportGenesisStateCommand</span> {
 	<span class="doccomment">/// Output file name or stdout if unspecified.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">action</span>)]</span>
+	<span class="attribute">#[<span class="ident">arg</span>()]</span>
 	<span class="kw">pub</span> <span class="ident">output</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// Write output in binary. Default is to write in hex.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
+	<span class="attribute">#[<span class="ident">arg</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">raw</span>: <span class="ident">bool</span>,
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">flatten</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">shared_params</span>: <span class="ident">sc_cli::SharedParams</span>,
 }
 
@@ -659,15 +662,15 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportGenesisWasmCommand</span> {
 	<span class="doccomment">/// Output file name or stdout if unspecified.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">action</span>)]</span>
+	<span class="attribute">#[<span class="ident">arg</span>()]</span>
 	<span class="kw">pub</span> <span class="ident">output</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// Write output in binary. Default is to write in hex.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
+	<span class="attribute">#[<span class="ident">arg</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">raw</span>: <span class="ident">bool</span>,
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">flatten</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">shared_params</span>: <span class="ident">sc_cli::SharedParams</span>,
 }
 
@@ -722,19 +725,20 @@
 
 <span class="doccomment">/// The `run` command used to run a node.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">clap::Parser</span>)]</span>
+<span class="attribute">#[<span class="ident">group</span>(<span class="ident">skip</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunCmd</span> {
 	<span class="doccomment">/// The cumulus RunCmd inherents from sc_cli&#39;s</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
+	<span class="attribute">#[<span class="ident">command</span>(<span class="ident">flatten</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">base</span>: <span class="ident">sc_cli::RunCmd</span>,
 
 	<span class="doccomment">/// Run node as collator.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Note that this is the same as running with `--validator`.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;validator&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">arg</span>(<span class="ident">long</span>, <span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;validator&quot;</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">collator</span>: <span class="ident">bool</span>,
 
 	<span class="doccomment">/// EXPERIMENTAL: Specify an URL to a relay chain full node to communicate with.</span>
-	<span class="attribute">#[<span class="ident">clap</span>(
+	<span class="attribute">#[<span class="ident">arg</span>(
 		<span class="ident">long</span>,
 		<span class="ident">value_parser</span> <span class="op">=</span> <span class="ident">validate_relay_chain_url</span>
 	)]</span>
