@@ -1534,102 +1534,6 @@
 <span id="1534">1534</span>
 <span id="1535">1535</span>
 <span id="1536">1536</span>
-<span id="1537">1537</span>
-<span id="1538">1538</span>
-<span id="1539">1539</span>
-<span id="1540">1540</span>
-<span id="1541">1541</span>
-<span id="1542">1542</span>
-<span id="1543">1543</span>
-<span id="1544">1544</span>
-<span id="1545">1545</span>
-<span id="1546">1546</span>
-<span id="1547">1547</span>
-<span id="1548">1548</span>
-<span id="1549">1549</span>
-<span id="1550">1550</span>
-<span id="1551">1551</span>
-<span id="1552">1552</span>
-<span id="1553">1553</span>
-<span id="1554">1554</span>
-<span id="1555">1555</span>
-<span id="1556">1556</span>
-<span id="1557">1557</span>
-<span id="1558">1558</span>
-<span id="1559">1559</span>
-<span id="1560">1560</span>
-<span id="1561">1561</span>
-<span id="1562">1562</span>
-<span id="1563">1563</span>
-<span id="1564">1564</span>
-<span id="1565">1565</span>
-<span id="1566">1566</span>
-<span id="1567">1567</span>
-<span id="1568">1568</span>
-<span id="1569">1569</span>
-<span id="1570">1570</span>
-<span id="1571">1571</span>
-<span id="1572">1572</span>
-<span id="1573">1573</span>
-<span id="1574">1574</span>
-<span id="1575">1575</span>
-<span id="1576">1576</span>
-<span id="1577">1577</span>
-<span id="1578">1578</span>
-<span id="1579">1579</span>
-<span id="1580">1580</span>
-<span id="1581">1581</span>
-<span id="1582">1582</span>
-<span id="1583">1583</span>
-<span id="1584">1584</span>
-<span id="1585">1585</span>
-<span id="1586">1586</span>
-<span id="1587">1587</span>
-<span id="1588">1588</span>
-<span id="1589">1589</span>
-<span id="1590">1590</span>
-<span id="1591">1591</span>
-<span id="1592">1592</span>
-<span id="1593">1593</span>
-<span id="1594">1594</span>
-<span id="1595">1595</span>
-<span id="1596">1596</span>
-<span id="1597">1597</span>
-<span id="1598">1598</span>
-<span id="1599">1599</span>
-<span id="1600">1600</span>
-<span id="1601">1601</span>
-<span id="1602">1602</span>
-<span id="1603">1603</span>
-<span id="1604">1604</span>
-<span id="1605">1605</span>
-<span id="1606">1606</span>
-<span id="1607">1607</span>
-<span id="1608">1608</span>
-<span id="1609">1609</span>
-<span id="1610">1610</span>
-<span id="1611">1611</span>
-<span id="1612">1612</span>
-<span id="1613">1613</span>
-<span id="1614">1614</span>
-<span id="1615">1615</span>
-<span id="1616">1616</span>
-<span id="1617">1617</span>
-<span id="1618">1618</span>
-<span id="1619">1619</span>
-<span id="1620">1620</span>
-<span id="1621">1621</span>
-<span id="1622">1622</span>
-<span id="1623">1623</span>
-<span id="1624">1624</span>
-<span id="1625">1625</span>
-<span id="1626">1626</span>
-<span id="1627">1627</span>
-<span id="1628">1628</span>
-<span id="1629">1629</span>
-<span id="1630">1630</span>
-<span id="1631">1631</span>
-<span id="1632">1632</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1700,6 +1604,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
 <span class="kw">type</span> <span class="ident">HostFunctions</span> <span class="op">=</span>
 	(<span class="ident">sp_io::SubstrateHostFunctions</span>, <span class="ident">frame_benchmarking::benchmarking::HostFunctions</span>);
+
+<span class="kw">type</span> <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+
+<span class="kw">type</span> <span class="ident">ParachainBackend</span> <span class="op">=</span> <span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Native executor instance.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ShellRuntimeExecutor</span>;
@@ -1785,45 +1693,33 @@
 	<span class="ident">build_import_queue</span>: <span class="ident">BIQ</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
 	<span class="ident">PartialComponents</span><span class="op">&lt;</span>
-		<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		<span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBackend</span>,
 		(),
-		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-			<span class="ident">Block</span>,
-			<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
-		<span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span>
-			<span class="ident">Block</span>,
-			<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
+		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Telemetry</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryWorkerHandle</span><span class="op">&gt;</span>),
 	<span class="op">&gt;</span>,
 	<span class="ident">sc_service::Error</span>,
 <span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
-		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-			<span class="ident">Block</span>,
-			<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
+		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">sc_service::Error</span>,
 	<span class="op">&gt;</span>,
 {
@@ -1924,54 +1820,38 @@
 	<span class="ident">build_import_queue</span>: <span class="ident">BIQ</span>,
 	<span class="ident">build_consensus</span>: <span class="ident">BIC</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
-	<span class="ident">TaskManager</span>,
-	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-)<span class="op">&gt;</span>
+) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(<span class="ident">TaskManager</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
-	<span class="ident">RB</span>: <span class="ident">Fn</span>(
-			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
-		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-			<span class="ident">Block</span>,
-			<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
+		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">sc_service::Error</span>,
 	<span class="op">&gt;</span>,
 	<span class="ident">BIC</span>: <span class="ident">FnOnce</span>(
-		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">RelayChainInterface</span><span class="op">&gt;</span>,
-		<span class="ident">Arc</span><span class="op">&lt;</span>
-			<span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span>
-				<span class="ident">Block</span>,
-				<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">NetworkService</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">SyncCryptoStorePtr</span>,
 		<span class="ident">bool</span>,
@@ -2120,56 +2000,40 @@
 	<span class="ident">build_import_queue</span>: <span class="ident">BIQ</span>,
 	<span class="ident">build_consensus</span>: <span class="ident">BIC</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
-	<span class="ident">TaskManager</span>,
-	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-)<span class="op">&gt;</span>
+) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(<span class="ident">TaskManager</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Balance</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">frame_rpc_system::AccountNonceApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">AccountId</span>, <span class="ident">Nonce</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
-	<span class="ident">RB</span>: <span class="ident">Fn</span>(
-			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
-			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 			<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 			<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 			<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-			<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-				<span class="ident">Block</span>,
-				<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="op">&gt;</span>,
+			<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 			<span class="ident">sc_service::Error</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIC</span>: <span class="ident">FnOnce</span>(
-		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">RelayChainInterface</span><span class="op">&gt;</span>,
-		<span class="ident">Arc</span><span class="op">&lt;</span>
-			<span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span>
-				<span class="ident">Block</span>,
-				<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">NetworkService</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">SyncCryptoStorePtr</span>,
 		<span class="ident">bool</span>,
@@ -2318,17 +2182,12 @@
 
 <span class="doccomment">/// Build the import queue for the rococo parachain runtime.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_parachain_build_import_queue</span>(
-	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span>
-		<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">rococo_parachain_runtime::RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="op">&gt;</span>,
+	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-	<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-		<span class="ident">Block</span>,
-		<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">rococo_parachain_runtime::RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="op">&gt;</span>,
+	<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">sc_service::Error</span>,
 <span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">slot_duration</span> <span class="op">=</span> <span class="ident">cumulus_client_consensus_aura::slot_duration</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">client</span>)<span class="question-mark">?</span>;
@@ -2370,7 +2229,7 @@
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
 	<span class="ident">TaskManager</span>,
-	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">rococo_parachain_runtime::RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 )<span class="op">&gt;</span> {
 	<span class="ident">start_node_impl</span>::<span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::RuntimeApi</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 		<span class="ident">parachain_config</span>,
@@ -2452,31 +2311,22 @@
 
 <span class="doccomment">/// Build the import queue for the shell runtime.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shell_build_import_queue</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>(
-	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="kw">_</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-	<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-		<span class="ident">Block</span>,
-		<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="op">&gt;</span>,
-	<span class="ident">sc_service::Error</span>,
-<span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 {
 	<span class="ident">cumulus_client_consensus_relay_chain::import_queue</span>(
 		<span class="ident">client</span>.<span class="ident">clone</span>(),
@@ -2495,25 +2345,19 @@
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
-	<span class="ident">TaskManager</span>,
-	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-)<span class="op">&gt;</span>
+) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(<span class="ident">TaskManager</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 {
 	<span class="ident">start_shell_node_impl</span>::<span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 		<span class="ident">parachain_config</span>,
@@ -2680,32 +2524,23 @@
 
 <span class="doccomment">/// Build the import queue for Statemint and other Aura-based runtimes.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">aura_build_import_queue</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">AuraId</span>: <span class="ident">AppKey</span><span class="op">&gt;</span>(
-	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-	<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-		<span class="ident">Block</span>,
-		<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="op">&gt;</span>,
-	<span class="ident">sc_service::Error</span>,
-<span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_consensus_aura::AuraApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">AuraId</span> <span class="kw">as</span> <span class="ident">AppKey</span><span class="op">&gt;</span><span class="ident">::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">AuraId</span> <span class="kw">as</span> <span class="ident">AppKey</span><span class="op">&gt;</span><span class="ident">::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Signature</span>:
 		<span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">std::hash::Hash</span> <span class="op">+</span> <span class="ident">sp_runtime::traits::Member</span> <span class="op">+</span> <span class="ident">Codec</span>,
 {
@@ -2763,28 +2598,22 @@
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
 	<span class="ident">id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
-	<span class="ident">TaskManager</span>,
-	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-)<span class="op">&gt;</span>
+) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(<span class="ident">TaskManager</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_consensus_aura::AuraApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">AuraId</span> <span class="kw">as</span> <span class="ident">AppKey</span><span class="op">&gt;</span><span class="ident">::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Balance</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">frame_rpc_system::AccountNonceApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">AccountId</span>, <span class="ident">Nonce</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">AuraId</span> <span class="kw">as</span> <span class="ident">AppKey</span><span class="op">&gt;</span><span class="ident">::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Signature</span>:
 		<span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">std::hash::Hash</span> <span class="op">+</span> <span class="ident">sp_runtime::traits::Member</span> <span class="op">+</span> <span class="ident">Codec</span>,
 {
@@ -2934,56 +2763,40 @@
 	<span class="ident">build_import_queue</span>: <span class="ident">BIQ</span>,
 	<span class="ident">build_consensus</span>: <span class="ident">BIC</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
-	<span class="ident">TaskManager</span>,
-	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-)<span class="op">&gt;</span>
+) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(<span class="ident">TaskManager</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="ident">Sync</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RuntimeApi</span>: <span class="ident">ConstructRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">RuntimeApi::RuntimeApi</span>: <span class="ident">sp_transaction_pool::runtime_api::TaggedTransactionQueue</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_api::ApiExt</span><span class="op">&lt;</span>
 			<span class="ident">Block</span>,
-			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
+			<span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">sp_offchain::OffchainWorkerApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Balance</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">frame_rpc_system::AccountNonceApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">AccountId</span>, <span class="ident">Nonce</span><span class="op">&gt;</span>,
-	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
-	<span class="ident">RB</span>: <span class="ident">Fn</span>(
-			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
+	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
+	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
-			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 			<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 			<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 			<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-			<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-				<span class="ident">Block</span>,
-				<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="op">&gt;</span>,
+			<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 			<span class="ident">sc_service::Error</span>,
 		<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIC</span>: <span class="ident">FnOnce</span>(
-		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">RelayChainInterface</span><span class="op">&gt;</span>,
-		<span class="ident">Arc</span><span class="op">&lt;</span>
-			<span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span>
-				<span class="ident">Block</span>,
-				<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">NetworkService</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">SyncCryptoStorePtr</span>,
 		<span class="ident">bool</span>,
@@ -3132,17 +2945,12 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contracts_rococo_build_import_queue</span>(
-	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span>
-		<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">contracts_rococo_runtime::RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="op">&gt;</span>,
+	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-	<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span>
-		<span class="ident">Block</span>,
-		<span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">contracts_rococo_runtime::RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="op">&gt;</span>,
+	<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">sc_service::Error</span>,
 <span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">slot_duration</span> <span class="op">=</span> <span class="ident">cumulus_client_consensus_aura::slot_duration</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">client</span>)<span class="question-mark">?</span>;
@@ -3184,7 +2992,7 @@
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
 	<span class="ident">TaskManager</span>,
-	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">contracts_rococo_runtime::RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 )<span class="op">&gt;</span> {
 	<span class="ident">start_contracts_rococo_node_impl</span>::<span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::RuntimeApi</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 		<span class="ident">parachain_config</span>,
