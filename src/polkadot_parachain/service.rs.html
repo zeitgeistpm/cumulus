@@ -1534,6 +1534,22 @@
 <span id="1534">1534</span>
 <span id="1535">1535</span>
 <span id="1536">1536</span>
+<span id="1537">1537</span>
+<span id="1538">1538</span>
+<span id="1539">1539</span>
+<span id="1540">1540</span>
+<span id="1541">1541</span>
+<span id="1542">1542</span>
+<span id="1543">1543</span>
+<span id="1544">1544</span>
+<span id="1545">1545</span>
+<span id="1546">1546</span>
+<span id="1547">1547</span>
+<span id="1548">1548</span>
+<span id="1549">1549</span>
+<span id="1550">1550</span>
+<span id="1551">1551</span>
+<span id="1552">1552</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1554,7 +1570,7 @@
 <span class="kw">use</span> <span class="ident">cumulus_client_cli::CollatorOptions</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_consensus_aura</span>::{<span class="ident">AuraConsensus</span>, <span class="ident">BuildAuraConsensusParams</span>, <span class="ident">SlotProportion</span>};
 <span class="kw">use</span> <span class="ident">cumulus_client_consensus_common</span>::{
-	<span class="ident">ParachainBlockImport</span>, <span class="ident">ParachainCandidate</span>, <span class="ident">ParachainConsensus</span>,
+	<span class="ident">ParachainBlockImport</span> <span class="kw">as</span> <span class="ident">TParachainBlockImport</span>, <span class="ident">ParachainCandidate</span>, <span class="ident">ParachainConsensus</span>,
 };
 <span class="kw">use</span> <span class="ident">cumulus_client_network::BlockAnnounceValidator</span>;
 <span class="kw">use</span> <span class="ident">cumulus_client_service</span>::{
@@ -1608,6 +1624,8 @@
 <span class="kw">type</span> <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">TFullClient</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">RuntimeApi</span>, <span class="ident">WasmExecutor</span><span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">type</span> <span class="ident">ParachainBackend</span> <span class="op">=</span> <span class="ident">TFullBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>;
+
+<span class="kw">type</span> <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">TParachainBlockImport</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Native executor instance.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ShellRuntimeExecutor</span>;
@@ -1698,7 +1716,7 @@
 		(),
 		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 		<span class="ident">sc_transaction_pool::FullPool</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Telemetry</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryWorkerHandle</span><span class="op">&gt;</span>),
+		(<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Telemetry</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryWorkerHandle</span><span class="op">&gt;</span>),
 	<span class="op">&gt;</span>,
 	<span class="ident">sc_service::Error</span>,
 <span class="op">&gt;</span>
@@ -1715,6 +1733,7 @@
 	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -1765,8 +1784,11 @@
 		<span class="ident">client</span>.<span class="ident">clone</span>(),
 	);
 
+	<span class="kw">let</span> <span class="ident">block_import</span> <span class="op">=</span> <span class="ident">ParachainBlockImport::new</span>(<span class="ident">client</span>.<span class="ident">clone</span>());
+
 	<span class="kw">let</span> <span class="ident">import_queue</span> <span class="op">=</span> <span class="ident">build_import_queue</span>(
 		<span class="ident">client</span>.<span class="ident">clone</span>(),
+		<span class="ident">block_import</span>.<span class="ident">clone</span>(),
 		<span class="ident">config</span>,
 		<span class="ident">telemetry</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">telemetry</span><span class="op">|</span> <span class="ident">telemetry</span>.<span class="ident">handle</span>()),
 		<span class="kw-2">&amp;</span><span class="ident">task_manager</span>,
@@ -1780,7 +1802,7 @@
 		<span class="ident">task_manager</span>,
 		<span class="ident">transaction_pool</span>,
 		<span class="ident">select_chain</span>: (),
-		<span class="ident">other</span>: (<span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>),
+		<span class="ident">other</span>: (<span class="ident">block_import</span>, <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>),
 	};
 
 	<span class="prelude-val">Ok</span>(<span class="ident">params</span>)
@@ -1815,7 +1837,7 @@
 	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">polkadot_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
-	<span class="ident">id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">rpc_ext_builder</span>: <span class="ident">RB</span>,
 	<span class="ident">build_import_queue</span>: <span class="ident">BIQ</span>,
 	<span class="ident">build_consensus</span>: <span class="ident">BIC</span>,
@@ -1834,10 +1856,10 @@
 		<span class="op">+</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
 	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
 		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -1847,6 +1869,7 @@
 	<span class="op">&gt;</span>,
 	<span class="ident">BIC</span>: <span class="ident">FnOnce</span>(
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -1860,7 +1883,7 @@
 	<span class="kw">let</span> <span class="ident">parachain_config</span> <span class="op">=</span> <span class="ident">prepare_node_config</span>(<span class="ident">parachain_config</span>);
 
 	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">BIQ</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">parachain_config</span>, <span class="ident">build_import_queue</span>)<span class="question-mark">?</span>;
-	<span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>) <span class="op">=</span> <span class="ident">params</span>.<span class="ident">other</span>;
+	<span class="kw">let</span> (<span class="ident">block_import</span>, <span class="kw-2">mut</span> <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>) <span class="op">=</span> <span class="ident">params</span>.<span class="ident">other</span>;
 
 	<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">client</span>.<span class="ident">clone</span>();
 	<span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">backend</span>.<span class="ident">clone</span>();
@@ -1881,7 +1904,8 @@
 		<span class="ident">s</span> =&gt; <span class="ident">s</span>.<span class="ident">to_string</span>().<span class="ident">into</span>(),
 	})<span class="question-mark">?</span>;
 
-	<span class="kw">let</span> <span class="ident">block_announce_validator</span> <span class="op">=</span> <span class="ident">BlockAnnounceValidator::new</span>(<span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(), <span class="ident">id</span>);
+	<span class="kw">let</span> <span class="ident">block_announce_validator</span> <span class="op">=</span>
+		<span class="ident">BlockAnnounceValidator::new</span>(<span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(), <span class="ident">para_id</span>);
 
 	<span class="kw">let</span> <span class="ident">force_authoring</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">force_authoring</span>;
 	<span class="kw">let</span> <span class="ident">validator</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>();
@@ -1941,6 +1965,7 @@
 	<span class="kw">if</span> <span class="ident">validator</span> {
 		<span class="kw">let</span> <span class="ident">parachain_consensus</span> <span class="op">=</span> <span class="ident">build_consensus</span>(
 			<span class="ident">client</span>.<span class="ident">clone</span>(),
+			<span class="ident">block_import</span>,
 			<span class="ident">prometheus_registry</span>.<span class="ident">as_ref</span>(),
 			<span class="ident">telemetry</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">handle</span>()),
 			<span class="kw-2">&amp;</span><span class="ident">task_manager</span>,
@@ -1954,7 +1979,7 @@
 		<span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>();
 
 		<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">StartCollatorParams</span> {
-			<span class="ident">para_id</span>: <span class="ident">id</span>,
+			<span class="ident">para_id</span>,
 			<span class="ident">block_status</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">announce_block</span>,
 			<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
@@ -1973,7 +1998,7 @@
 			<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">announce_block</span>,
 			<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
-			<span class="ident">para_id</span>: <span class="ident">id</span>,
+			<span class="ident">para_id</span>,
 			<span class="ident">relay_chain_interface</span>,
 			<span class="ident">relay_chain_slot_duration</span>,
 			<span class="ident">import_queue</span>,
@@ -1995,7 +2020,7 @@
 	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">polkadot_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
-	<span class="ident">id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">_rpc_ext_builder</span>: <span class="ident">RB</span>,
 	<span class="ident">build_import_queue</span>: <span class="ident">BIQ</span>,
 	<span class="ident">build_consensus</span>: <span class="ident">BIC</span>,
@@ -2015,20 +2040,20 @@
 		<span class="op">+</span> <span class="ident">pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Balance</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">frame_rpc_system::AccountNonceApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">AccountId</span>, <span class="ident">Nonce</span><span class="op">&gt;</span>,
 	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
-	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
-			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
-			<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
-			<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-			<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="ident">sc_service::Error</span>,
-		<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
+		<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
+		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
+		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
+		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">sc_service::Error</span>,
+	<span class="op">&gt;</span>,
 	<span class="ident">BIC</span>: <span class="ident">FnOnce</span>(
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -2042,7 +2067,7 @@
 	<span class="kw">let</span> <span class="ident">parachain_config</span> <span class="op">=</span> <span class="ident">prepare_node_config</span>(<span class="ident">parachain_config</span>);
 
 	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">BIQ</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">parachain_config</span>, <span class="ident">build_import_queue</span>)<span class="question-mark">?</span>;
-	<span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>) <span class="op">=</span> <span class="ident">params</span>.<span class="ident">other</span>;
+	<span class="kw">let</span> (<span class="ident">block_import</span>, <span class="kw-2">mut</span> <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>) <span class="op">=</span> <span class="ident">params</span>.<span class="ident">other</span>;
 
 	<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">client</span>.<span class="ident">clone</span>();
 	<span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">backend</span>.<span class="ident">clone</span>();
@@ -2062,7 +2087,8 @@
 		<span class="ident">s</span> =&gt; <span class="ident">s</span>.<span class="ident">to_string</span>().<span class="ident">into</span>(),
 	})<span class="question-mark">?</span>;
 
-	<span class="kw">let</span> <span class="ident">block_announce_validator</span> <span class="op">=</span> <span class="ident">BlockAnnounceValidator::new</span>(<span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(), <span class="ident">id</span>);
+	<span class="kw">let</span> <span class="ident">block_announce_validator</span> <span class="op">=</span>
+		<span class="ident">BlockAnnounceValidator::new</span>(<span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(), <span class="ident">para_id</span>);
 
 	<span class="kw">let</span> <span class="ident">force_authoring</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">force_authoring</span>;
 	<span class="kw">let</span> <span class="ident">validator</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>();
@@ -2134,6 +2160,7 @@
 	<span class="kw">if</span> <span class="ident">validator</span> {
 		<span class="kw">let</span> <span class="ident">parachain_consensus</span> <span class="op">=</span> <span class="ident">build_consensus</span>(
 			<span class="ident">client</span>.<span class="ident">clone</span>(),
+			<span class="ident">block_import</span>,
 			<span class="ident">prometheus_registry</span>.<span class="ident">as_ref</span>(),
 			<span class="ident">telemetry</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">handle</span>()),
 			<span class="kw-2">&amp;</span><span class="ident">task_manager</span>,
@@ -2147,7 +2174,7 @@
 		<span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>();
 
 		<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">StartCollatorParams</span> {
-			<span class="ident">para_id</span>: <span class="ident">id</span>,
+			<span class="ident">para_id</span>,
 			<span class="ident">block_status</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">announce_block</span>,
 			<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
@@ -2166,7 +2193,7 @@
 			<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">announce_block</span>,
 			<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
-			<span class="ident">para_id</span>: <span class="ident">id</span>,
+			<span class="ident">para_id</span>,
 			<span class="ident">relay_chain_interface</span>,
 			<span class="ident">relay_chain_slot_duration</span>,
 			<span class="ident">import_queue</span>,
@@ -2183,6 +2210,7 @@
 <span class="doccomment">/// Build the import queue for the rococo parachain runtime.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_parachain_build_import_queue</span>(
 	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">rococo_parachain_runtime::RuntimeApi</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -2200,7 +2228,7 @@
 		<span class="kw">_</span>,
 		<span class="kw">_</span>,
 	<span class="op">&gt;</span>(<span class="ident">cumulus_client_consensus_aura::ImportQueueParams</span> {
-		<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+		<span class="ident">block_import</span>,
 		<span class="ident">client</span>,
 		<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
@@ -2225,7 +2253,7 @@
 	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">polkadot_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
-	<span class="ident">id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
 	<span class="ident">TaskManager</span>,
@@ -2235,10 +2263,11 @@
 		<span class="ident">parachain_config</span>,
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
-		<span class="ident">id</span>,
+		<span class="ident">para_id</span>,
 		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">rococo_parachain_build_import_queue</span>,
 		<span class="op">|</span><span class="ident">client</span>,
+		 <span class="ident">block_import</span>,
 		 <span class="ident">prometheus_registry</span>,
 		 <span class="ident">telemetry</span>,
 		 <span class="ident">task_manager</span>,
@@ -2269,7 +2298,7 @@
 								<span class="ident">relay_parent</span>,
 								<span class="kw-2">&amp;</span><span class="ident">relay_chain_interface</span>,
 								<span class="kw-2">&amp;</span><span class="ident">validation_data</span>,
-								<span class="ident">id</span>,
+								<span class="ident">para_id</span>,
 							).<span class="kw">await</span>;
 
 							<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
@@ -2289,7 +2318,7 @@
 							<span class="prelude-val">Ok</span>((<span class="ident">slot</span>, <span class="ident">timestamp</span>, <span class="ident">parachain_inherent</span>))
 						}
 					},
-					<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+					<span class="ident">block_import</span>,
 					<span class="ident">para_client</span>: <span class="ident">client</span>,
 					<span class="ident">backoff_authoring_blocks</span>: <span class="prelude-ty">Option</span>::<span class="op">&lt;</span>()<span class="op">&gt;</span><span class="ident">::None</span>,
 					<span class="ident">sync_oracle</span>,
@@ -2312,6 +2341,7 @@
 <span class="doccomment">/// Build the import queue for the shell runtime.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shell_build_import_queue</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>(
 	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="kw">_</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -2330,7 +2360,7 @@
 {
 	<span class="ident">cumulus_client_consensus_relay_chain::import_queue</span>(
 		<span class="ident">client</span>.<span class="ident">clone</span>(),
-		<span class="ident">client</span>,
+		<span class="ident">block_import</span>,
 		<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> { <span class="prelude-val">Ok</span>(()) },
 		<span class="kw-2">&amp;</span><span class="ident">task_manager</span>.<span class="ident">spawn_essential_handle</span>(),
 		<span class="ident">config</span>.<span class="ident">prometheus_registry</span>(),
@@ -2343,7 +2373,7 @@
 	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">polkadot_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
-	<span class="ident">id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(<span class="ident">TaskManager</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
 <span class="kw">where</span>
@@ -2363,10 +2393,11 @@
 		<span class="ident">parachain_config</span>,
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
-		<span class="ident">id</span>,
+		<span class="ident">para_id</span>,
 		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">shell_build_import_queue</span>,
 		<span class="op">|</span><span class="ident">client</span>,
+		 <span class="ident">block_import</span>,
 		 <span class="ident">prometheus_registry</span>,
 		 <span class="ident">telemetry</span>,
 		 <span class="ident">task_manager</span>,
@@ -2377,7 +2408,7 @@
 		 <span class="kw">_</span><span class="op">|</span> {
 			<span class="kw">let</span> <span class="ident">proposer_factory</span> <span class="op">=</span> <span class="ident">sc_basic_authorship::ProposerFactory::with_proof_recording</span>(
 				<span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>(),
-				<span class="ident">client</span>.<span class="ident">clone</span>(),
+				<span class="ident">client</span>,
 				<span class="ident">transaction_pool</span>,
 				<span class="ident">prometheus_registry</span>,
 				<span class="ident">telemetry</span>,
@@ -2385,9 +2416,9 @@
 
 			<span class="prelude-val">Ok</span>(<span class="ident">cumulus_client_consensus_relay_chain::build_relay_chain_consensus</span>(
 				<span class="ident">cumulus_client_consensus_relay_chain::BuildRelayChainConsensusParams</span> {
-					<span class="ident">para_id</span>: <span class="ident">id</span>,
+					<span class="ident">para_id</span>,
 					<span class="ident">proposer_factory</span>,
-					<span class="ident">block_import</span>: <span class="ident">client</span>,
+					<span class="ident">block_import</span>,
 					<span class="ident">relay_chain_interface</span>: <span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(),
 					<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, (<span class="ident">relay_parent</span>, <span class="ident">validation_data</span>)<span class="op">|</span> {
 						<span class="kw">let</span> <span class="ident">relay_chain_interface</span> <span class="op">=</span> <span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>();
@@ -2397,7 +2428,7 @@
 								<span class="ident">relay_parent</span>,
 								<span class="kw-2">&amp;</span><span class="ident">relay_chain_interface</span>,
 								<span class="kw-2">&amp;</span><span class="ident">validation_data</span>,
-								<span class="ident">id</span>,
+								<span class="ident">para_id</span>,
 							).<span class="kw">await</span>;
 							<span class="kw">let</span> <span class="ident">parachain_inherent</span> <span class="op">=</span> <span class="ident">parachain_inherent</span>.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
 								<span class="ident">Box</span>::<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="ident">::from</span>(
@@ -2525,6 +2556,7 @@
 <span class="doccomment">/// Build the import queue for Statemint and other Aura-based runtimes.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">aura_build_import_queue</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">AuraId</span>: <span class="ident">AppKey</span><span class="op">&gt;</span>(
 	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -2581,13 +2613,7 @@
 	<span class="kw">let</span> <span class="ident">registry</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">prometheus_registry</span>();
 	<span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">task_manager</span>.<span class="ident">spawn_essential_handle</span>();
 
-	<span class="prelude-val">Ok</span>(<span class="ident">BasicQueue::new</span>(
-		<span class="ident">verifier</span>,
-		<span class="ident">Box::new</span>(<span class="ident">ParachainBlockImport::new</span>(<span class="ident">client</span>)),
-		<span class="prelude-val">None</span>,
-		<span class="kw-2">&amp;</span><span class="ident">spawner</span>,
-		<span class="ident">registry</span>,
-	))
+	<span class="prelude-val">Ok</span>(<span class="ident">BasicQueue::new</span>(<span class="ident">verifier</span>, <span class="ident">Box::new</span>(<span class="ident">block_import</span>), <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">spawner</span>, <span class="ident">registry</span>))
 }
 
 <span class="doccomment">/// Start an aura powered parachain node.</span>
@@ -2596,7 +2622,7 @@
 	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">polkadot_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
-	<span class="ident">id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(<span class="ident">TaskManager</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span>
 <span class="kw">where</span>
@@ -2621,10 +2647,11 @@
 		<span class="ident">parachain_config</span>,
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
-		<span class="ident">id</span>,
+		<span class="ident">para_id</span>,
 		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">aura_build_import_queue</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AuraId</span><span class="op">&gt;</span>,
 		<span class="op">|</span><span class="ident">client</span>,
+		 <span class="ident">block_import</span>,
 		 <span class="ident">prometheus_registry</span>,
 		 <span class="ident">telemetry</span>,
 		 <span class="ident">task_manager</span>,
@@ -2633,8 +2660,9 @@
 		 <span class="ident">sync_oracle</span>,
 		 <span class="ident">keystore</span>,
 		 <span class="ident">force_authoring</span><span class="op">|</span> {
-			<span class="kw">let</span> <span class="ident">client2</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
 			<span class="kw">let</span> <span class="ident">spawn_handle</span> <span class="op">=</span> <span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>();
+			<span class="kw">let</span> <span class="ident">client2</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
+			<span class="kw">let</span> <span class="ident">block_import2</span> <span class="op">=</span> <span class="ident">block_import</span>.<span class="ident">clone</span>();
 			<span class="kw">let</span> <span class="ident">transaction_pool2</span> <span class="op">=</span> <span class="ident">transaction_pool</span>.<span class="ident">clone</span>();
 			<span class="kw">let</span> <span class="ident">telemetry2</span> <span class="op">=</span> <span class="ident">telemetry</span>.<span class="ident">clone</span>();
 			<span class="kw">let</span> <span class="ident">prometheus_registry2</span> <span class="op">=</span> <span class="ident">prometheus_registry</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">r</span>).<span class="ident">clone</span>());
@@ -2663,7 +2691,7 @@
 											<span class="ident">relay_parent</span>,
 											<span class="kw-2">&amp;</span><span class="ident">relay_chain_for_aura</span>,
 											<span class="kw-2">&amp;</span><span class="ident">validation_data</span>,
-											<span class="ident">id</span>,
+											<span class="ident">para_id</span>,
 										).<span class="kw">await</span>;
 
 									<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span>
@@ -2685,8 +2713,8 @@
 									<span class="prelude-val">Ok</span>((<span class="ident">slot</span>, <span class="ident">timestamp</span>, <span class="ident">parachain_inherent</span>))
 								}
 							},
-						<span class="ident">block_import</span>: <span class="ident">client2</span>.<span class="ident">clone</span>(),
-						<span class="ident">para_client</span>: <span class="ident">client2</span>.<span class="ident">clone</span>(),
+						<span class="ident">block_import</span>: <span class="ident">block_import2</span>,
+						<span class="ident">para_client</span>: <span class="ident">client2</span>,
 						<span class="ident">backoff_authoring_blocks</span>: <span class="prelude-ty">Option</span>::<span class="op">&lt;</span>()<span class="op">&gt;</span><span class="ident">::None</span>,
 						<span class="ident">sync_oracle</span>,
 						<span class="ident">keystore</span>,
@@ -2712,9 +2740,9 @@
 			<span class="kw">let</span> <span class="ident">relay_chain_consensus</span> <span class="op">=</span>
 				<span class="ident">cumulus_client_consensus_relay_chain::build_relay_chain_consensus</span>(
 					<span class="ident">cumulus_client_consensus_relay_chain::BuildRelayChainConsensusParams</span> {
-						<span class="ident">para_id</span>: <span class="ident">id</span>,
+						<span class="ident">para_id</span>,
 						<span class="ident">proposer_factory</span>,
-						<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+						<span class="ident">block_import</span>,
 						<span class="ident">relay_chain_interface</span>: <span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(),
 						<span class="ident">create_inherent_data_providers</span>:
 							<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, (<span class="ident">relay_parent</span>, <span class="ident">validation_data</span>)<span class="op">|</span> {
@@ -2725,7 +2753,7 @@
 										<span class="ident">relay_parent</span>,
 										<span class="kw-2">&amp;</span><span class="ident">relay_chain_interface</span>,
 										<span class="kw-2">&amp;</span><span class="ident">validation_data</span>,
-										<span class="ident">id</span>,
+										<span class="ident">para_id</span>,
 									).<span class="kw">await</span>;
 									<span class="kw">let</span> <span class="ident">parachain_inherent</span> <span class="op">=</span>
 										<span class="ident">parachain_inherent</span>.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
@@ -2758,7 +2786,7 @@
 	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">polkadot_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
-	<span class="ident">id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">_rpc_ext_builder</span>: <span class="ident">RB</span>,
 	<span class="ident">build_import_queue</span>: <span class="ident">BIQ</span>,
 	<span class="ident">build_consensus</span>: <span class="ident">BIC</span>,
@@ -2778,20 +2806,20 @@
 		<span class="op">+</span> <span class="ident">pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Balance</span><span class="op">&gt;</span>
 		<span class="op">+</span> <span class="ident">frame_rpc_system::AccountNonceApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">AccountId</span>, <span class="ident">Nonce</span><span class="op">&gt;</span>,
 	<span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">ParachainBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span>: <span class="ident">sp_api::StateBackend</span><span class="op">&lt;</span><span class="ident">BlakeTwo256</span><span class="op">&gt;</span>,
-	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>
-		<span class="op">+</span> <span class="ident">Send</span>
-		<span class="op">+</span> <span class="lifetime">&#39;static</span>,
+	<span class="ident">RB</span>: <span class="ident">Fn</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">jsonrpsee::RpcModule</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">sc_service::Error</span><span class="op">&gt;</span>,
 	<span class="ident">BIQ</span>: <span class="ident">FnOnce</span>(
-			<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
-			<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
-			<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-			<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			<span class="ident">sc_service::Error</span>,
-		<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
+		<span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
+		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
+		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
+		<span class="ident">sc_consensus::DefaultImportQueue</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">sc_service::Error</span>,
+	<span class="op">&gt;</span>,
 	<span class="ident">BIC</span>: <span class="ident">FnOnce</span>(
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&gt;</span>,
 		<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 		<span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -2805,7 +2833,7 @@
 	<span class="kw">let</span> <span class="ident">parachain_config</span> <span class="op">=</span> <span class="ident">prepare_node_config</span>(<span class="ident">parachain_config</span>);
 
 	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">new_partial</span>::<span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">BIQ</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">parachain_config</span>, <span class="ident">build_import_queue</span>)<span class="question-mark">?</span>;
-	<span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>) <span class="op">=</span> <span class="ident">params</span>.<span class="ident">other</span>;
+	<span class="kw">let</span> (<span class="ident">block_import</span>, <span class="kw-2">mut</span> <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>) <span class="op">=</span> <span class="ident">params</span>.<span class="ident">other</span>;
 
 	<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">client</span>.<span class="ident">clone</span>();
 	<span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">backend</span>.<span class="ident">clone</span>();
@@ -2825,7 +2853,8 @@
 		<span class="ident">s</span> =&gt; <span class="ident">s</span>.<span class="ident">to_string</span>().<span class="ident">into</span>(),
 	})<span class="question-mark">?</span>;
 
-	<span class="kw">let</span> <span class="ident">block_announce_validator</span> <span class="op">=</span> <span class="ident">BlockAnnounceValidator::new</span>(<span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(), <span class="ident">id</span>);
+	<span class="kw">let</span> <span class="ident">block_announce_validator</span> <span class="op">=</span>
+		<span class="ident">BlockAnnounceValidator::new</span>(<span class="ident">relay_chain_interface</span>.<span class="ident">clone</span>(), <span class="ident">para_id</span>);
 
 	<span class="kw">let</span> <span class="ident">force_authoring</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">force_authoring</span>;
 	<span class="kw">let</span> <span class="ident">validator</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>();
@@ -2897,6 +2926,7 @@
 	<span class="kw">if</span> <span class="ident">validator</span> {
 		<span class="kw">let</span> <span class="ident">parachain_consensus</span> <span class="op">=</span> <span class="ident">build_consensus</span>(
 			<span class="ident">client</span>.<span class="ident">clone</span>(),
+			<span class="ident">block_import</span>,
 			<span class="ident">prometheus_registry</span>.<span class="ident">as_ref</span>(),
 			<span class="ident">telemetry</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">handle</span>()),
 			<span class="kw-2">&amp;</span><span class="ident">task_manager</span>,
@@ -2910,7 +2940,7 @@
 		<span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>();
 
 		<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">StartCollatorParams</span> {
-			<span class="ident">para_id</span>: <span class="ident">id</span>,
+			<span class="ident">para_id</span>,
 			<span class="ident">block_status</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">announce_block</span>,
 			<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
@@ -2929,7 +2959,7 @@
 			<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">announce_block</span>,
 			<span class="ident">task_manager</span>: <span class="kw-2">&amp;mut</span> <span class="ident">task_manager</span>,
-			<span class="ident">para_id</span>: <span class="ident">id</span>,
+			<span class="ident">para_id</span>,
 			<span class="ident">relay_chain_interface</span>,
 			<span class="ident">relay_chain_slot_duration</span>,
 			<span class="ident">import_queue</span>,
@@ -2946,6 +2976,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contracts_rococo_build_import_queue</span>(
 	<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ParachainClient</span><span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::RuntimeApi</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">contracts_rococo_runtime::RuntimeApi</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Configuration</span>,
 	<span class="ident">telemetry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
 	<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="ident">TaskManager</span>,
@@ -2963,7 +2994,7 @@
 		<span class="kw">_</span>,
 		<span class="kw">_</span>,
 	<span class="op">&gt;</span>(<span class="ident">cumulus_client_consensus_aura::ImportQueueParams</span> {
-		<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+		<span class="ident">block_import</span>,
 		<span class="ident">client</span>,
 		<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
@@ -2988,7 +3019,7 @@
 	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">polkadot_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">collator_options</span>: <span class="ident">CollatorOptions</span>,
-	<span class="ident">id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="ident">hwbench</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sc_sysinfo::HwBench</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">sc_service::error::Result</span><span class="op">&lt;</span>(
 	<span class="ident">TaskManager</span>,
@@ -2998,10 +3029,11 @@
 		<span class="ident">parachain_config</span>,
 		<span class="ident">polkadot_config</span>,
 		<span class="ident">collator_options</span>,
-		<span class="ident">id</span>,
+		<span class="ident">para_id</span>,
 		<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">RpcModule::new</span>(())),
 		<span class="ident">contracts_rococo_build_import_queue</span>,
 		<span class="op">|</span><span class="ident">client</span>,
+		 <span class="ident">block_import</span>,
 		 <span class="ident">prometheus_registry</span>,
 		 <span class="ident">telemetry</span>,
 		 <span class="ident">task_manager</span>,
@@ -3031,7 +3063,7 @@
 									<span class="ident">relay_parent</span>,
 									<span class="kw-2">&amp;</span><span class="ident">relay_chain_interface</span>,
 									<span class="kw-2">&amp;</span><span class="ident">validation_data</span>,
-									<span class="ident">id</span>,
+									<span class="ident">para_id</span>,
 								).<span class="kw">await</span>;
 
 							<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
@@ -3051,7 +3083,7 @@
 							<span class="prelude-val">Ok</span>((<span class="ident">slot</span>, <span class="ident">timestamp</span>, <span class="ident">parachain_inherent</span>))
 						}
 					},
-					<span class="ident">block_import</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
+					<span class="ident">block_import</span>,
 					<span class="ident">para_client</span>: <span class="ident">client</span>,
 					<span class="ident">backoff_authoring_blocks</span>: <span class="prelude-ty">Option</span>::<span class="op">&lt;</span>()<span class="op">&gt;</span><span class="ident">::None</span>,
 					<span class="ident">sync_oracle</span>,

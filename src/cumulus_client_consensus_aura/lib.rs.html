@@ -305,6 +305,22 @@
 	}
 }
 
+<span class="doccomment">/// Parameters of [`AuraConsensus::build`].</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BuildAuraConsensusParams</span><span class="op">&lt;</span><span class="ident">PF</span>, <span class="ident">BI</span>, <span class="ident">CIDP</span>, <span class="ident">Client</span>, <span class="ident">BS</span>, <span class="ident">SO</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="ident">proposer_factory</span>: <span class="ident">PF</span>,
+	<span class="kw">pub</span> <span class="ident">create_inherent_data_providers</span>: <span class="ident">CIDP</span>,
+	<span class="kw">pub</span> <span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">BI</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">para_client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">backoff_authoring_blocks</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BS</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">sync_oracle</span>: <span class="ident">SO</span>,
+	<span class="kw">pub</span> <span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>,
+	<span class="kw">pub</span> <span class="ident">force_authoring</span>: <span class="ident">bool</span>,
+	<span class="kw">pub</span> <span class="ident">slot_duration</span>: <span class="ident">SlotDuration</span>,
+	<span class="kw">pub</span> <span class="ident">telemetry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">block_proposal_slot_portion</span>: <span class="ident">SlotProportion</span>,
+	<span class="kw">pub</span> <span class="ident">max_block_proposal_slot_portion</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SlotProportion</span><span class="op">&gt;</span>,
+}
+
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> <span class="ident">AuraConsensus</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">CIDP</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">B</span>: <span class="ident">BlockT</span>,
@@ -351,7 +367,7 @@
 		<span class="kw">let</span> <span class="ident">worker</span> <span class="op">=</span> <span class="ident">sc_consensus_aura::build_aura_worker</span>::<span class="op">&lt;</span><span class="ident">P</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 			<span class="ident">BuildAuraWorkerParams</span> {
 				<span class="ident">client</span>: <span class="ident">para_client</span>,
-				<span class="ident">block_import</span>: <span class="ident">ParachainBlockImport::new</span>(<span class="ident">block_import</span>),
+				<span class="ident">block_import</span>,
 				<span class="ident">justification_sync_link</span>: (),
 				<span class="ident">proposer_factory</span>,
 				<span class="ident">sync_oracle</span>,
@@ -449,22 +465,6 @@
 
 		<span class="prelude-val">Some</span>(<span class="ident">ParachainCandidate</span> { <span class="ident">block</span>: <span class="ident">res</span>.<span class="ident">block</span>, <span class="ident">proof</span>: <span class="ident">res</span>.<span class="ident">storage_proof</span> })
 	}
-}
-
-<span class="doccomment">/// Parameters of [`AuraConsensus::build`].</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BuildAuraConsensusParams</span><span class="op">&lt;</span><span class="ident">PF</span>, <span class="ident">BI</span>, <span class="ident">CIDP</span>, <span class="ident">Client</span>, <span class="ident">BS</span>, <span class="ident">SO</span><span class="op">&gt;</span> {
-	<span class="kw">pub</span> <span class="ident">proposer_factory</span>: <span class="ident">PF</span>,
-	<span class="kw">pub</span> <span class="ident">create_inherent_data_providers</span>: <span class="ident">CIDP</span>,
-	<span class="kw">pub</span> <span class="ident">block_import</span>: <span class="ident">BI</span>,
-	<span class="kw">pub</span> <span class="ident">para_client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>,
-	<span class="kw">pub</span> <span class="ident">backoff_authoring_blocks</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BS</span><span class="op">&gt;</span>,
-	<span class="kw">pub</span> <span class="ident">sync_oracle</span>: <span class="ident">SO</span>,
-	<span class="kw">pub</span> <span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>,
-	<span class="kw">pub</span> <span class="ident">force_authoring</span>: <span class="ident">bool</span>,
-	<span class="kw">pub</span> <span class="ident">slot_duration</span>: <span class="ident">SlotDuration</span>,
-	<span class="kw">pub</span> <span class="ident">telemetry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryHandle</span><span class="op">&gt;</span>,
-	<span class="kw">pub</span> <span class="ident">block_proposal_slot_portion</span>: <span class="ident">SlotProportion</span>,
-	<span class="kw">pub</span> <span class="ident">max_block_proposal_slot_portion</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SlotProportion</span><span class="op">&gt;</span>,
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cumulus_client_consensus_aura" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>

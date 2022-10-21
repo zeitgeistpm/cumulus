@@ -118,6 +118,7 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
+<span id="121">121</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -137,6 +138,7 @@
 <span class="doccomment">//! Parachain specific wrapper for the AuRa import queue.</span>
 
 <span class="kw">use</span> <span class="ident">codec::Codec</span>;
+<span class="kw">use</span> <span class="ident">cumulus_client_consensus_common::ParachainBlockImport</span>;
 <span class="kw">use</span> <span class="ident">sc_client_api</span>::{<span class="ident">backend::AuxStore</span>, <span class="ident">BlockOf</span>, <span class="ident">UsageProvider</span>};
 <span class="kw">use</span> <span class="ident">sc_consensus</span>::{<span class="ident">import_queue::DefaultImportQueue</span>, <span class="ident">BlockImport</span>};
 <span class="kw">use</span> <span class="ident">sc_consensus_aura::AuraVerifier</span>;
@@ -153,10 +155,10 @@
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt::Debug</span>, <span class="ident">hash::Hash</span>, <span class="ident">sync::Arc</span>};
 <span class="kw">use</span> <span class="ident">substrate_prometheus_endpoint::Registry</span>;
 
-<span class="doccomment">/// Parameters of [`import_queue`].</span>
+<span class="doccomment">/// Parameters for [`import_queue`].</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImportQueueParams</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">I</span>, <span class="ident">C</span>, <span class="ident">CIDP</span>, <span class="ident">S</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The block import to use.</span>
-	<span class="kw">pub</span> <span class="ident">block_import</span>: <span class="ident">I</span>,
+	<span class="kw">pub</span> <span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The client to interact with the chain.</span>
 	<span class="kw">pub</span> <span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The inherent data providers, to create the inherent data.</span>
@@ -203,7 +205,7 @@
 	<span class="ident">CIDP::InherentDataProviders</span>: <span class="ident">InherentDataProviderExt</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
 {
 	<span class="ident">sc_consensus_aura::import_queue</span>::<span class="op">&lt;</span><span class="ident">P</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">sc_consensus_aura::ImportQueueParams</span> {
-		<span class="ident">block_import</span>: <span class="ident">cumulus_client_consensus_common::ParachainBlockImport::new</span>(<span class="ident">block_import</span>),
+		<span class="ident">block_import</span>,
 		<span class="ident">justification_import</span>: <span class="prelude-val">None</span>,
 		<span class="ident">client</span>,
 		<span class="ident">create_inherent_data_providers</span>,

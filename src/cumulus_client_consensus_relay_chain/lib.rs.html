@@ -257,8 +257,6 @@
 <span id="257">257</span>
 <span id="258">258</span>
 <span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -351,16 +349,14 @@
 		<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 		<span class="ident">proposer_factory</span>: <span class="ident">PF</span>,
 		<span class="ident">create_inherent_data_providers</span>: <span class="ident">CIDP</span>,
-		<span class="ident">block_import</span>: <span class="ident">BI</span>,
+		<span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">BI</span><span class="op">&gt;</span>,
 		<span class="ident">relay_chain_interface</span>: <span class="ident">RCInterface</span>,
 	) -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span> {
 			<span class="ident">para_id</span>,
 			<span class="ident">proposer_factory</span>: <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">proposer_factory</span>)),
 			<span class="ident">create_inherent_data_providers</span>: <span class="ident">Arc::new</span>(<span class="ident">create_inherent_data_providers</span>),
-			<span class="ident">block_import</span>: <span class="ident">Arc::new</span>(<span class="ident">futures::lock::Mutex::new</span>(<span class="ident">ParachainBlockImport::new</span>(
-				<span class="ident">block_import</span>,
-			))),
+			<span class="ident">block_import</span>: <span class="ident">Arc::new</span>(<span class="ident">futures::lock::Mutex::new</span>(<span class="ident">block_import</span>)),
 			<span class="ident">relay_chain_interface</span>,
 			<span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
 		}
@@ -483,7 +479,7 @@
 	<span class="kw">pub</span> <span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 	<span class="kw">pub</span> <span class="ident">proposer_factory</span>: <span class="ident">PF</span>,
 	<span class="kw">pub</span> <span class="ident">create_inherent_data_providers</span>: <span class="ident">CIDP</span>,
-	<span class="kw">pub</span> <span class="ident">block_import</span>: <span class="ident">BI</span>,
+	<span class="kw">pub</span> <span class="ident">block_import</span>: <span class="ident">ParachainBlockImport</span><span class="op">&lt;</span><span class="ident">BI</span><span class="op">&gt;</span>,
 	<span class="kw">pub</span> <span class="ident">relay_chain_interface</span>: <span class="ident">RCInterface</span>,
 }
 
