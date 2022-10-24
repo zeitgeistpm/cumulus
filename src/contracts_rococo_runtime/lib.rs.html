@@ -665,6 +665,13 @@
 <span id="665">665</span>
 <span id="666">666</span>
 <span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2018-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0</span>
 <span class="comment">//</span>
@@ -1191,6 +1198,7 @@
 				<span class="ident">storage_deposit_limit</span>,
 				<span class="ident">input_data</span>,
 				<span class="ident">contracts::CONTRACTS_DEBUG_OUTPUT</span>,
+				<span class="ident">pallet_contracts::Determinism::Deterministic</span>,
 			)
 		}
 
@@ -1220,8 +1228,14 @@
 			<span class="ident">origin</span>: <span class="ident">AccountId</span>,
 			<span class="ident">code</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 			<span class="ident">storage_deposit_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span>,
+			<span class="ident">determinism</span>: <span class="ident">pallet_contracts::Determinism</span>,
 		) -&gt; <span class="ident">pallet_contracts_primitives::CodeUploadResult</span><span class="op">&lt;</span><span class="ident">Hash</span>, <span class="ident">Balance</span><span class="op">&gt;</span> {
-			<span class="ident">Contracts::bare_upload_code</span>(<span class="ident">origin</span>, <span class="ident">code</span>, <span class="ident">storage_deposit_limit</span>)
+			<span class="ident">Contracts::bare_upload_code</span>(
+				<span class="ident">origin</span>,
+				<span class="ident">code</span>,
+				<span class="ident">storage_deposit_limit</span>,
+				<span class="ident">determinism</span>,
+			)
 		}
 
 		<span class="kw">fn</span> <span class="ident">get_storage</span>(
