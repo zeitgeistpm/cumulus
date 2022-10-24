@@ -130,6 +130,9 @@
 <span id="130">130</span>
 <span id="131">131</span>
 <span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -148,7 +151,7 @@
 
 <span class="doccomment">//! A module that is responsible for migration of storage.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Config</span>, <span class="ident">Pallet</span>, <span class="ident">Store</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Config</span>, <span class="ident">Pallet</span>, <span class="ident">Store</span>, <span class="ident">DEFAULT_POV_SIZE</span>};
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">pallet_prelude</span>::<span class="kw-2">*</span>,
 	<span class="ident">traits::StorageVersion</span>,
@@ -213,7 +216,10 @@
 			<span class="ident">resume_threshold</span>: <span class="ident">pre</span>.<span class="ident">resume_threshold</span>,
 			<span class="ident">threshold_weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="ident">pre</span>.<span class="ident">threshold_weight</span>),
 			<span class="ident">weight_restrict_decay</span>: <span class="ident">Weight::from_ref_time</span>(<span class="ident">pre</span>.<span class="ident">weight_restrict_decay</span>),
-			<span class="ident">xcmp_max_individual_weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="ident">pre</span>.<span class="ident">xcmp_max_individual_weight</span>),
+			<span class="ident">xcmp_max_individual_weight</span>: <span class="ident">Weight::from_parts</span>(
+				<span class="ident">pre</span>.<span class="ident">xcmp_max_individual_weight</span>,
+				<span class="ident">DEFAULT_POV_SIZE</span>,
+			),
 		}
 	};
 

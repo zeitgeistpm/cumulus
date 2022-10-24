@@ -1145,6 +1145,10 @@
 <span id="1145">1145</span>
 <span id="1146">1146</span>
 <span id="1147">1147</span>
+<span id="1148">1148</span>
+<span id="1149">1149</span>
+<span id="1150">1150</span>
+<span id="1151">1151</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1213,6 +1217,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OverweightIndex</span> <span class="op">=</span> <span class="ident">u64</span>;
 
 <span class="kw">const</span> <span class="ident">LOG_TARGET</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;xcmp_queue&quot;</span>;
+<span class="kw">const</span> <span class="ident">DEFAULT_POV_SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">64</span> <span class="op">*</span> <span class="number">1024</span>; <span class="comment">// 64 KB</span>
 
 <span class="attribute">#[<span class="ident">frame_support::pallet</span>]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pallet</span> {
@@ -1609,7 +1614,10 @@
 			<span class="ident">resume_threshold</span>: <span class="number">1</span>,
 			<span class="ident">threshold_weight</span>: <span class="ident">Weight::from_ref_time</span>(<span class="number">100_000</span>),
 			<span class="ident">weight_restrict_decay</span>: <span class="ident">Weight::from_ref_time</span>(<span class="number">2</span>),
-			<span class="ident">xcmp_max_individual_weight</span>: <span class="number">20u64</span> <span class="op">*</span> <span class="ident">WEIGHT_PER_MILLIS</span>,
+			<span class="ident">xcmp_max_individual_weight</span>: <span class="ident">Weight::from_parts</span>(
+				<span class="number">20u64</span> <span class="op">*</span> <span class="ident">WEIGHT_PER_MILLIS</span>.<span class="ident">ref_time</span>(),
+				<span class="ident">DEFAULT_POV_SIZE</span>,
+			),
 		}
 	}
 }

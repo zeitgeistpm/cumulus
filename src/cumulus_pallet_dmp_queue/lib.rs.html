@@ -809,6 +809,11 @@
 <span id="809">809</span>
 <span id="810">810</span>
 <span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -849,6 +854,8 @@
 	<span class="ident">VersionedXcm</span>, <span class="ident">MAX_XCM_DECODE_DEPTH</span>,
 };
 
+<span class="kw">const</span> <span class="ident">DEFAULT_POV_SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">64</span> <span class="op">*</span> <span class="number">1024</span>; <span class="comment">// 64 KB</span>
+
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ConfigData</span> {
 	<span class="doccomment">/// The maximum amount of weight any individual message may consume. Messages above this weight</span>
@@ -860,7 +867,10 @@
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ConfigData</span> {
 	<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span> {
-			<span class="ident">max_individual</span>: <span class="number">10u64</span> <span class="op">*</span> <span class="ident">WEIGHT_PER_MILLIS</span>, <span class="comment">// 10 ms of execution time maximum by default</span>
+			<span class="ident">max_individual</span>: <span class="ident">Weight::from_parts</span>(
+				<span class="number">10u64</span> <span class="op">*</span> <span class="ident">WEIGHT_PER_MILLIS</span>.<span class="ident">ref_time</span>(), <span class="comment">// 10 ms of execution time maximum by default</span>
+				<span class="ident">DEFAULT_POV_SIZE</span>,                     <span class="comment">// 64 KB of proof size by default</span>
+			),
 		}
 	}
 }
