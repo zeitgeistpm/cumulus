@@ -1215,7 +1215,7 @@
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DepositBase</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">88</span>);
 	<span class="comment">// Additional storage item size of 32 bytes.</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DepositFactor</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">0</span>, <span class="number">32</span>);
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxSignatories</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">100</span>;
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxSignatories</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_multisig::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
