@@ -1550,6 +1550,8 @@
 <span id="1550">1550</span>
 <span id="1551">1551</span>
 <span id="1552">1552</span>
+<span id="1553">1553</span>
+<span id="1554">1554</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -2581,23 +2583,25 @@
 	<span class="kw">let</span> <span class="ident">aura_verifier</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
 		<span class="kw">let</span> <span class="ident">slot_duration</span> <span class="op">=</span> <span class="ident">cumulus_client_consensus_aura::slot_duration</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">client2</span>).<span class="ident">unwrap</span>();
 
-		<span class="ident">Box::new</span>(<span class="ident">cumulus_client_consensus_aura::build_verifier</span>::<span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">AuraId</span> <span class="kw">as</span> <span class="ident">AppKey</span><span class="op">&gt;</span><span class="ident">::Pair</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
-			<span class="ident">cumulus_client_consensus_aura::BuildVerifierParams</span> {
-				<span class="ident">client</span>: <span class="ident">client2</span>.<span class="ident">clone</span>(),
-				<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
-					<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
+		<span class="ident">Box::new</span>(
+			<span class="ident">cumulus_client_consensus_aura::build_verifier</span>::<span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">AuraId</span> <span class="kw">as</span> <span class="ident">AppKey</span><span class="op">&gt;</span><span class="ident">::Pair</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="ident">cumulus_client_consensus_aura::BuildVerifierParams</span> {
+					<span class="ident">client</span>: <span class="ident">client2</span>.<span class="ident">clone</span>(),
+					<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
+						<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
-					<span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span>
+						<span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span>
 							<span class="ident">sp_consensus_aura::inherents::InherentDataProvider::from_timestamp_and_slot_duration</span>(
 								<span class="kw-2">*</span><span class="ident">timestamp</span>,
 								<span class="ident">slot_duration</span>,
 							);
 
-					<span class="prelude-val">Ok</span>((<span class="ident">slot</span>, <span class="ident">timestamp</span>))
+						<span class="prelude-val">Ok</span>((<span class="ident">slot</span>, <span class="ident">timestamp</span>))
+					},
+					<span class="ident">telemetry</span>: <span class="ident">telemetry_handle</span>,
 				},
-				<span class="ident">telemetry</span>: <span class="ident">telemetry_handle</span>,
-			},
-		)) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>
+			),
+		) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>
 	};
 
 	<span class="kw">let</span> <span class="ident">relay_chain_verifier</span> <span class="op">=</span>

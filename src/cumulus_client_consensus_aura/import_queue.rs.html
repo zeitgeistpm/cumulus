@@ -119,6 +119,8 @@
 <span id="119">119</span>
 <span id="120">120</span>
 <span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -141,7 +143,7 @@
 <span class="kw">use</span> <span class="ident">cumulus_client_consensus_common::ParachainBlockImport</span>;
 <span class="kw">use</span> <span class="ident">sc_client_api</span>::{<span class="ident">backend::AuxStore</span>, <span class="ident">BlockOf</span>, <span class="ident">UsageProvider</span>};
 <span class="kw">use</span> <span class="ident">sc_consensus</span>::{<span class="ident">import_queue::DefaultImportQueue</span>, <span class="ident">BlockImport</span>};
-<span class="kw">use</span> <span class="ident">sc_consensus_aura::AuraVerifier</span>;
+<span class="kw">use</span> <span class="ident">sc_consensus_aura</span>::{<span class="ident">AuraVerifier</span>, <span class="ident">CompatibilityMode</span>};
 <span class="kw">use</span> <span class="ident">sc_consensus_slots::InherentDataProviderExt</span>;
 <span class="kw">use</span> <span class="ident">sc_telemetry::TelemetryHandle</span>;
 <span class="kw">use</span> <span class="ident">sp_api</span>::{<span class="ident">ApiExt</span>, <span class="ident">ProvideRuntimeApi</span>};
@@ -213,6 +215,7 @@
 		<span class="ident">registry</span>,
 		<span class="ident">check_for_equivocation</span>: <span class="ident">sc_consensus_aura::CheckForEquivocation::No</span>,
 		<span class="ident">telemetry</span>,
+		<span class="ident">compatibility_mode</span>: <span class="ident">CompatibilityMode::None</span>,
 	})
 }
 
@@ -227,17 +230,18 @@
 }
 
 <span class="doccomment">/// Build the [`AuraVerifier`].</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_verifier</span><span class="op">&lt;</span><span class="ident">P</span>, <span class="ident">C</span>, <span class="ident">CIDP</span><span class="op">&gt;</span>(
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_verifier</span><span class="op">&lt;</span><span class="ident">P</span>, <span class="ident">C</span>, <span class="ident">CIDP</span>, <span class="ident">N</span><span class="op">&gt;</span>(
 	<span class="ident">BuildVerifierParams</span> { <span class="ident">client</span>, <span class="ident">create_inherent_data_providers</span>, <span class="ident">telemetry</span> }: <span class="ident">BuildVerifierParams</span><span class="op">&lt;</span>
 		<span class="ident">C</span>,
 		<span class="ident">CIDP</span>,
 	<span class="op">&gt;</span>,
-) -&gt; <span class="ident">AuraVerifier</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">P</span>, <span class="ident">CIDP</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">AuraVerifier</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">P</span>, <span class="ident">CIDP</span>, <span class="ident">N</span><span class="op">&gt;</span> {
 	<span class="ident">sc_consensus_aura::build_verifier</span>(<span class="ident">sc_consensus_aura::BuildVerifierParams</span> {
 		<span class="ident">client</span>,
 		<span class="ident">create_inherent_data_providers</span>,
 		<span class="ident">telemetry</span>,
 		<span class="ident">check_for_equivocation</span>: <span class="ident">sc_consensus_aura::CheckForEquivocation::No</span>,
+		<span class="ident">compatibility_mode</span>: <span class="ident">CompatibilityMode::None</span>,
 	})
 }
 </code></pre></div>
