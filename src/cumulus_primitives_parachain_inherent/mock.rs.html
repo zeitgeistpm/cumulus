@@ -353,7 +353,7 @@
 	) -&gt; <span class="self">Self</span> {
 		<span class="kw">let</span> <span class="ident">starting_dmq_mqc_head</span> <span class="op">=</span> <span class="ident">client</span>
 			.<span class="ident">storage</span>(
-				<span class="kw-2">&amp;</span><span class="ident">parent_block</span>,
+				<span class="ident">parent_block</span>,
 				<span class="kw-2">&amp;</span><span class="ident">sp_storage::StorageKey</span>(
 					[<span class="ident">twox_128</span>(<span class="kw-2">&amp;</span><span class="ident">parachain_system_name</span>.<span class="number">0</span>), <span class="ident">twox_128</span>(<span class="string">b&quot;LastDmqMqcHead&quot;</span>)]
 						.<span class="ident">concat</span>()
@@ -368,7 +368,7 @@
 
 		<span class="kw">let</span> <span class="ident">starting_hrmp_mqc_heads</span> <span class="op">=</span> <span class="ident">client</span>
 			.<span class="ident">storage</span>(
-				<span class="kw-2">&amp;</span><span class="ident">parent_block</span>,
+				<span class="ident">parent_block</span>,
 				<span class="kw-2">&amp;</span><span class="ident">sp_storage::StorageKey</span>(
 					[<span class="ident">twox_128</span>(<span class="kw-2">&amp;</span><span class="ident">parachain_system_name</span>.<span class="number">0</span>), <span class="ident">twox_128</span>(<span class="string">b&quot;LastHrmpMqcHeads&quot;</span>)]
 						.<span class="ident">concat</span>()
