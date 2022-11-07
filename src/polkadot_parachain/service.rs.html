@@ -1552,6 +1552,7 @@
 <span id="1552">1552</span>
 <span id="1553">1553</span>
 <span id="1554">1554</span>
+<span id="1555">1555</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -2114,6 +2115,7 @@
 		<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
 		<span class="kw">let</span> <span class="ident">transaction_pool</span> <span class="op">=</span> <span class="ident">transaction_pool</span>.<span class="ident">clone</span>();
 
+		<span class="kw">let</span> <span class="ident">backend_for_rpc</span> <span class="op">=</span> <span class="ident">backend</span>.<span class="ident">clone</span>();
 		<span class="ident">Box::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">deny_unsafe</span>, <span class="kw">_</span><span class="op">|</span> {
 			<span class="kw">let</span> <span class="ident">deps</span> <span class="op">=</span> <span class="ident">rpc::FullDeps</span> {
 				<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
@@ -2121,7 +2123,7 @@
 				<span class="ident">deny_unsafe</span>,
 			};
 
-			<span class="ident">rpc::create_full</span>(<span class="ident">deps</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+			<span class="ident">rpc::create_full</span>(<span class="ident">deps</span>, <span class="ident">backend_for_rpc</span>.<span class="ident">clone</span>()).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
 		})
 	};
 
