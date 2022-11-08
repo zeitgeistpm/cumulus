@@ -1,6 +1,6 @@
 var sourcesIndex = JSON.parse('{\
 "asset_test_utils":["",[],["lib.rs"]],\
-"collectives_polkadot_runtime":["",[["weights",[],["block_weights.rs","cumulus_pallet_xcmp_queue.rs","extrinsic_weights.rs","frame_system.rs","mod.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_utility.rs","paritydb_weights.rs","rocksdb_weights.rs"]]],["constants.rs","impls.rs","lib.rs","xcm_config.rs"]],\
+"collectives_polkadot_runtime":["",[["weights",[],["block_weights.rs","cumulus_pallet_xcmp_queue.rs","extrinsic_weights.rs","frame_system.rs","mod.rs","pallet_alliance.rs","pallet_balances.rs","pallet_collator_selection.rs","pallet_collective.rs","pallet_multisig.rs","pallet_proxy.rs","pallet_session.rs","pallet_timestamp.rs","pallet_utility.rs","paritydb_weights.rs","rocksdb_weights.rs"]]],["constants.rs","impls.rs","lib.rs","xcm_config.rs"]],\
 "contracts_rococo_runtime":["",[["weights",[],["block_weights.rs","extrinsic_weights.rs","mod.rs","paritydb_weights.rs","rocksdb_weights.rs"]]],["constants.rs","contracts.rs","lib.rs","xcm_config.rs"]],\
 "cumulus_client_cli":["",[],["lib.rs"]],\
 "cumulus_client_collator":["",[],["lib.rs"]],\

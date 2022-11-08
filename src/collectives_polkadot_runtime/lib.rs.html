@@ -1244,7 +1244,7 @@
 	<span class="kw">type</span> <span class="ident">MaxProposals</span> <span class="op">=</span> <span class="ident">ConstU32</span><span class="op">&lt;</span><span class="ident">ALLIANCE_MAX_PROPOSALS</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">MaxMembers</span> <span class="op">=</span> <span class="ident">ConstU32</span><span class="op">&lt;</span><span class="ident">ALLIANCE_MAX_MEMBERS</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">DefaultVote</span> <span class="op">=</span> <span class="ident">pallet_collective::MoreThanMajorityThenPrimeDefaultVote</span>;
-	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">pallet_collective::weights::SubstrateWeight</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_collective::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_FOUNDERS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">10</span>;
@@ -1283,7 +1283,7 @@
 	<span class="kw">type</span> <span class="ident">MaxAnnouncementsCount</span> <span class="op">=</span> <span class="ident">ConstU32</span><span class="op">&lt;</span><span class="number">100</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">MaxMembersCount</span> <span class="op">=</span> <span class="ident">ConstU32</span><span class="op">&lt;</span><span class="ident">ALLIANCE_MAX_MEMBERS</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">AllyDeposit</span> <span class="op">=</span> <span class="ident">AllyDeposit</span>;
-	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">pallet_alliance::weights::SubstrateWeight</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_alliance::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
 <span class="comment">// Create the runtime by composing the FRAME pallets that were previously configured.</span>
