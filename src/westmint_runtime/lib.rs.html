@@ -968,6 +968,7 @@
 <span id="968">968</span>
 <span id="969">969</span>
 <span id="970">970</span>
+<span id="971">971</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1198,6 +1199,7 @@
 	<span class="kw">type</span> <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">Balance</span>;
 	<span class="kw">type</span> <span class="ident">AssetId</span> <span class="op">=</span> <span class="ident">AssetId</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
+	<span class="kw">type</span> <span class="ident">CreateOrigin</span> <span class="op">=</span> <span class="ident">AsEnsureOriginWithArg</span><span class="op">&lt;</span><span class="ident">EnsureSigned</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">ForceOrigin</span> <span class="op">=</span> <span class="ident">AssetsForceOrigin</span>;
 	<span class="kw">type</span> <span class="ident">AssetDeposit</span> <span class="op">=</span> <span class="ident">AssetDeposit</span>;
 	<span class="kw">type</span> <span class="ident">MetadataDepositBase</span> <span class="op">=</span> <span class="ident">MetadataDepositBase</span>;

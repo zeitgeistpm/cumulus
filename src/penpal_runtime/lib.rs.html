@@ -796,6 +796,7 @@
 <span id="796">796</span>
 <span id="797">797</span>
 <span id="798">798</span>
+<span id="799">799</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -833,7 +834,7 @@
 	<span class="ident">construct_runtime</span>,
 	<span class="ident">dispatch::DispatchClass</span>,
 	<span class="ident">parameter_types</span>,
-	<span class="ident">traits::Everything</span>,
+	<span class="ident">traits</span>::{<span class="ident">AsEnsureOriginWithArg</span>, <span class="ident">Everything</span>},
 	<span class="ident">weights</span>::{
 		<span class="ident">constants::WEIGHT_PER_SECOND</span>, <span class="ident">ConstantMultiplier</span>, <span class="ident">Weight</span>, <span class="ident">WeightToFeeCoefficient</span>,
 		<span class="ident">WeightToFeeCoefficients</span>, <span class="ident">WeightToFeePolynomial</span>,
@@ -842,7 +843,7 @@
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{
 	<span class="ident">limits</span>::{<span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>},
-	<span class="ident">EnsureRoot</span>,
+	<span class="ident">EnsureRoot</span>, <span class="ident">EnsureSigned</span>,
 };
 <span class="kw">use</span> <span class="ident">smallvec::smallvec</span>;
 <span class="kw">use</span> <span class="ident">sp_api::impl_runtime_apis</span>;
@@ -1196,6 +1197,7 @@
 	<span class="kw">type</span> <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">Balance</span>;
 	<span class="kw">type</span> <span class="ident">AssetId</span> <span class="op">=</span> <span class="ident">AssetId</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
+	<span class="kw">type</span> <span class="ident">CreateOrigin</span> <span class="op">=</span> <span class="ident">AsEnsureOriginWithArg</span><span class="op">&lt;</span><span class="ident">EnsureSigned</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">ForceOrigin</span> <span class="op">=</span> <span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">AssetDeposit</span> <span class="op">=</span> <span class="ident">AssetDeposit</span>;
 	<span class="kw">type</span> <span class="ident">MetadataDepositBase</span> <span class="op">=</span> <span class="ident">MetadataDepositBase</span>;
