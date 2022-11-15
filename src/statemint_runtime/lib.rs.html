@@ -1008,6 +1008,11 @@
 <span id="1008">1008</span>
 <span id="1009">1009</span>
 <span id="1010">1010</span>
+<span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
+<span id="1014">1014</span>
+<span id="1015">1015</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
@@ -1284,6 +1289,7 @@
 	<span class="kw">type</span> <span class="ident">Extra</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_assets::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">AssetAccountDeposit</span> <span class="op">=</span> <span class="ident">AssetAccountDeposit</span>;
+	<span class="kw">type</span> <span class="ident">RemoveItemsLimit</span> <span class="op">=</span> <span class="ident">frame_support::traits::ConstU32</span><span class="op">&lt;</span><span class="number">1000</span><span class="op">&gt;</span>;
 }
 
 <span class="macro">parameter_types!</span> {
@@ -1386,7 +1392,10 @@
 			<span class="ident">ProxyType::AssetOwner</span> =&gt; <span class="macro">matches!</span>(
 				<span class="ident">c</span>,
 				<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::create</span> { .. }) <span class="op">|</span>
-					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::destroy</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::start_destroy</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::destroy_accounts</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::destroy_approvals</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::finish_destroy</span> { .. }) <span class="op">|</span>
 					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::transfer_ownership</span> { .. }) <span class="op">|</span>
 					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::set_team</span> { .. }) <span class="op">|</span>
 					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::set_metadata</span> { .. }) <span class="op">|</span>
@@ -1671,6 +1680,7 @@
 	<span class="ident">frame_system::ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">Runtime</span>,
 	<span class="ident">AllPalletsWithSystem</span>,
+	<span class="ident">pallet_assets::migration::v1::MigrateToV1</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>

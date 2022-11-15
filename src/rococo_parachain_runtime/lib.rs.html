@@ -755,6 +755,7 @@
 <span id="755">755</span>
 <span id="756">756</span>
 <span id="757">757</span>
+<span id="758">758</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -1265,6 +1266,7 @@
 	<span class="kw">type</span> <span class="ident">Extra</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">pallet_assets::weights::SubstrateWeight</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">AssetAccountDeposit</span> <span class="op">=</span> <span class="ident">AssetAccountDeposit</span>;
+	<span class="kw">type</span> <span class="ident">RemoveItemsLimit</span> <span class="op">=</span> <span class="ident">frame_support::traits::ConstU32</span><span class="op">&lt;</span><span class="number">1000</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_aura::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
