@@ -14,12 +14,12 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 parity-scale-codec = { version = "3.1.5", default-features = false }
-sp-std = { default-features = false, git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-sp-runtime = { default-features = false, git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-frame-support = { default-features = false, git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-frame-system = { default-features = false, git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-frame-benchmarking = { default-features = false, optional = true, git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-pallet-session = { default-features = false, git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
+sp-std = { default-features = false, git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+sp-runtime = { default-features = false, git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+frame-support = { default-features = false, git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+frame-system = { default-features = false, git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+frame-benchmarking = { default-features = false, optional = true, git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+pallet-session = { default-features = false, git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
 
 [features]
 default = ["std"]

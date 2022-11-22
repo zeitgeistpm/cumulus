@@ -5,17 +5,17 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-polkadot-overseer = { git = "https://github.com/paritytech/polkadot", branch = "release-v0.9.26" }
-polkadot-service = { git = "https://github.com/paritytech/polkadot", branch = "release-v0.9.26" }
+polkadot-overseer = { git = "https://github.com/zeitgeistpm/polkadot", branch = "release-v0.9.26-libp2p" }
+polkadot-service = { git = "https://github.com/zeitgeistpm/polkadot", branch = "release-v0.9.26-libp2p" }
 
 cumulus-primitives-core = { path = "../../primitives/core" }
 
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-sp-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-sp-state-machine = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
-sc-client-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.26" }
+sp-core = { git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+sp-api = { git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+sp-runtime = { git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+sp-blockchain = { git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+sp-state-machine = { git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
+sc-client-api = { git = "https://github.com/zeitgeistpm/substrate", branch = "polkadot-v0.9.26-libp2p" }
 
 futures = "0.3.21"
 parking_lot = "0.12.1"

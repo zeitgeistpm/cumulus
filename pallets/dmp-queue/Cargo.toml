@@ -10,22 +10,22 @@ log = { version = "0.4.17", default-features = false }
 scale-info = { version = "2.1.1", default-features = false, features = ["derive"] }
 
 # Substrate
-frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.26" }
-frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.26" }
-sp-io = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.26" }
-sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.26" }
-sp-std = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.26" }
+frame-support = { git = "https://github.com/zeitgeistpm/substrate", default-features = false, branch = "polkadot-v0.9.26-libp2p" }
+frame-system = { git = "https://github.com/zeitgeistpm/substrate", default-features = false, branch = "polkadot-v0.9.26-libp2p" }
+sp-io = { git = "https://github.com/zeitgeistpm/substrate", default-features = false, branch = "polkadot-v0.9.26-libp2p" }
+sp-runtime = { git = "https://github.com/zeitgeistpm/substrate", default-features = false, branch = "polkadot-v0.9.26-libp2p" }
+sp-std = { git = "https://github.com/zeitgeistpm/substrate", default-features = false, branch = "polkadot-v0.9.26-libp2p" }
 
 # Polkadot
-xcm = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.26" }
-xcm-executor = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.26" }
+xcm = { git = "https://github.com/zeitgeistpm/polkadot", default-features = false, branch = "release-v0.9.26-libp2p" }
+xcm-executor = { git = "https://github.com/zeitgeistpm/polkadot", default-features = false, branch = "release-v0.9.26-libp2p" }
 
 # Cumulus
 cumulus-primitives-core = { path = "../../primitives/core", default-features = false }
 
 [dev-dependencies]
-sp-core = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.26" }
-sp-version = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.26" }
+sp-core = { git = "https://github.com/zeitgeistpm/substrate", default-features = false, branch = "polkadot-v0.9.26-libp2p" }
+sp-version = { git = "https://github.com/zeitgeistpm/substrate", default-features = false, branch = "polkadot-v0.9.26-libp2p" }
 
 [features]
 default = [ "std" ]
