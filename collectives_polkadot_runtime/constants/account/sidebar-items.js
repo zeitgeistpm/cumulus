@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["RELAY_TREASURY_PALL_ID","Relay Chain treasury pallet id, used to convert into AccountId"],["SLASHED_IMBALANCE_ACC_ID","account used to temporarily deposit slashed imbalance before teleporting"]]};
+window.SIDEBAR_ITEMS = {"constant":["ALLIANCE_PALLET_ID","POLKADOT_TREASURY_PALLET_ID","REFERENDA_PALLET_ID"]};
